@@ -1,4 +1,4 @@
-module fr.atlas.hyperplanning{
+module fr.utln.atlas.hyperplanning{
     requires javafx.controls;
     requires javafx.fxml;
     requires lombok;
@@ -6,13 +6,13 @@ module fr.atlas.hyperplanning{
     requires javafaker;
     requires java.sql;
 
-    opens fr.atlas.hyperplanning.fxapp1 to javafx.fxml;
-    exports fr.atlas.hyperplanning.fxapp1;
-    exports fr.atlas.hyperplanning.fxapp2;
-    opens fr.atlas.hyperplanning.fxapp2 to javafx.fxml;
-    exports fr.atlas.hyperplanning.fxapp2.view;
-    opens fr.atlas.hyperplanning.fxapp2.view to javafx.fxml;
-    exports fr.atlas.hyperplanning.fxapp2.model;
-    opens fr.atlas.hyperplanning.fxapp2.model to javafx.fxml;
+    opens fr.utln.atlas.projethyp.planningview to javafx.fxml;
+    exports fr.utln.atlas.projethyp.planningview;
+    exports fr.utln.atlas.projethyp.fxapp2;
+    opens fr.utln.atlas.projethyp.fxapp2 to javafx.fxml;
+    exports fr.utln.atlas.projethyp.fxapp2.view;
+    opens fr.utln.atlas.projethyp.fxapp2.view to javafx.fxml;
+    exports fr.utln.atlas.projethyp.fxapp2.model;
+    opens fr.utln.atlas.projethyp.fxapp2.model to javafx.fxml;
 
 }

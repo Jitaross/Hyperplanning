@@ -13,7 +13,7 @@
         <javafx.version>19.0.2.1</javafx.version>
         <lombok.version>1.18.30</lombok.version>
 
-        <mainClass>fr.atlas.hyperplanning.fxapp2.App</mainClass>
+        <mainClass>fr.utln.atlas.projethyp.fxapp2.App</mainClass>
         <project.module>fr.univtln.bruno.samples.jfx</project.module>
         <jdep.java.version>17</jdep.java.version>
     </properties>
