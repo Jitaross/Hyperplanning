@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.sql.Time;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Builder
@@ -14,8 +15,8 @@ public class Cours implements Entity {
     private String nomMatiere;
     private String description;
     private long idEnseignant;
-    private Time debut;
-    private Time fin;
-    private Date date;
+    private long idsalle;
+    private Timestamp debut;
+    private Timestamp fin;
 
 }

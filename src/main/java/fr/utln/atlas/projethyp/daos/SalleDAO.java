@@ -3,18 +3,30 @@ package fr.utln.atlas.projethyp.daos;
 import fr.utln.atlas.projethyp.entities.Salle;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalleDAO extends AbstractDAO<Salle>{
+
+    private final PreparedStatement notTakenPS;
     protected SalleDAO(String persistPS, String updatePS) throws DataAccessException {
-        super("INSERT INTO Salle(ID, NOMSALLE) VALUE (?, ?)",
-                "UPDATE Salle SET NOMSALLE=? WHERE ID=?");
+        super("INSERT INTO SALLE(ID, NOMSALLE) VALUE (?, ?)",
+                "UPDATE SALLE SET NOMSALLE=? WHERE ID=?");
+        try{
+            notTakenPS = getConnection().prepareStatement("SELECT DISTINCT ID, NOMSALLE FROM SALLE AS s, " +
+                    "COURS AS cs WHERE cs.IDSALLE = s.ID AND NOT cs.DEBUT=?");
+        } catch(SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
     }
 
     @Override
     public String getTableName() {
-        return "Salle";
+        return "SALLE";
     }
 
     @Override
@@ -38,6 +50,18 @@ public class SalleDAO extends AbstractDAO<Salle>{
             throw new DataAccessException(e.getLocalizedMessage());
         }
         return super.persist();
+    }
+
+    public Page<Salle> findNotTakenRoom(Timestamp date, int pageNumber, int pageSize) throws  DataAccessException {
+        List<Salle> salleList = new ArrayList<>();
+        try {
+            notTakenPS.setTimestamp(1, date);
+            ResultSet resultSet = notTakenPS.executeQuery();
+            while (resultSet.next()) salleList.add(fromResultSet(resultSet));
+        }catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+        return new Page<>(pageNumber, pageSize, salleList);
     }
 
     @Override
