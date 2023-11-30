@@ -17,8 +17,10 @@ public class SalleDAO extends AbstractDAO<Salle>{
         super("INSERT INTO SALLE(ID, NOMSALLE) VALUE (?, ?)",
                 "UPDATE SALLE SET NOMSALLE=? WHERE ID=?");
         try{
-            notTakenPS = getConnection().prepareStatement("SELECT DISTINCT ID, NOMSALLE FROM SALLE AS s, " +
-                    "COURS AS cs WHERE cs.IDSALLE = s.ID AND NOT cs.DEBUT=?");
+            notTakenPS = getConnection().prepareStatement("SELECT DISTINCT ID, NOMSALLE FROM SALLE AS s, COURS AS cs " +
+                    "WHERE cs.IDSALLE = s.ID " +
+                    "AND NOT cs.DEBUT=? " +
+                    "AND TIMESTAMPDIFF(cs.FIN, cs.DEBUT, MINUTE()) <= 0");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
