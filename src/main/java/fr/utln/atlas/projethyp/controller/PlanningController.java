@@ -3,15 +3,20 @@ package fr.utln.atlas.projethyp.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -22,6 +27,8 @@ public class PlanningController {
 
     @FXML
     private GridPane gridPane;
+    @FXML
+    private GridPane planning;
     @FXML
     private VBox vbox;
 
@@ -90,6 +97,16 @@ public class PlanningController {
             // Positionnement des jours aux bons emplacements (à modifier)
             joursSemaine.get(i).setText(dayText);
             joursSemaine.get(i).setTranslateY(70);
+
+            // Placement des cours
+            Time heuredebut = Time.valueOf("08:00:00");
+            Time heurefin = Time.valueOf("11:00:00");
+            Date date = Date.valueOf("2023-12-01");
+
+
+            Time diff = new Time(heurefin.getTime()-heuredebut.getTime()-3600000);
+            int heure = diff.getHours();
+            planning.add(new TextArea("Ouai"),1,1,1,4);
 
 
             }
