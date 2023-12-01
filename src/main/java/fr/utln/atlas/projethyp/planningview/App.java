@@ -20,7 +20,7 @@ public class App extends Application {
                 App.class.getResource("Test_Planning_Template.fxml"));
 
         AnchorPane page = loader.load();
-        Scene scene = new Scene(page);
+        Scene scene = new Scene(page,1280,800);
 
         primaryStage.setTitle("Java FX Ex01");
         primaryStage.setScene(scene);

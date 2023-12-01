@@ -5,19 +5,18 @@
 <?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TreeTableView layoutX="-1.0" layoutY="87.0" prefHeight="313.0" prefWidth="607.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
         <columns>
-          <TreeTableColumn minWidth="50.0" prefWidth="100.0" text="LUNDI" />
-          <TreeTableColumn minWidth="50.0" prefWidth="100.0" text="MARDI" />
-            <TreeTableColumn minWidth="50.0" prefWidth="100.0" text="MERCREDI" />
-            <TreeTableColumn minWidth="50.0" prefWidth="100.0" text="JEUDI" />
-            <TreeTableColumn minWidth="50.0" prefWidth="100.0" text="VENDREDI" />
-            <TreeTableColumn minWidth="50.0" prefWidth="100.0" text="SAMEDI" />
+          <TreeTableColumn minWidth="50.0" prefWidth="213.0" text="LUNDI" />
+          <TreeTableColumn minWidth="50.0" prefWidth="213.0" text="MARDI" />
+            <TreeTableColumn minWidth="50.0" prefWidth="213.0" text="MERCREDI" />
+            <TreeTableColumn maxWidth="500.0" minWidth="50.0" prefWidth="213.0" text="JEUDI" />
+            <TreeTableColumn minWidth="50.0" prefWidth="213.0" text="VENDREDI" />
+            <TreeTableColumn minWidth="50.0" prefWidth="214.0" text="SAMEDI" />
         </columns>
       </TreeTableView>
-      <Pagination layoutX="200.0" layoutY="1.0" prefHeight="45.0" prefWidth="200.0" />
+      <Pagination fx:id="planning_menu_pages" layoutX="540.0" layoutY="1.0" prefHeight="45.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

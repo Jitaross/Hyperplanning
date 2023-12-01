@@ -1,0 +1,13 @@
+
+z	java:S116"^Rename this field "planning_menu_pages" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿšô8íôıÅ¼1
+L	java:S106"+Replace this use of System.out by a logger.(¸¡™ üÿÿÿÿ8ÕÇˆÆ¼1
+d
+java:S1128"GRemove this unused import 'javafx.beans.property.SimpleStringProperty'.(ûĞùÑ8ÖÇˆÆ¼1
+^
+java:S1128"ARemove this unused import 'javafx.beans.property.StringProperty'.(Å‘ï±8ÖÇˆÆ¼1
+Z
+java:S1128"8Remove this unused import 'javafx.scene.control.Button'.(Ë Í‹øÿÿÿÿ8ÖÇˆÆ¼1
+W
+java:S1128":Remove this unused import 'javafx.scene.control.TextArea'.(ö ¸8ÖÇˆÆ¼1
+X
+java:S1128	";Remove this unused import 'javafx.scene.control.TextField'.(¨¢¤¶8×ÇˆÆ¼1
