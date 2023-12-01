@@ -11,12 +11,13 @@ import java.sql.Timestamp;
 @Builder
 public class Cours implements Entity {
     @Builder.Default
-    private long id = -1;
-    private String nomMatiere;
+    private int id = -1;
     private String description;
-    private long idEnseignant;
-    private long idsalle;
-    private Timestamp debut;
-    private Timestamp fin;
+    private int idEnseignant;
+    private int idMatiere;
+    private int idsalle;
+    private Time debut;
+    private Time fin;
+    private Date date;
 
 }

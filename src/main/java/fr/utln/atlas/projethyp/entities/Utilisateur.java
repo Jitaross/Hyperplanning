@@ -8,9 +8,11 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Utilisateur implements Entity {
-    private long id = -1;
-    private String Nom;
-    private String Prenom;
-    private String Mail;
+    @Builder.Default
+    private int id = -1;
+    private String nom;
+    private String prenom;
+    private String mail;
+    private String motDePasse;
     private Date dateNaissance;
 }
