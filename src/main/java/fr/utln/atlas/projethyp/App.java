@@ -34,10 +34,6 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 import java.io.IOException;
 public class App extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(
@@ -50,6 +46,7 @@ public class App extends Application {
         primaryStage.show();
     }
   public static void main(String[] args) {
+      launch(args);
         /*
         try {
             // Création d'une instance de CoursDAO
