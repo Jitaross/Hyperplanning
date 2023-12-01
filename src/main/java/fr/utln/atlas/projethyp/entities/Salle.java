@@ -9,6 +9,7 @@ public class Salle implements Entity{
     @Builder.Default
     private long id = -1;
     private String nomSalle;
+    private int nombrePlace;
 
     @Override
     public long getId() {

@@ -14,8 +14,8 @@ public class SalleDAO extends AbstractDAO<Salle>{
 
     private final PreparedStatement notTakenPS;
     protected SalleDAO(String persistPS, String updatePS) throws DataAccessException {
-        super("INSERT INTO SALLE(ID, NOMSALLE) VALUE (?, ?)",
-                "UPDATE SALLE SET NOMSALLE=? WHERE ID=?");
+        super("INSERT INTO SALLE(ID, NOMSALLE, NOMBREPLACE) VALUE (?, ?, ?)",
+                "UPDATE SALLE SET NOMSALLE=?, NOMNREPLACE=? WHERE ID=?");
         try{
             notTakenPS = getConnection().prepareStatement("SELECT DISTINCT ID, NOMSALLE FROM SALLE AS s, COURS AS cs " +
                     "WHERE cs.IDSALLE = s.ID " +
@@ -36,18 +36,20 @@ public class SalleDAO extends AbstractDAO<Salle>{
         return Salle.builder()
                 .id(resultSet.getInt("ID"))
                 .nomSalle(resultSet.getString("NOMSALLE"))
+                .nombrePlace(resultSet.getInt("NOMBREPLACE"))
                 .build();
     }
 
     @Override
     public Salle persist(Salle salle) throws DataAccessException {
-        return persist(salle.getId(), salle.getNomSalle());
+        return persist(salle.getId(), salle.getNomSalle(), salle.getNombrePlace());
     }
 
-    private Salle persist(long id, String nomSalle) throws DataAccessException {
+    private Salle persist(long id, String nomSalle, int nombreSalle) throws DataAccessException {
         try {
             persistPS.setLong(1, id);
             persistPS.setString(2, nomSalle);
+            persistPS.setInt(3, nombreSalle);
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -70,7 +72,8 @@ public class SalleDAO extends AbstractDAO<Salle>{
     public void update(Salle salle) throws DataAccessException {
         try {
             updatePS.setString(1, salle.getNomSalle());
-            persistPS.setLong(2, salle.getId());
+            updatePS.setInt(2, salle.getNombrePlace());
+            updatePS.setLong(2, salle.getId());
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
