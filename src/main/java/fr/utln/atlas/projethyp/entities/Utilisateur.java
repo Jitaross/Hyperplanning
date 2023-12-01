@@ -7,10 +7,13 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Utilisateur implements Entity {
+    @Builder.Default
     private int id = -1;
-    private String Nom;
-    private String Prenom;
-    private String Mail;
+    private String nom;
+    private String prenom;
+    private String mail;
+    private String motDePasse;
     private Date dateNaissance;
 }

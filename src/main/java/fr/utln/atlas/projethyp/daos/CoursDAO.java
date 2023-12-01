@@ -68,14 +68,14 @@ public class CoursDAO extends AbstractDAO<Cours> {
     @Override
     public void update(Cours cours) throws DataAccessException {
         try {
-            updatePS.setString(2, cours.getDescription());
-            updatePS.setInt(3, cours.getIdEnseignant());
-            updatePS.setInt(4, cours.getIdMatiere());
-            updatePS.setInt(5, cours.getIdSalle());
-            updatePS.setTime(6, cours.getDebut());
-            updatePS.setTime(7, cours.getFin());
-            updatePS.setDate(8,cours.getDate());
-            updatePS.setInt(1, cours.getId());
+            updatePS.setString(1, cours.getDescription());
+            updatePS.setInt(2, cours.getIdEnseignant());
+            updatePS.setInt(3, cours.getIdMatiere());
+            updatePS.setInt(4, cours.getIdSalle());
+            updatePS.setTime(5, cours.getDebut());
+            updatePS.setTime(6, cours.getFin());
+            updatePS.setDate(7,cours.getDate());
+            updatePS.setInt(8, cours.getId());
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }

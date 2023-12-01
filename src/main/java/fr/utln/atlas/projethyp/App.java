@@ -10,7 +10,9 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.Temporal;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
  */
 public class App {
     public static void main(String[] args) {
+        /*
         try {
             // Création d'une instance de CoursDAO
             CoursDAO coursDAO = new CoursDAO();
@@ -50,6 +53,13 @@ public class App {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+
+         */
+        Time debut = Time.valueOf("09:00:00");
+        Time fin = Time.valueOf("10:30:00");
+        Duration diff = Duration.between((Temporal) debut, (Temporal) fin);
+        System.out.println(diff);
+
     }
 
     static void loadProperties(String propFileName) throws IOException {

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Salle implements Entity{
-    private int Id;
+    private int id = -1;
+    private String nomSalle;
     private int nombrePlace;
 }

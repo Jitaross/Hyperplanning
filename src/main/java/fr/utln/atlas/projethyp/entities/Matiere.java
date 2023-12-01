@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Matiere implements Entity{
-    private int Id;
+    private int id = -1;
     private String nomMatiere;
 
 }
