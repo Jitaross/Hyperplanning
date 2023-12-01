@@ -1,4 +1,11 @@
 package fr.utln.atlas.projethyp;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import fr.utln.atlas.projethyp.daos.CoursDAO;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Cours;
@@ -24,12 +31,25 @@ import org.h2.tools.Server;
 
 import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
-/**
- * Hello world!
- *
- */
-public class App {
+import java.io.IOException;
+public class App extends Application {
+
     public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("main.fxml"));
+        Parent rootNode = loader.load();
+        Scene scene = new Scene(rootNode);
+
+        primaryStage.setTitle("Hyper-planning");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+  public static void main(String[] args) {
         /*
         try {
             // Création d'une instance de CoursDAO
@@ -76,5 +96,4 @@ public class App {
         path = Objects.requireNonNull(App.class.getClassLoader().getResource("logging.properties")).getFile();
         System.setProperty("java.util.logging.config.file", path);
     }
-
 }
