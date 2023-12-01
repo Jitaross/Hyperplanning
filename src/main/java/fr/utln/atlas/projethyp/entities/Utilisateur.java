@@ -8,7 +8,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Utilisateur implements Entity {
-    private long id = -1;
+    private int id = -1;
     private String Nom;
     private String Prenom;
     private String Mail;

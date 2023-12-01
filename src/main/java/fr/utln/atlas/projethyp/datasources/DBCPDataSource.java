@@ -10,9 +10,9 @@ public class DBCPDataSource {
     private static final BasicDataSource ds = new BasicDataSource();
 
     static {
-        ds.setUrl(System.getProperty("jdbcdao.datasource.url"));
-        ds.setUsername(System.getProperty("jdbcdao.datasource.username"));
-        ds.setPassword(System.getProperty("jdbcdao.datasource.password"));
+        ds.setUrl("jdbc:h2:tcp://nas.richardsebastien.fr/~/atlas");
+        ds.setUsername("user");
+        ds.setPassword("@tlas");
 
         ds.setMinIdle(5);
         ds.setMaxIdle(10);

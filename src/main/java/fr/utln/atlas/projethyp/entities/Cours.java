@@ -10,10 +10,11 @@ import java.sql.Date;
 @Builder
 public class Cours implements Entity {
     @Builder.Default
-    private long id = -1;
-    private String nomMatiere;
+    private int id = -1;
     private String description;
-    private long idEnseignant;
+    private int idEnseignant;
+    private int idMatiere;
+    private int idSalle;
     private Time debut;
     private Time fin;
     private Date date;
