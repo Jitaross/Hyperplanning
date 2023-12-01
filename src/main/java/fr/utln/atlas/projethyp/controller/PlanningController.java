@@ -116,6 +116,10 @@ public class PlanningController {
         return gridPane;
     }
 
+    public void ajouterCours(String cours){
+
+    }
+
     public void show(){
         this.planningPane.setVisible(true);
     }
