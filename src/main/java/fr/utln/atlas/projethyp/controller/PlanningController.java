@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp.controller;
 
+import fr.utln.atlas.projethyp.entities.Cours;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
@@ -14,8 +15,10 @@ import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -98,26 +101,24 @@ public class PlanningController {
             joursSemaine.get(i).setText(dayText);
             joursSemaine.get(i).setTranslateY(70);
 
-            // Placement des cours
-            Time heuredebut = Time.valueOf("08:00:00");
-            Time heurefin = Time.valueOf("11:00:00");
-            Date date = Date.valueOf("2023-12-01");
-
-
-            Time diff = new Time(heurefin.getTime()-heuredebut.getTime()-3600000);
-            int heure = diff.getHours();
-            planning.add(new TextArea("Ouai"),1,1,1,4);
-
-
+            // Placement des cours de la semaine
+            Cours test = Cours.builder().date(Date.valueOf("2023-12-07"))
+                    .description("Le cours du test")
+                    .debut(Time.valueOf("10:15:00"))
+                    .fin(Time.valueOf("12:15:00"))
+                    .build();
+            this.ajouterCours(test);
             }
-
-
-
         return gridPane;
     }
 
-    public void ajouterCours(String cours){
-
+    private void ajouterCours(Cours cours){
+        LocalTime debut = cours.getDebut().toLocalTime();
+        LocalTime fin = cours.getFin().toLocalTime();
+        int rowSpan = (int) (debut.until(fin, ChronoUnit.MINUTES)) / 15;
+        int column = cours.getDate().getDay();
+        int row = (debut.getHour() - 8) * 4 + (debut.getMinute() / 15) + 1; // + 1 cause 8:00 is row 1 not 0
+        this.planning.add(new TextArea(cours.getDescription()), column, row, 1, rowSpan);
     }
 
     public void show(){
