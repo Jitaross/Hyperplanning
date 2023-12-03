@@ -2,9 +2,12 @@ package fr.utln.atlas.projethyp.entities;
 
 import lombok.Builder;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.sql.Date;
 
 @Data
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Utilisateur implements Entity {

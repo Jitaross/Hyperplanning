@@ -15,7 +15,7 @@ public class Cours implements Entity {
     private String description;
     private int idEnseignant;
     private int idMatiere;
-    private int idsalle;
+    private int idSalle;
     private Time debut;
     private Time fin;
     private Date date;
