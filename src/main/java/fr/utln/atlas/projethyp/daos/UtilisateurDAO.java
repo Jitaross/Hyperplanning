@@ -25,8 +25,8 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     private final PreparedStatement findNomUtilisateurPS;
 
     public UtilisateurDAO() throws DataAccessException {
-        super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,MOTDEPASSE,DATENAISSANCE) VALUES (?,?,?,?,?)",
-                "UPDATE COURS SET NOM=?, PRENOM=?, MAIL=?, MOTDEPASSE=?, DATENAISSANCE=? WHERE ID=?");
+        super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE) VALUES (?,?,?,?,?)",
+                "UPDATE COURS SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=? WHERE ID=?");
 
         try{
             findNomUtilisateurPS = getConnection().prepareStatement("SELECT NOM FROM UTILISATEUR WHERE ID = ?");
@@ -43,7 +43,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
                 .nom(resultSet.getString("NOM"))
                 .prenom(resultSet.getString("PRENOM"))
                 .mail(resultSet.getString("MAIL"))
-                .motDePasse(resultSet.getString("MOTDEPASSE"))
+                .motDePasse(resultSet.getString("PASSWORD"))
                 .dateNaissance(resultSet.getDate("DATENAISSANCE"))
                 .build();
     }
