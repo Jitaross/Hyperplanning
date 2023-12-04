@@ -1,7 +1,11 @@
 package fr.utln.atlas.projethyp.controller;
 
+import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
+import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
@@ -9,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import lombok.extern.java.Log;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -21,8 +26,10 @@ import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+@Log
 public class PlanningController {
 
     @FXML
@@ -50,13 +57,24 @@ public class PlanningController {
     @FXML
     private Text jour5;
 
-
+    private CoursDAO coursDAO;
+    private MatiereDAO matiereDAO;
+    private UtilisateurDAO utilisateurDAO;
 
     private static final int START_WEEK = 1;
     private static final int DAYS_IN_WEEK = 7;
 
     public void initialize() {
         this.planningPane.setVisible(false);
+
+        try{
+            this.coursDAO = new CoursDAO();
+            /*this.utilisateurDAO = new UtilisateurDAO();
+            this.matiereDAO = new MatiereDAO();*/
+
+        }catch(DataAccessException e) {
+            e.printStackTrace();
+        }
 
         paginationPlanning.setCurrentPageIndex(START_WEEK); // On initialise à la première semaine de l'année (plus simple pour les calculs suivants)
         paginationPlanning.setPageFactory(this::createPage); // Notre méthode de création de page est createPage
@@ -66,7 +84,6 @@ public class PlanningController {
     }
 
     private GridPane createPage(Integer weekIndex) {
-
         // Liste permettant de gérer simplement les attributs text de la page
         ArrayList<Text> joursSemaine = new ArrayList<Text>();
         joursSemaine.add(jour0);
@@ -102,23 +119,48 @@ public class PlanningController {
             joursSemaine.get(i).setTranslateY(70);
 
             // Placement des cours de la semaine
-            Cours test = Cours.builder().date(Date.valueOf("2023-12-07"))
-                    .description("Le cours du test")
-                    .debut(Time.valueOf("10:15:00"))
-                    .fin(Time.valueOf("12:15:00"))
-                    .build();
-            this.ajouterCours(test);
+
+            // Enlève tous les cours présent à l'écran
+            this.planning.getChildren().removeIf(TextArea.class::isInstance);
+            try{
+                Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaine(currentWeek, 1, 10);
+                List<Cours> cours = pageCoursSemaine.getResultList();
+                for (Cours c : cours) {
+                    this.ajouterCours(c);
+                }
+            } catch (DataAccessException e) {
+                e.printStackTrace();
             }
+        }
         return gridPane;
     }
 
     private void ajouterCours(Cours cours){
         LocalTime debut = cours.getDebut().toLocalTime();
         LocalTime fin = cours.getFin().toLocalTime();
-        int rowSpan = (int) (debut.until(fin, ChronoUnit.MINUTES)) / 15;
+        long duree = debut.until(fin, ChronoUnit.MINUTES);
+        int rowSpan = (int) (duree) / 15;
         int column = cours.getDate().getDay();
         int row = (debut.getHour() - 8) * 4 + (debut.getMinute() / 15) + 1; // + 1 cause 8:00 is row 1 not 0
-        this.planning.add(new TextArea(cours.getDescription()), column, row, 1, rowSpan);
+
+        /* A REPRENDRE QUAND IL Y AURA LES DAOS FONCTIONNELLES
+        String matiere = "";
+        String nomProf = "";
+        LocalTime dureeLT = LocalTime.ofSecondOfDay(duree);
+        String dureeCours =  dureeLT.getHour() + "h" + dureeLT.getMinute();
+        try{
+            matiere = this.matiereDAO.findMatId(cours.getIdMatiere());
+            nomProf = this.utilisateurDAO.findUtilisateurNom(cours.getIdEnseignant());
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+        String text = matiere + "\n\n" +
+                    nomProf + "\n" +
+                    dureeCours;
+        */
+        TextArea coursTextArea = new TextArea(cours.getDescription());
+        coursTextArea.setEditable(false);
+        this.planning.add(coursTextArea, column, row, 1, rowSpan);
     }
 
     public void show(){

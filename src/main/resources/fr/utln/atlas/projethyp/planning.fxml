@@ -158,8 +158,6 @@
                         <Line endX="1500.0" layoutX="111.0" layoutY="93.0" opacity="0.63" startX="-100.0" GridPane.columnIndex="1" GridPane.rowIndex="9" GridPane.valignment="TOP" />
                         <Line endX="1500.0" layoutX="151.0" layoutY="309.0" opacity="0.63" startX="-100.0" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="TOP" />
                         <Line endX="1500.0" startX="-100.0" stroke="#7c0101" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.rowIndex="17" GridPane.valignment="TOP" />
-                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="I122 BASES DE L'APPRENTIS&#10;GLOTIN HERVE&#10;&#10;U001 - SALLE TP MASTER 1&#10;&#10;2H" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.rowSpan="8" GridPane.valignment="CENTER" />
-                        <TextArea editable="false" layoutX="650.0" layoutY="167.0" prefHeight="200.0" prefWidth="200.0" text="I122 BASES DE L'APPRENTIS&#10;GLOTIN HERVE&#10;&#10;U001 - SALLE TP MASTER 1&#10;&#10;2H&#10;" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="8" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8:00" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                         <Text layoutX="10.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8:30" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                         <Text layoutX="10.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9:00" GridPane.rowIndex="4" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
@@ -185,8 +183,6 @@
                         <Text layoutX="10.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="19:00" GridPane.rowIndex="44" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                         <Text layoutX="10.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="19:30" GridPane.rowIndex="46" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                         <Text layoutX="10.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="20:00" GridPane.rowIndex="48" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
-                        <TextArea editable="false" layoutX="302.0" layoutY="20.0" prefHeight="200.0" prefWidth="200.0" text="I131 PROTECT DONNEES&#10;LANGEVIN PHILIPPE&#10;&#10;U001 - SALLE TP MASTER 1&#10;&#10;1H30" GridPane.columnIndex="2" GridPane.rowIndex="9" GridPane.rowSpan="6" />
-                        <TextArea editable="false" layoutX="302.0" layoutY="164.0" prefHeight="200.0" prefWidth="200.0" text="I131 PROTECT DONNEES&#10;LANGEVIN PHILIPPE&#10;&#10;U001 - SALLE TP MASTER 1&#10;&#10;1H30" GridPane.columnIndex="1" GridPane.rowIndex="13" GridPane.rowSpan="6" />
                         
                      </children>
                   </GridPane>
