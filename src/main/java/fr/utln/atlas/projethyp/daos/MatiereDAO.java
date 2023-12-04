@@ -3,16 +3,18 @@ package fr.utln.atlas.projethyp.daos;
 import fr.utln.atlas.projethyp.entities.Matiere;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import fr.utln.atlas.projethyp.exceptions.NotFoundException;
+import lombok.extern.java.Log;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Log
 public class MatiereDAO extends AbstractDAO<Matiere>{
 
     private PreparedStatement findMatPS;
-    protected MatiereDAO(String persistPS, String updatePS) throws DataAccessException {
-        super("INSERT INTO MATIERE(NOMMATIERE) VALUE (?)",
+    public MatiereDAO() throws DataAccessException {
+        super("INSERT INTO MATIERE(NOMMATIERE) VALUES (?)",
                 "UPDATE MATIERE SET NOMMATIERE=? WHERE ID=?");
         try {
             findMatPS = getConnection().prepareStatement("SELECT NOMMATIERE FROM MATIERE WHERE ID=?");
@@ -60,15 +62,17 @@ public class MatiereDAO extends AbstractDAO<Matiere>{
     }
 
     public String findMatId(int id) throws DataAccessException {
-        Matiere temp;
+        String temp = null;
         try {
             findMatPS.setInt(1, id);
             ResultSet rs = findMatPS.executeQuery();
-            temp = fromResultSet(rs);
+            while(rs.next()) {
+                temp = rs.getString("NOMMATIERE");
+            }
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
         if (temp==null) throw new NotFoundException();
-        return temp.getNomMatiere();
+        return temp;
     }
 }

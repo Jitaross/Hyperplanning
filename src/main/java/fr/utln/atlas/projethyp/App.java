@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp;
 import fr.utln.atlas.projethyp.daos.CoursDAO;
+import fr.utln.atlas.projethyp.daos.MatiereDAO;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.DateSemaine;
@@ -19,7 +20,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
+import fr.utln.atlas.projethyp.entities.Matiere;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+import lombok.extern.java.Log;
 import org.h2.tools.Server;
 
 import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
@@ -28,37 +31,14 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
  * Hello world!
  *
  */
+@Log
 public class App {
-    public static void main(String[] args) {
-        /*
-        try {
-            // Création d'une instance de CoursDAO
-            CoursDAO coursDAO = new CoursDAO();
+    public static void main(String[] args) throws DataAccessException {
 
-            // Appel de la méthode findCoursSemaine depuis l'instance de CoursDAO
-            Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaine(47, 1, 10);
+        MatiereDAO matiereDAO = new MatiereDAO();
 
-            // Utilisation des résultats ou traitement de la page de cours obtenue
-            List<Cours> cours = pageCoursSemaine.getResultList();
-            for (Cours c : cours) {
-                // Faites quelque chose avec chaque cours
-                System.out.println(c.getDescription());
-            }
-            Time debut = Time.valueOf("09:00:00");
-            Time fin = Time.valueOf("10:30:00");
-            Date date = Date.valueOf("2023-11-27");
-            coursDAO.persist("Cours de fun en barre",1,1, 1, debut,  fin,  date );
-            coursDAO.persist("Cours de fun en barre2",101,101, 101, debut,  fin,  date );
-            coursDAO.persist("Cours de fun en barre3",1,1, 1, debut,  fin,  date );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-
-         */
-        Time debut = Time.valueOf("09:00:00");
-        Time fin = Time.valueOf("10:30:00");
-        Duration diff = Duration.between((Temporal) debut, (Temporal) fin);
-        System.out.println(diff);
+        String testmat = matiereDAO.findMatId(4);
+        log.info(testmat);
 
     }
 
