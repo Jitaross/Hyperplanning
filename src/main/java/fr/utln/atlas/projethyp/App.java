@@ -6,33 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import fr.utln.atlas.projethyp.daos.CoursDAO;
-import fr.utln.atlas.projethyp.daos.Page;
-import fr.utln.atlas.projethyp.entities.Cours;
-import fr.utln.atlas.projethyp.entities.DateSemaine;
 import fr.utln.atlas.projethyp.daos.MatiereDAO;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
-import java.sql.Time;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.temporal.Temporal;
-import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
-import org.h2.tools.Server;
-
-import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
-
-import java.io.IOException;
 public class App extends Application {
 
     @Override

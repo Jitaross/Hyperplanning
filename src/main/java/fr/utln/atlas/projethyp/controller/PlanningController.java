@@ -3,10 +3,7 @@ package fr.utln.atlas.projethyp.controller;
 import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -15,16 +12,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import lombok.extern.java.Log;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,11 +159,9 @@ public class PlanningController {
 
 
         if(cours.getDescription().substring(0,2).equals("TD")){
-            System.out.println("OK");
             coursTextArea.setStyle("-fx-control-inner-background:#9fff90;");
         }
         if(cours.getDescription().substring(0,2).equals("TP")){
-            System.out.println("OK");
             coursTextArea.setStyle("-fx-control-inner-background:#d790ff;");
         }
 
