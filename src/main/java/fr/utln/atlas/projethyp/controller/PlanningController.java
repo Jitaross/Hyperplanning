@@ -163,6 +163,17 @@ public class PlanningController {
         */
         TextArea coursTextArea = new TextArea(cours.getDescription());
         coursTextArea.setEditable(false);
+
+
+        if(cours.getDescription().substring(0,2).equals("TD")){
+            System.out.println("OK");
+            coursTextArea.setStyle("-fx-control-inner-background:#9fff90;");
+        }
+        if(cours.getDescription().substring(0,2).equals("TP")){
+            System.out.println("OK");
+            coursTextArea.setStyle("-fx-control-inner-background:#d790ff;");
+        }
+
         this.planning.add(coursTextArea, column, row, 1, rowSpan);
     }
 
