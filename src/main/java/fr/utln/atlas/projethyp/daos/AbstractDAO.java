@@ -64,6 +64,12 @@ public abstract class AbstractDAO<E extends Entity> implements DAO<E> {
         return find(id).orElseThrow(NotFoundException::new);
     }
 
+    /**
+     * Search an entity by his id
+     * @param id the id of the entity
+     * @return The entity if found
+     * @throws DataAccessException If unable to access data
+     */
     public Optional<E> find(long id) throws DataAccessException {
         E entity = null;
         try {
@@ -78,6 +84,13 @@ public abstract class AbstractDAO<E extends Entity> implements DAO<E> {
         return Optional.of(entity);
     }
 
+    /**
+     * Search all entities in table
+     * @param pageNumber The number of page to return
+     * @param pageSize The number of entity by page
+     * @return The page of entity
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public Page<E> findAll(int pageNumber, int pageSize) throws DataAccessException {
         List<E> entityList = new ArrayList<>();
@@ -92,6 +105,11 @@ public abstract class AbstractDAO<E extends Entity> implements DAO<E> {
         return new Page<>(pageNumber, pageSize, entityList);
     }
 
+    /**
+     * Remove an entity in DB by id
+     * @param id the id of the entity to remove
+     * @throws DataAccessException If unable to access data
+     */
     public void remove(long id) throws DataAccessException {
         try {
             connection.createStatement().execute("DELETE FROM " + getTableName() + " WHERE ID=" + id);
@@ -100,6 +118,10 @@ public abstract class AbstractDAO<E extends Entity> implements DAO<E> {
         }
     }
 
+    /**
+     * Remove all entities of table
+     * @throws DataAccessException If unable to access data
+     */
     public void clean() throws DataAccessException {
         try {
             connection.createStatement().execute("DELETE FROM " + getTableName());
@@ -108,6 +130,10 @@ public abstract class AbstractDAO<E extends Entity> implements DAO<E> {
         }
     }
 
+    /**
+     * Close to connection to DB
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public void close() throws DataAccessException {
         try {
@@ -119,6 +145,10 @@ public abstract class AbstractDAO<E extends Entity> implements DAO<E> {
 
     protected abstract E fromResultSet(ResultSet resultSet) throws SQLException;
 
+    /**
+     * Update the entity in DB
+     * @throws DataAccessException If unable to access data
+     */
     public void update() throws DataAccessException {
         try {
             updatePS.executeUpdate();

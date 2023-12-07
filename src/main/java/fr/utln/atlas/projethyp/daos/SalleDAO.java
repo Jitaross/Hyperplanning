@@ -24,11 +24,21 @@ public class SalleDAO extends AbstractDAO<Salle>{
         }
     }
 
+    /**
+     * Give the name of the table
+     * @return The table name
+     */
     @Override
     public String getTableName() {
         return "SALLE";
     }
 
+    /**
+     * Initialize a Salle object with data collected in resultSet
+     * @param resultSet The data collected from the SQL query
+     * @return The object Salle initialized with data from resultSet
+     * @throws SQLException If collecting data from resultSet throw an error
+     */
     @Override
     protected Salle fromResultSet(ResultSet resultSet) throws SQLException {
         return Salle.builder()
@@ -38,11 +48,24 @@ public class SalleDAO extends AbstractDAO<Salle>{
                 .build();
     }
 
+    /**
+     * Persist the salle entity in DB
+     * @param salle The entity to be persisted.
+     * @return The entity persisted
+     * @throws DataAccessException If unable to find data
+     * */
     @Override
     public Salle persist(Salle salle) throws DataAccessException {
         return persist(salle.getNomSalle(), salle.getNombrePlace());
     }
 
+    /**
+     * Persist the salle entity in DB with all parameters given
+     * @param nomSalle The name of salle
+     * @param nombreSalle The Capacity of salle
+     * @return the entity persisted
+     * @throws DataAccessException If unable to find data
+     */
     private Salle persist(String nomSalle, int nombreSalle) throws DataAccessException {
         try {
             persistPS.setString(1, nomSalle);
@@ -53,6 +76,15 @@ public class SalleDAO extends AbstractDAO<Salle>{
         return super.persist();
     }
 
+    /**
+     * Search for free romms in a day
+     * @param date The date to search which rooms are available
+     * @param deb The time when the lesson starts
+     * @param pageNumber Number of page of Salle returned
+     * @param pageSize The amount of Salle by page
+     * @return A page of Salle
+     * @throws DataAccessException If unable to find data
+     */
     public Page<Salle> findNotTakenRoom(Date date, Time deb, int pageNumber, int pageSize) throws  DataAccessException {
         List<Salle> salleList = new ArrayList<>();
         try {
@@ -66,6 +98,11 @@ public class SalleDAO extends AbstractDAO<Salle>{
         return new Page<>(pageNumber, pageSize, salleList);
     }
 
+    /**
+     * Update the entity salle in DB
+     * @param salle The entity to be updated. The id is used and cannot be updated.
+     * @throws DataAccessException If unalble to find data
+     */
     @Override
     public void update(Salle salle) throws DataAccessException {
         try {

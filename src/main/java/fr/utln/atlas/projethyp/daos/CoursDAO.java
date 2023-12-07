@@ -29,7 +29,12 @@ public class CoursDAO extends AbstractDAO<Cours> {
         }
     }
 
-
+    /**
+     * Initialize a Cours object with data collected in resultSet
+     * @param resultSet The data collected from the SQL query
+     * @return The object Cours initialized with data from resultSet
+     * @throws SQLException If collecting data from resultSet throw an error
+     */
     @Override
     protected Cours fromResultSet(ResultSet resultSet) throws SQLException {
         return Cours.builder()
@@ -45,11 +50,30 @@ public class CoursDAO extends AbstractDAO<Cours> {
                 .build();
     }
 
+    /**
+     * Persist an entity Cours in DB
+     * @param cours The entity to be persisted.
+     * @return The entity persisted
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public Cours persist(Cours cours) throws DataAccessException {
         return persist(cours.getDescription(),cours.getIdEnseignant(),cours.getIdMatiere(),cours.getIdSalle(),cours.getDebut(),cours.getFin(), cours.getDate(), cours.getTypeCours());
     }
 
+    /**
+     * Persist an entity Cours in DB
+     * @param description The description of Cours
+     * @param idEnseignant The Enseignant who teach this Cours
+     * @param idMatiere The Matiere of Cours
+     * @param idSalle The Salle of Cours
+     * @param debut Start time of Cours
+     * @param fin End of Cours
+     * @param date The day of Cours
+     * @param typeCours The type of Cours (TD, TP, CM, CC, EXAM, EXAMTP)
+     * @return The entity persisted
+     * @throws DataAccessException If unable to access data
+     */
     public Cours persist(String description, int idEnseignant, int idMatiere, int idSalle, Time debut, Time fin, Date date, String typeCours ) throws DataAccessException {
         try {
             persistPS.setString(1, description);
@@ -65,6 +89,12 @@ public class CoursDAO extends AbstractDAO<Cours> {
         }
         return super.persist();
     }
+
+    /**
+     * Update the entity in DB
+     * @param cours The entity to be updated. The id is used and cannot be updated.
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public void update(Cours cours) throws DataAccessException {
         try {
@@ -82,7 +112,6 @@ public class CoursDAO extends AbstractDAO<Cours> {
         }
         super.update();
     }
-
 
 
     public List<Cours> findCoursJour(Date date) throws DataAccessException {
@@ -117,8 +146,11 @@ public class CoursDAO extends AbstractDAO<Cours> {
     }
 
 
-
-            @Override
+    /**
+     * Give the name of the table
+     * @return The table name
+     */
+    @Override
     public String getTableName() {
         return "COURS";
     }

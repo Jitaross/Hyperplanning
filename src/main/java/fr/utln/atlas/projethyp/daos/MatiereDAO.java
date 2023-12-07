@@ -23,11 +23,21 @@ public class MatiereDAO extends AbstractDAO<Matiere>{
         }
     }
 
+    /**
+     * give the name of the table
+     * @return The table name
+     */
     @Override
     public String getTableName() {
         return "MATIERE";
     }
 
+    /**
+     * Initialize a Matiere object with data collected in resultSet
+     * @param resultSet The data collected from the SQL query
+     * @return The object Matiere initialized with data from resultSet
+     * @throws SQLException If collecting data from resultSet throw an error
+     */
     @Override
     protected Matiere fromResultSet(ResultSet resultSet) throws SQLException {
         return Matiere.builder()
@@ -36,11 +46,23 @@ public class MatiereDAO extends AbstractDAO<Matiere>{
                 .build();
     }
 
+    /**
+     * Persist an entity Matiere in DB
+     * @param matiere The entity to be persisted.
+     * @return The entity persisted
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public Matiere persist(Matiere matiere) throws DataAccessException {
         return persist(matiere.getNomMatiere());
     }
 
+    /**
+     * Persist an entity Matiere in DB
+     * @param nomMatiere The name of Matiere
+     * @return The entity persisted
+     * @throws DataAccessException If unable to access data
+     */
     public Matiere persist(String nomMatiere) throws DataAccessException {
         try {
             persistPS.setString(1, nomMatiere);
@@ -50,6 +72,11 @@ public class MatiereDAO extends AbstractDAO<Matiere>{
         return super.persist();
     }
 
+    /**
+     * Update the entity Matiere in DB
+     * @param matiere The entity to be updated. The id is used and cannot be updated.
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public void update(Matiere matiere) throws DataAccessException {
         try {
@@ -61,6 +88,12 @@ public class MatiereDAO extends AbstractDAO<Matiere>{
         super.update();
     }
 
+    /**
+     * Search Matiere by id
+     * @param id the id of Matiere
+     * @return The name of Matiere found
+     * @throws DataAccessException If unable to access data
+     */
     public String findMatId(int id) throws DataAccessException {
         String temp = null;
         try {

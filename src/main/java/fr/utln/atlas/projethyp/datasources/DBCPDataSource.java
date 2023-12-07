@@ -5,6 +5,9 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Our datasources which uses BasicDataSources to manage the connections to ou DB
+ */
 public class DBCPDataSource {
 
     private static final BasicDataSource ds = new BasicDataSource();

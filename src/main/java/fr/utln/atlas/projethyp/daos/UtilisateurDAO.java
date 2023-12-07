@@ -1,24 +1,10 @@
 package fr.utln.atlas.projethyp.daos;
 
 
-import fr.utln.atlas.projethyp.entities.Enseignant;
-import fr.utln.atlas.projethyp.entities.Utilisateur;
-import fr.utln.atlas.projethyp.entities.DateSemaine;
 import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
-import lombok.Data;
 import lombok.extern.java.Log;
-
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.sql.Time;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-
-import static fr.utln.atlas.projethyp.datasources.DBCPDataSource.getConnection;
-import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
 @Log
 public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
@@ -29,13 +15,19 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
                 "UPDATE UTILISATEUR SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=? WHERE ID=?");
 
         try{
+            // The prepared statement to search a Utilisateur by id
             findNomUtilisateurPS = getConnection().prepareStatement("SELECT NOM FROM UTILISATEUR WHERE ID = ?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
     }
 
-
+    /**
+     * Initialize an Utilisateur object with data collected in resultSet
+     * @param resultSet The data collected from the SQL query
+     * @return The object Utilisateur initialized with data from resultSet
+     * @throws SQLException If collecting data from resultSet throw an error
+     */
     @Override
     protected Utilisateur fromResultSet(ResultSet resultSet) throws SQLException {
         return Utilisateur.builder()
@@ -48,11 +40,27 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
                 .build();
     }
 
+    /**
+     * Add a row in the database in Utilisateur table from an object Utilisateur
+     * @param utilisateur The entity to be persisted.
+     * @return The entity persisted
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public Utilisateur persist(Utilisateur utilisateur) throws DataAccessException {
         return persist(utilisateur.getNom(),utilisateur.getPrenom(),utilisateur.getMail(),utilisateur.getMotDePasse(),utilisateur.getDateNaissance());
     }
 
+    /**
+     * Persist a Utilisateur object by passing all the data in parameters
+     * @param nom The name of the Utilisateur
+     * @param prenom The firstname of the Utilisateur
+     * @param mail The mail address of the Utilisateur
+     * @param motdepasse The password (which is hashed) of the Utilisateur
+     * @param datenaissance The date of birth of Utilisateur
+     * @return The entity persisted
+     * @throws DataAccessException If unable to access data
+     */
     public Utilisateur persist(String nom, String prenom, String mail, String motdepasse, Date datenaissance) throws DataAccessException {
         try {
             persistPS.setString(1, nom);
@@ -65,6 +73,12 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         }
         return super.persist();
     }
+
+    /**
+     * Update an Utilisateur in the table
+     * @param utilisateur The entity to be updated. The id is used and cannot be updated.
+     * @throws DataAccessException If unable to access data
+     */
     @Override
     public void update(Utilisateur utilisateur) throws DataAccessException {
         try {
@@ -81,7 +95,12 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     }
 
 
-
+    /**
+     * Search for Utilisateur with id in the table
+     * @param id The id of Utilisateur we search
+     * @return The name of Utilisateur
+     * @throws DataAccessException If unable to access data
+     */
     public String findUtilisateurNom(int id) throws DataAccessException {
         String nom;
 
@@ -100,7 +119,10 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         return nom;
     }
 
-
+    /**
+     * Give the name of the Table
+     * @return The table name
+     */
     @Override
     public String getTableName() {
         return "UTILISATEUR";
