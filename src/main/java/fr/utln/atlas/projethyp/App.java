@@ -10,6 +10,7 @@ import fr.utln.atlas.projethyp.daos.CoursDAO;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.DateSemaine;
+import fr.utln.atlas.projethyp.daos.MatiereDAO;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,7 +46,11 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-  public static void main(String[] args) {
+  public static void main(String[] args) throws DataAccessException{
+        MatiereDAO test = new MatiereDAO();
+        String ok;
+        ok = test.findMatId(1);
+      System.out.println(ok);
       launch(args);
     }
 

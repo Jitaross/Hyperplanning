@@ -25,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -96,7 +97,9 @@ public class PlanningController {
         int currentWeek = START_WEEK + weekIndex;
 
         // Mise à jour des jours de la semaine en fonction du numéro de la semaine sélectionné
-        LocalDate startDate = LocalDate.of(2023, 01, 02); // Lundi 02 Janvier 2023 (date de référence pour les calculs)
+        LocalDate startDate = LocalDate.now(); // Obtient la date actuelle
+        startDate = startDate.withYear(LocalDate.now().getYear()).with(WeekFields.ISO.weekOfWeekBasedYear(), 1).with(DayOfWeek.MONDAY);
+        //LocalDate startDate = LocalDate.of(2023, 01, 02); // Lundi 02 Janvier 2023 (date de référence pour les calculs)
         startDate = startDate.plusWeeks(currentWeek - 1); // Ajoute le nombre du numéro de la semaine sélectionnée
 
 
