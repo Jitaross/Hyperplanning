@@ -164,6 +164,9 @@ public class PlanningController {
         if(cours.getDescription().substring(0,2).equals("TP")){
             coursTextArea.setStyle("-fx-control-inner-background:#d790ff;");
         }
+        if(cours.getDescription().substring(0,5).equals("Cours")){
+            coursTextArea.setStyle("-fx-control-inner-background:#ffeb7a;");
+        }
 
         this.planning.add(coursTextArea, column, row, 1, rowSpan);
     }
