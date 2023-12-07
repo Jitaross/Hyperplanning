@@ -19,5 +19,6 @@ public class Cours implements Entity {
     private Time debut;
     private Time fin;
     private Date date;
+    private String typeCours;
 
 }

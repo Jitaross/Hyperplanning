@@ -19,8 +19,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
     private final PreparedStatement findCoursPS;
 
     public CoursDAO() throws DataAccessException {
-        super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE) VALUES (?,?,?,?,?,?,?)",
-                "UPDATE COURS SET DESCRIPTION=?, IDENSEIGNANT=?, IDMATIERE=?, IDSALLE=?, DEBUT=?, FIN=?, DATE=? WHERE ID=?");
+        super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE, TYPE) VALUES (?,?,?,?,?,?,?,?)",
+                "UPDATE COURS SET DESCRIPTION=?, IDENSEIGNANT=?, IDMATIERE=?, IDSALLE=?, DEBUT=?, FIN=?, DATE=?, TYPE=? WHERE ID=?");
 
         try{
             findCoursPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ?");
@@ -41,15 +41,16 @@ public class CoursDAO extends AbstractDAO<Cours> {
                 .debut(resultSet.getTime("DEBUT"))
                 .fin(resultSet.getTime("FIN"))
                 .date(resultSet.getDate("DATE"))
+                .typeCours(resultSet.getString("TYPE"))
                 .build();
     }
 
     @Override
     public Cours persist(Cours cours) throws DataAccessException {
-        return persist(cours.getDescription(),cours.getIdEnseignant(),cours.getIdMatiere(),cours.getIdSalle(),cours.getDebut(),cours.getFin(), cours.getDate());
+        return persist(cours.getDescription(),cours.getIdEnseignant(),cours.getIdMatiere(),cours.getIdSalle(),cours.getDebut(),cours.getFin(), cours.getDate(), cours.getTypeCours());
     }
 
-    public Cours persist(String description, int idEnseignant, int idMatiere, int idSalle, Time debut, Time fin, Date date ) throws DataAccessException {
+    public Cours persist(String description, int idEnseignant, int idMatiere, int idSalle, Time debut, Time fin, Date date, String typeCours ) throws DataAccessException {
         try {
             persistPS.setString(1, description);
             persistPS.setInt(2, idEnseignant);
@@ -58,6 +59,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
             persistPS.setTime(5,debut);
             persistPS.setTime(6,fin);
             persistPS.setDate(7,date);
+            persistPS.setString(8, typeCours);
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
@@ -73,7 +75,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
             updatePS.setTime(5, cours.getDebut());
             updatePS.setTime(6, cours.getFin());
             updatePS.setDate(7,cours.getDate());
-            updatePS.setInt(8, cours.getId());
+            updatePS.setString(8, cours.getTypeCours());
+            updatePS.setInt(9, cours.getId());
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
