@@ -6,14 +6,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="identificationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.IdentificationController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField maxWidth="-Infinity" prefHeight="24.0" prefWidth="300.0" promptText="Identifiant" translateX="150.0" translateY="150.0" />
-            <PasswordField maxWidth="-Infinity" prefWidth="300.0" promptText="Mot de passe" translateX="150.0" translateY="160.0" />
-            <Button contentDisplay="CENTER" mnemonicParsing="false" text="Se connecter" translateX="340.0" translateY="170.0" />
+            <TextField fx:id="identifiant" maxWidth="-Infinity" prefHeight="24.0" prefWidth="300.0" promptText="Identifiant" translateX="150.0" translateY="150.0" />
+            <PasswordField fx:id="motDePasse" maxWidth="-Infinity" prefWidth="300.0" promptText="Mot de passe" translateX="150.0" translateY="160.0" />
+            <Button fx:id="seConnecter" contentDisplay="CENTER" mnemonicParsing="false" text="Se connecter" translateX="340.0" translateY="170.0" />
          </children>
       </VBox>
    </center>

@@ -6,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import fr.utln.atlas.projethyp.daos.MatiereDAO;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
