@@ -1,10 +1,19 @@
 package fr.utln.atlas.projethyp;
 
 import fr.utln.atlas.projethyp.authentications.Authentication;
-import fr.utln.atlas.projethyp.daos.AuthDao;
+import fr.utln.atlas.projethyp.daos.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Date;
+import java.util.Objects;
+import java.util.Properties;
+
+import fr.utln.atlas.projethyp.entities.Utilisateur;
+import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import lombok.extern.java.Log;
 
-import java.nio.charset.StandardCharsets;
+import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
 /**
  * Hello world!
@@ -12,22 +21,23 @@ import java.nio.charset.StandardCharsets;
  */
 @Log
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws DataAccessException {
 
-        String username = "Jitaross";
-        String passwordnormal = "123jesaispas";
-        byte[] password = passwordnormal.getBytes(StandardCharsets.UTF_8);
-
-        Authentication auth = new Authentication(username, password);
-
-        try(
-                AuthDao authDao = new AuthDao()
-                ){
-            authDao.creationLogin(auth);
-            log.info("Done, now verification...");
-
-            authDao.login(auth);
-            log.info("Great !");
-        }
     }
+
+    static void loadProperties(String propFileName) throws IOException {
+        Properties properties = new Properties();
+        InputStream inputstream = App.class.getClassLoader().getResourceAsStream(propFileName);
+        if (inputstream == null) throw new FileNotFoundException();
+        properties.load(inputstream);
+        System.setProperties(properties);
+    }
+
+    static void configureLogger() {
+        //Regarder src/main/ressources/logging.properties pour fixer le niveau de log
+        String path;
+        path = Objects.requireNonNull(App.class.getClassLoader().getResource("logging.properties")).getFile();
+        System.setProperty("java.util.logging.config.file", path);
+    }
+
 }
