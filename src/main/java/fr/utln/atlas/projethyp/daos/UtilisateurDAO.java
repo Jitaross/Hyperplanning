@@ -1,7 +1,6 @@
 package fr.utln.atlas.projethyp.daos;
 
 
-import fr.utln.atlas.projethyp.authentications.Authentication;
 import fr.utln.atlas.projethyp.entities.Enseignant;
 import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.entities.DateSemaine;
@@ -84,21 +83,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         super.update();
     }
 
-    public Utilisateur login(Authentication authentication) throws DataAccessException{
-        Utilisateur utilisateur = null;
-        try {
-            findLogin.setString(1, authentication.getUserMail());
-            findLogin.setString(2, new String(authentication.getPasswordHash(), StandardCharsets.UTF_8));
-            ResultSet person = findLogin.executeQuery();
-            while (person.next())
-                utilisateur = fromResultSet(person);
 
-            assert utilisateur != null;
-        } catch (SQLException e) {
-            throw new DataAccessException(e.getLocalizedMessage());
-        }
-        return utilisateur;
-    }
 
 
     public String findUtilisateurNom(int id) throws DataAccessException {
