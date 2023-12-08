@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Matiere implements Entity{
+public class Formation implements Entity{
     private int id = -1;
-    private String nomMatiere;
-    private int idFormation;
+    private String nomFormation;
 }

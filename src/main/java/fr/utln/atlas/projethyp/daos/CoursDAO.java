@@ -19,13 +19,15 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 @Log
 public class CoursDAO extends AbstractDAO<Cours> {
     private final PreparedStatement findCoursPS;
+    private final PreparedStatement findCoursEtudiantPS;
 
     public CoursDAO() throws DataAccessException {
-        super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE) VALUES (?,?,?,?,?,?,?)",
-                "UPDATE COURS SET DESCRIPTION=?, IDENSEIGNANT=?, IDMATIERE=?, IDSALLE=?, DEBUT=?, FIN=?, DATE=? WHERE ID=?");
+        super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE,TYPECOURS) VALUES (?,?,?,?,?,?,?,?)",
+                "UPDATE COURS SET DESCRIPTION=?, IDENSEIGNANT=?, IDMATIERE=?, IDSALLE=?, DEBUT=?, FIN=?, DATE=?, TYPECOURS=? WHERE ID=?");
 
         try{
             findCoursPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ?");
+            findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -43,15 +45,16 @@ public class CoursDAO extends AbstractDAO<Cours> {
                 .debut(resultSet.getTime("DEBUT"))
                 .fin(resultSet.getTime("FIN"))
                 .date(resultSet.getDate("DATE"))
+                .typeCours(Cours.TypeCours.fromValue(resultSet.getInt("TYPECOURS")))
                 .build();
     }
 
     @Override
     public Cours persist(Cours cours) throws DataAccessException {
-        return persist(cours.getDescription(),cours.getIdEnseignant(),cours.getIdMatiere(),cours.getIdSalle(),cours.getDebut(),cours.getFin(), cours.getDate());
+        return persist(cours.getDescription(),cours.getIdEnseignant(),cours.getIdMatiere(),cours.getIdSalle(),cours.getDebut(),cours.getFin(), cours.getDate(), cours.getTypeCours().getValue());
     }
 
-    public Cours persist(String description, int idEnseignant, int idMatiere, int idSalle, Time debut, Time fin, Date date ) throws DataAccessException {
+    public Cours persist(String description, int idEnseignant, int idMatiere, int idSalle, Time debut, Time fin, Date date, int typeCours ) throws DataAccessException {
         try {
             persistPS.setString(1, description);
             persistPS.setInt(2, idEnseignant);
@@ -60,6 +63,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
             persistPS.setTime(5,debut);
             persistPS.setTime(6,fin);
             persistPS.setDate(7,date);
+            persistPS.setInt(8, typeCours);
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
@@ -75,7 +79,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
             updatePS.setTime(5, cours.getDebut());
             updatePS.setTime(6, cours.getFin());
             updatePS.setDate(7,cours.getDate());
-            updatePS.setInt(8, cours.getId());
+            updatePS.setInt(8, cours.getTypeCours().getValue());
+            updatePS.setInt(9, cours.getId());
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
@@ -115,6 +120,41 @@ public class CoursDAO extends AbstractDAO<Cours> {
         return new Page<>(pageNumber, pageSize, listeCours);
     }
 
+
+
+
+    public List<Cours> findCoursJourEtudiant(Date date,int id) throws DataAccessException {
+        List<Cours> listeCours = new ArrayList<>();
+
+        try {
+            findCoursEtudiantPS.setDate(1, date);
+            findCoursEtudiantPS.setInt(2, id);
+
+            ResultSet resultSet = findCoursEtudiantPS.executeQuery();
+
+            while (resultSet.next()) {
+                Cours cours = fromResultSet(resultSet);
+                listeCours.add(cours);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException throwables) {
+            throw new DataAccessException(throwables.getLocalizedMessage());
+        }
+
+        return listeCours;
+    }
+
+
+    public Page<Cours> findCoursSemaineEtudiant(int numeroSemaine,int id, int pageNumber, int pageSize) throws  DataAccessException {
+        List<Date> semaine = JourSemaine(numeroSemaine, 2023);
+        List<Cours> listeCours = new ArrayList<>();
+        for (Date jour : semaine) {
+            listeCours.addAll(findCoursJourEtudiant(jour,id));
+        }
+        return new Page<>(pageNumber, pageSize, listeCours);
+    }
 
 
             @Override
