@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 import java.sql.Date;
 
 @Data
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
