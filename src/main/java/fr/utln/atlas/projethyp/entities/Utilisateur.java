@@ -10,6 +10,7 @@ import java.sql.Date;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class Utilisateur implements Entity {
     @Builder.Default
     private int id = -1;

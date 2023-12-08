@@ -3,6 +3,7 @@ package fr.utln.atlas.projethyp.daos;
 import fr.utln.atlas.projethyp.entities.Matiere;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import fr.utln.atlas.projethyp.exceptions.NotFoundException;
+import lombok.extern.java.Log;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log
 public class MatiereDAO extends AbstractDAO<Matiere>{
 
     private PreparedStatement findMatPS;

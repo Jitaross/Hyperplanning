@@ -1,20 +1,30 @@
 package fr.utln.atlas.projethyp;
 
+import fr.utln.atlas.projethyp.authentications.Authentication;
+import fr.utln.atlas.projethyp.daos.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+import java.util.Objects;
+import java.util.Properties;
+
+import fr.utln.atlas.projethyp.entities.Utilisateur;
+import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.h2.tools.Server;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.Properties;
+import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
-import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+/**
+ * Hello world!
+ *
+ */
 public class App extends Application {
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(
@@ -26,8 +36,9 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-  public static void main(String[] args) throws DataAccessException{
-      launch(args);
+
+    public static void main(String[] args) {
+        launch(args);
     }
 
     static void loadProperties(String propFileName) throws IOException {
@@ -44,4 +55,5 @@ public class App extends Application {
         path = Objects.requireNonNull(App.class.getClassLoader().getResource("logging.properties")).getFile();
         System.setProperty("java.util.logging.config.file", path);
     }
+
 }
