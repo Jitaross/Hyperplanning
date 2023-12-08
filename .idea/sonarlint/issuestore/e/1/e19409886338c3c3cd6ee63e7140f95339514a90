@@ -1,0 +1,19 @@
+
+c
+java:S1128"HRemove this unused import 'fr.utln.atlas.projethyp.entities.Enseignant'.(Ï²ğøÿÿÿÿ
+d
+java:S1128"IRemove this unused import 'fr.utln.atlas.projethyp.entities.DateSemaine'.(ı™µÿÿÿÿÿ
+4
+java:S1128"Remove this duplicated import.(éÁâ»
+C
+java:S1128	"(Remove this unused import 'lombok.Data'.(÷í«ÿÿÿÿÿ
+F
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ
+F
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ
+E
+java:S1128"*Remove this unused import 'java.sql.Time'.(Üå»‰şÿÿÿÿ
+s
+java:S1128"]Remove this unused import 'fr.utln.atlas.projethyp.datasources.DBCPDataSource.getConnection'.(·¸ØÅ
+k
+java:S1128"URemove this unused import 'fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine'.(Ôô¥İ

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane fx:id="accueil" prefHeight="520.0" prefWidth="1280" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.AccueilController">
+   <left>
+      <VBox prefHeight="200.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
+   </left>
+</BorderPane>
