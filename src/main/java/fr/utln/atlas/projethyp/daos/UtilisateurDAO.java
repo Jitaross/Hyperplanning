@@ -32,8 +32,8 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE) VALUES (?,?,?,?,?)",
                 "UPDATE UTILISATEUR SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=? WHERE ID=?");
         try {
-            findNomUtilisateurPS = getConnection().prepareStatement("SELECT UTILISATEUR.NOM FROM UTILISATEUR WHERE ID = ?");
-            findLogin = getConnection().prepareStatement("SELECT * FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
+            findNomUtilisateurPS = getConnection().prepareStatement("SELECT UTILISATEUR.NOM FROM UTILISATEUR WHERE ID=?");
+            findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -84,20 +84,19 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         super.update();
     }
 
-    public Utilisateur login(Authentication authentication) throws DataAccessException{
-        Utilisateur utilisateur = null;
+    public int login(Authentication authentication) throws DataAccessException{
+        int idUtilisateur = -1;
         try {
             findLogin.setString(1, authentication.getUserMail());
             findLogin.setString(2, new String(authentication.getPasswordHash(), StandardCharsets.UTF_8));
             ResultSet person = findLogin.executeQuery();
             while (person.next())
-                utilisateur = fromResultSet(person);
+                idUtilisateur = person.getInt("ID");
 
-            assert utilisateur != null;
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
-        return utilisateur;
+        return idUtilisateur;
     }
 
 

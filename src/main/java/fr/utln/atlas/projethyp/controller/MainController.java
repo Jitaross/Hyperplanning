@@ -2,10 +2,12 @@ package fr.utln.atlas.projethyp.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import lombok.extern.java.Log;
 
 @Log
 public class MainController {
+	private static int userId = -1;
 
 	private enum Page{
 		ACCUEIL, PLANNING, ABSENCES, NOTES
@@ -19,8 +21,19 @@ public class MainController {
 	private Button btnAccueil;
 	@FXML
 	private Button btnPlanning;
+	@FXML
+	private Text textInfos;
 
 	private Page currentPage;
+
+	public static void setUserId(int value){
+		userId = value;
+	}
+
+	public static int getUserId(){
+		return userId;
+	}
+
 	@FXML
 	private void initialize(){
 		this.currentPage = Page.ACCUEIL;

@@ -2,6 +2,7 @@ package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
+import fr.utln.atlas.projethyp.entities.Etudiant;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Pagination;
@@ -22,6 +23,7 @@ import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.HashMap;
 
 @Log
 public class PlanningController {
@@ -58,13 +60,18 @@ public class PlanningController {
     private static final int START_WEEK = 1;
     private static final int DAYS_IN_WEEK = 7;
 
-    public void initialize() {
+    int userId = MainController.getUserId();
+
+
+
+    public void initialize() throws DataAccessException {
+
         this.planningPane.setVisible(false);
 
         try{
             this.coursDAO = new CoursDAO();
-            /*this.utilisateurDAO = new UtilisateurDAO();
-            this.matiereDAO = new MatiereDAO();*/
+            this.utilisateurDAO = new UtilisateurDAO();
+            /*this.matiereDAO = new MatiereDAO();*/
 
         }catch(DataAccessException e) {
             e.printStackTrace();
@@ -119,7 +126,7 @@ public class PlanningController {
             // Enlève tous les cours présent à l'écran
             this.planning.getChildren().removeIf(TextArea.class::isInstance);
             try{
-                Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaine(currentWeek, 1, 10);
+                Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineEtudiant(currentWeek,userId, 1, 10);
                 List<Cours> cours = pageCoursSemaine.getResultList();
                 for (Cours c : cours) {
                     this.ajouterCours(c);
@@ -132,6 +139,16 @@ public class PlanningController {
     }
 
     private void ajouterCours(Cours cours){
+
+        HashMap<String, String> couleurs = new HashMap<String, String>();
+        couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");
+        couleurs.put("TD", "-fx-control-inner-background:#9fff90;");
+        couleurs.put("TP", "-fx-control-inner-background:#d790ff;");
+        couleurs.put("CC", "-fx-control-inner-background:#9fff90;");
+        couleurs.put("EXAM", "-fx-control-inner-background:#9fff90;");
+        couleurs.put("EXAMTP", "-fx-control-inner-background:#9fff90;");
+        couleurs.put("REUNION", "-fx-control-inner-background:#9fff90;");
+
         LocalTime debut = cours.getDebut().toLocalTime();
         LocalTime fin = cours.getFin().toLocalTime();
         long duree = debut.until(fin, ChronoUnit.MINUTES);
@@ -157,7 +174,7 @@ public class PlanningController {
         TextArea coursTextArea = new TextArea(cours.getDescription());
         coursTextArea.setEditable(false);
 
-
+        /*
         if(cours.getDescription().substring(0,2).equals("TD")){
             coursTextArea.setStyle("-fx-control-inner-background:#9fff90;");
         }
@@ -167,6 +184,10 @@ public class PlanningController {
         if(cours.getDescription().substring(0,5).equals("Cours")){
             coursTextArea.setStyle("-fx-control-inner-background:#ffeb7a;");
         }
+        */
+
+        coursTextArea.setStyle(couleurs.get(cours.getTypeCours().toString()));
+
 
         this.planning.add(coursTextArea, column, row, 1, rowSpan);
     }

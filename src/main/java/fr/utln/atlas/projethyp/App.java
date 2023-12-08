@@ -1,6 +1,8 @@
 package fr.utln.atlas.projethyp;
 
 import fr.utln.atlas.projethyp.authentications.Authentication;
+import fr.utln.atlas.projethyp.controller.IdentificationController;
+import fr.utln.atlas.projethyp.controller.MainController;
 import fr.utln.atlas.projethyp.daos.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,21 +27,48 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
  *
  */
 public class App extends Application {
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                App.class.getResource("main.fxml"));
-        Parent rootNode = loader.load();
-        Scene scene = new Scene(rootNode);
 
-        primaryStage.setTitle("Hyper-planning");
-        primaryStage.setScene(scene);
+
+    private Stage primaryStage;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        this.primaryStage = primaryStage;
+        showAuthWindow();
+    }
+
+    // Méthode pour afficher la fenêtre d'authentification
+    private void showAuthWindow() throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("identification.fxml"));
+        Parent root = loader.load();
+
+        IdentificationController identificationController = loader.getController();
+        identificationController.setApp(this);
+
+        primaryStage.setTitle("Hyper-planning | Authentification");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
+
+    // Méthode appelée après une authentification réussie
+    public void showMainWindow() throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+        Parent root = loader.load();
+
+        // Associer le contrôleur à la fenêtre principale
+        MainController mainController = loader.getController();
+
+        // Fournir les données nécessaires au contrôleur principal si nécessaire
+
+        primaryStage.setTitle("Hyper-planning | Accueil");
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
 
     static void loadProperties(String propFileName) throws IOException {
         Properties properties = new Properties();
