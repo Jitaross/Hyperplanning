@@ -5,16 +5,10 @@ import fr.utln.atlas.projethyp.authentications.Authentication;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import lombok.Data;
 
 import java.io.IOException;
 
@@ -34,7 +28,36 @@ public class IdentificationController {
 
     @FXML
     public void initialize() throws IOException {
-        seConnecter.setOnAction(event ->{
+        seConnecter.setOnAction(event -> {
+            try {
+                login();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        identifiant.setOnAction(event -> {
+            try {
+                login();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        motDePasse.setOnAction(event -> {
+            try {
+                login();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void setApp(App app) {
+        this.app = app;
+    }
+
+    private void login() throws IOException{
             String identifiantValue = identifiant.getText();
             String motDePasseValue = motDePasse.getText();
             System.out.println("Login = "+identifiantValue+" Mot de passe = "+motDePasseValue);
@@ -60,11 +83,7 @@ public class IdentificationController {
             }
 
 
-        });
-    }
 
-    public void setApp(App app) {
-        this.app = app;
     }
 
 
