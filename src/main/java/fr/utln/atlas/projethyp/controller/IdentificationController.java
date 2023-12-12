@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 
@@ -24,6 +25,8 @@ public class IdentificationController {
     PasswordField motDePasse;
     @FXML
     Button seConnecter;
+    @FXML
+    Text textErreurLogin;
 
 
     @FXML
@@ -80,6 +83,9 @@ public class IdentificationController {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
+            }
+            else{
+                textErreurLogin.setText("L'identifiant ou le mot de passe est incorrect, veuillez réessayer.");
             }
 
 
