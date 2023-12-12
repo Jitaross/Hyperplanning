@@ -25,14 +25,14 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
 @Log
 public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
-    private final PreparedStatement findNomUtilisateurPS;
+    private final PreparedStatement findUtilisateurPS;
     private final PreparedStatement findLogin;
 
     public UtilisateurDAO() throws DataAccessException {
         super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE) VALUES (?,?,?,?,?)",
                 "UPDATE UTILISATEUR SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=? WHERE ID=?");
         try {
-            findNomUtilisateurPS = getConnection().prepareStatement("SELECT UTILISATEUR.NOM FROM UTILISATEUR WHERE ID=?");
+            findUtilisateurPS = getConnection().prepareStatement("SELECT * FROM UTILISATEUR WHERE ID=?");
             findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
@@ -100,22 +100,22 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     }
 
 
-    public String findUtilisateurNom(int id) throws DataAccessException {
-        String nom;
+    public Utilisateur findUtilisateur(int id) throws DataAccessException {
+        Utilisateur user = null;
 
         try {
-            findNomUtilisateurPS.setInt(1, id);
+            findUtilisateurPS.setInt(1, id);
 
-            ResultSet resultSet = findNomUtilisateurPS.executeQuery();
-            nom = fromResultSet(resultSet).getNom();
-
-            resultSet.close();
+            ResultSet resultSet = findUtilisateurPS.executeQuery();
+            while(resultSet.next()){
+                user = fromResultSet(resultSet);
+            }
 
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
 
-        return nom;
+        return user;
     }
 
 

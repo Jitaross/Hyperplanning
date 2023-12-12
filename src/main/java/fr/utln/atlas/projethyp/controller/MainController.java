@@ -1,5 +1,7 @@
 package fr.utln.atlas.projethyp.controller;
 
+import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
+import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -35,7 +37,9 @@ public class MainController {
 	}
 
 	@FXML
-	private void initialize(){
+	private void initialize() throws DataAccessException {
+		UtilisateurDAO userdao = new UtilisateurDAO();
+		textInfos.setText(userdao.findUtilisateur(userId).getNom()+" "+userdao.findUtilisateur(userId).getPrenom()+" ("+")");
 		this.currentPage = Page.ACCUEIL;
 		this.btnAccueil.setOnAction(event -> showNewPage(Page.ACCUEIL));
 		this.btnPlanning.setOnAction(event -> showNewPage(Page.PLANNING));
