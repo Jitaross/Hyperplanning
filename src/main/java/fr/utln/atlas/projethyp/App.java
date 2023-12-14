@@ -38,7 +38,7 @@ public class App extends Application {
     }
 
     // Méthode pour afficher la fenêtre d'authentification
-    private void showAuthWindow() throws Exception {
+    public void showAuthWindow() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("identification.fxml"));
         Parent root = loader.load();
 

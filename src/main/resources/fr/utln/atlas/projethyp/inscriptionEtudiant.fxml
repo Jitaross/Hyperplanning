@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<?import java.lang.String?>
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.InscriptionEtudiantController">
+    <children>
+        <GridPane VBox.vgrow="ALWAYS">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50" />
+                <ColumnConstraints percentWidth="50" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Nom" />
+                <TextField fx:id="nomField" GridPane.columnIndex="1" />
+                <Label text="Prénom" GridPane.rowIndex="1" />
+                <TextField fx:id="prenomField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Mail" GridPane.rowIndex="2" />
+                <TextField fx:id="mailField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label text="Mot de passe" GridPane.rowIndex="3" />
+                <TextField fx:id="motDePasseField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Date de naissance" GridPane.rowIndex="4" />
+                <DatePicker fx:id="dateNaissancePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label text="Formation" GridPane.rowIndex="5" />
+                <ChoiceBox fx:id="formationChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Formation 1" />
+                            <String fx:value="Formation 2" />
+                            <String fx:value="Formation 3" />
+                            <!-- Ajoutez autant d'options que nécessaire -->
+                        </FXCollections>
+                    </items>
+                </ChoiceBox>
+            </children>
+        </GridPane>
+        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+            <Button text="Inscrire" onAction="#inscrireEtudiant" />
+            <Button text="Annuler" />
+        </HBox>
+    </children>
+</VBox>

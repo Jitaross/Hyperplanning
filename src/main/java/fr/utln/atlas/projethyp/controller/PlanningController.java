@@ -2,7 +2,6 @@ package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
-import fr.utln.atlas.projethyp.entities.Etudiant;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Pagination;
@@ -114,7 +113,7 @@ public class PlanningController {
             }
 
             // On définie le bon format des dates, dates courtes en français. Exemple : "lun 2 janv."
-            String dayText = currentDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.FRENCH).toString().substring(0, 3) + " " +
+            String dayText = currentDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.FRENCH).substring(0, 3) + " " +
                     currentDate.format(DateTimeFormatter.ofPattern("d MMM"));
 
             // Positionnement des jours aux bons emplacements (à modifier)
@@ -174,17 +173,6 @@ public class PlanningController {
         TextArea coursTextArea = new TextArea(cours.getDescription());
         coursTextArea.setEditable(false);
 
-        /*
-        if(cours.getDescription().substring(0,2).equals("TD")){
-            coursTextArea.setStyle("-fx-control-inner-background:#9fff90;");
-        }
-        if(cours.getDescription().substring(0,2).equals("TP")){
-            coursTextArea.setStyle("-fx-control-inner-background:#d790ff;");
-        }
-        if(cours.getDescription().substring(0,5).equals("Cours")){
-            coursTextArea.setStyle("-fx-control-inner-background:#ffeb7a;");
-        }
-        */
 
         coursTextArea.setStyle(couleurs.get(cours.getTypeCours().toString()));
 
@@ -199,4 +187,5 @@ public class PlanningController {
     public void hide(){
         this.planningPane.setVisible(false);
     }
+
 }

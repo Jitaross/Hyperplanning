@@ -32,6 +32,8 @@
                   <Button fx:id="btnPlanning" mnemonicParsing="false" text="Planning" />
                   <Button fx:id="btnAbsences" disable="true" mnemonicParsing="false" text="Absences" />
                   <Button fx:id="btnNotes" disable="true" mnemonicParsing="false" text="Notes" />
+                  <Separator orientation="VERTICAL" />
+                  <Button fx:id="btnDeconnexion" mnemonicParsing="false" text="Déconnexion" translateX="840.0" />
               </items>
             </ToolBar>
          </children>

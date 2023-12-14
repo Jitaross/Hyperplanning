@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class IdentificationController {
 
-    private App app;
+    private static App app;
 
     @FXML
     BorderPane identificationPane;
@@ -60,6 +60,10 @@ public class IdentificationController {
         this.app = app;
     }
 
+    public App getApp(){
+        return this.app;
+    }
+
     private void login() throws IOException{
             String identifiantValue = identifiant.getText();
             String motDePasseValue = motDePasse.getText();
@@ -70,9 +74,10 @@ public class IdentificationController {
 
             Authentication auth = new Authentication(identifiantValue,motDePasseValue);
             try {
-                UtilisateurDAO utilsateurDAO = new UtilisateurDAO();
-                iduser = utilsateurDAO.login(auth);
+                UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+                iduser = utilisateurDAO.login(auth);
                 MainController.setUserId(iduser);
+                utilisateurDAO.close();
             } catch (DataAccessException e) {
                 throw new RuntimeException(e);
             }
@@ -100,6 +105,7 @@ public class IdentificationController {
     public void hide(){
         this.identificationPane.setVisible(false);
     }
+
 
 
 
