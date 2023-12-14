@@ -67,8 +67,6 @@ public class IdentificationController {
     private void login() throws IOException{
             String identifiantValue = identifiant.getText();
             String motDePasseValue = motDePasse.getText();
-            System.out.println("Login = "+identifiantValue+" Mot de passe = "+motDePasseValue);
-            System.out.println("Demande de connexion");
 
             int iduser = -1;
 
