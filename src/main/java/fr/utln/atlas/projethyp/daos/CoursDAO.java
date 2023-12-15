@@ -25,7 +25,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
 
         try{
             findCoursPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ?");
-            findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
+            findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
+                    "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
