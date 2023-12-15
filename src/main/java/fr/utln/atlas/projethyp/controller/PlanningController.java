@@ -120,19 +120,20 @@ public class PlanningController {
             joursSemaine.get(i).setText(dayText);
             joursSemaine.get(i).setTranslateY(70);
 
-            // Placement des cours de la semaine
 
-            // Enlève tous les cours présent à l'écran
-            this.planning.getChildren().removeIf(TextArea.class::isInstance);
-            try{
-                Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineEtudiant(currentWeek,userId, 1, 10);
-                List<Cours> cours = pageCoursSemaine.getResultList();
-                for (Cours c : cours) {
-                    this.ajouterCours(c);
-                }
-            } catch (DataAccessException e) {
-                e.printStackTrace();
+        }
+        // Placement des cours de la semaine
+
+        // Enlève tous les cours présent à l'écran
+        this.planning.getChildren().removeIf(TextArea.class::isInstance);
+        try{
+            Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineEtudiant(currentWeek,userId, 1, 10);
+            List<Cours> cours = pageCoursSemaine.getResultList();
+            for (Cours c : cours) {
+                this.ajouterCours(c);
             }
+        } catch (DataAccessException e) {
+            e.printStackTrace();
         }
         return gridPane;
     }
