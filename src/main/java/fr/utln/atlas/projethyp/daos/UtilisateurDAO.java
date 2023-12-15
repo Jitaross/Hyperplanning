@@ -27,6 +27,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     private final PreparedStatement findUtilisateurPS;
     private final PreparedStatement findLogin;
     private final PreparedStatement modifyMDPPS;
+    private final PreparedStatement getMailWithIDPS;
 
     public UtilisateurDAO() throws DataAccessException {
         super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE, TYPEUTILISATEUR) VALUES (?,?,?,?,?,?)",
@@ -35,6 +36,8 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
             findUtilisateurPS = getConnection().prepareStatement("SELECT * FROM UTILISATEUR WHERE ID=?");
             findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
             modifyMDPPS = getConnection().prepareStatement("UPDATE UTILISATEUR SET PASSWORD=? WHERE ID=?");
+            getMailWithIDPS = getConnection().prepareStatement("SELECT MAIL FROM UTILISATEUR WHERE ID=?");
+
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -144,6 +147,22 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         try (EnseignantDAO enseignantDAO = new EnseignantDAO()) {
             return enseignantDAO.persist(utilisateur.getId(), ufr);
         }
+    }
+
+    public String getMailWithId(int id) throws DataAccessException {
+        String mail = null;
+        try {
+            getMailWithIDPS.setInt(1, id);
+
+            ResultSet resultSet = getMailWithIDPS.executeQuery();
+            while (resultSet.next())
+                mail = resultSet.getString("MAIL");
+
+        } catch (SQLException throwables) {
+            throw new DataAccessException(throwables.getLocalizedMessage());
+        }
+
+        return mail;
     }
 
     public int modifyMDP(String mail, String oldMDP, String newMdp) throws DataAccessException {

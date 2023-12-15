@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.ChangerMotDePasseController">
    <left>
       <VBox BorderPane.alignment="CENTER" />
@@ -30,16 +29,18 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <PasswordField fx:id="oldPassword" GridPane.columnIndex="3" GridPane.columnSpan="2" />
                   <PasswordField fx:id="newPassword" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                   <PasswordField fx:id="newPasswordRepeated" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                  <Button fx:id="cancelButton" mnemonicParsing="false" text="Annuler" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                  <Button fx:id="confirmButton" mnemonicParsing="false" text="Confirmer" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" text="Annuler" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirm" text="Confirmer" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ancien mot de passe" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nouveau mot de passe" GridPane.rowIndex="1" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Répéter nouveau mot de passe" GridPane.rowIndex="2" />
+                  <Text fx:id="statusText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="498.7294921875" GridPane.rowIndex="4" />
                </children>
             </GridPane>
          </children>
