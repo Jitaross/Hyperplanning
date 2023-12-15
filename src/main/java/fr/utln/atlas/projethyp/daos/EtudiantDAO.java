@@ -1,6 +1,5 @@
 package fr.utln.atlas.projethyp.daos;
 
-import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Etudiant;
 import fr.utln.atlas.projethyp.entities.Formation;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
@@ -21,7 +20,7 @@ public class EtudiantDAO extends AbstractDAO<Etudiant> {
                 "UPDATE ETUDIANT SET IDFORMATION=? WHERE ID=?");
         try{
             findFormation = getConnection().prepareStatement("SELECT f.* FROM ETUDIANT as e,FORMATION as f where e.ID=?" +
-                    "AND e.IDFORMATION=f.ID")
+                    "AND e.IDFORMATION=f.ID");
             findEtudiantFromFormationPS = getConnection().prepareStatement("SELECT * FROM ETUDIANT WHERE IDFORMATION = ?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
