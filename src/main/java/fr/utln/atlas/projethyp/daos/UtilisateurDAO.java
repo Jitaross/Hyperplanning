@@ -2,9 +2,7 @@ package fr.utln.atlas.projethyp.daos;
 
 
 import fr.utln.atlas.projethyp.authentications.Authentication;
-import fr.utln.atlas.projethyp.entities.Enseignant;
-import fr.utln.atlas.projethyp.entities.Utilisateur;
-import fr.utln.atlas.projethyp.entities.DateSemaine;
+import fr.utln.atlas.projethyp.entities.*;
 import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import fr.utln.atlas.projethyp.exceptions.NotFoundException;
@@ -15,6 +13,7 @@ import lombok.extern.java.Log;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.sql.Time;
 import java.sql.Date;
@@ -116,6 +115,29 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         }
 
         return user;
+    }
+
+    public Utilisateur createUser(String nom, String prenom, String mail,
+                                  String motDePasse, Date dateNaissance) throws DataAccessException {
+        Authentication authentication = new Authentication(mail, motDePasse);
+        return persist(nom, prenom, authentication.getUserMail(),
+                new String(authentication.getPasswordHash(), StandardCharsets.UTF_8), dateNaissance);
+    }
+
+    public Etudiant createEtudiant(String nom, String prenom, String mail, String motDePasse,
+                                   Date dateNaissance, int idFormation) throws DataAccessException {
+        Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance);
+        try (EtudiantDAO etudiantDAO = new EtudiantDAO()) {
+            return etudiantDAO.persist(utilisateur.getId(), idFormation);
+        }
+    }
+
+    public Enseignant createEnseignant(String nom, String prenom, String mail, String motDePasse,
+                                   Date dateNaissance, String ufr) throws DataAccessException {
+        Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance);
+        try (EnseignantDAO enseignantDAO = new EnseignantDAO()) {
+            return enseignantDAO.persist(utilisateur.getId(), ufr);
+        }
     }
 
 
