@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import lombok.extern.java.Log;
 
 import java.time.DayOfWeek;
@@ -66,6 +67,7 @@ public class PlanningController {
     public void initialize() throws DataAccessException {
 
         this.planningPane.setVisible(false);
+
 
         try{
             this.coursDAO = new CoursDAO();

@@ -1,11 +1,20 @@
 package fr.utln.atlas.projethyp.controller;
 
+import fr.utln.atlas.projethyp.App;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import lombok.extern.java.Log;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 @Log
 public class MainController {
@@ -73,6 +82,27 @@ public class MainController {
 		switch (nextPage){
 			case ACCUEIL -> accueilController.show();
 			case PLANNING -> planningController.show();
+		}
+	}
+
+	@FXML
+	private void openChangerMotDePasse() {
+		try {
+			InputStream fxmlStream = App.class.getResourceAsStream("changerMotDePasse.fxml");
+			FXMLLoader loader = new FXMLLoader();
+			Parent root = loader.load(fxmlStream);
+			Stage popupStage = new Stage();
+			popupStage.initModality(Modality.APPLICATION_MODAL);
+
+
+			// Charger la scène depuis le fichier FXML
+			Scene scene = new Scene(root);
+
+			popupStage.setScene(scene);
+			popupStage.setTitle("Fenêtre pop-up");
+			popupStage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace(); // Gérer l'exception de chargement du FXML
 		}
 	}
 

@@ -1,26 +1,20 @@
 package fr.utln.atlas.projethyp;
 
-import fr.utln.atlas.projethyp.authentications.Authentication;
 import fr.utln.atlas.projethyp.controller.IdentificationController;
 import fr.utln.atlas.projethyp.controller.MainController;
-import fr.utln.atlas.projethyp.daos.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
 import java.util.Objects;
 import java.util.Properties;
 
-import fr.utln.atlas.projethyp.entities.Utilisateur;
-import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.h2.tools.Server;
-
-import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
+import javafx.stage.WindowEvent;
 
 /**
  * Hello world!
@@ -45,6 +39,7 @@ public class App extends Application {
         IdentificationController identificationController = loader.getController();
         identificationController.setApp(this);
 
+
         primaryStage.setTitle("Hyper-planning | Authentification");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -58,7 +53,7 @@ public class App extends Application {
         // Associer le contrôleur à la fenêtre principale
         MainController mainController = loader.getController();
 
-        // Fournir les données nécessaires au contrôleur principal si nécessaire
+
 
         primaryStage.setTitle("Hyper-planning | Accueil");
         primaryStage.setScene(new Scene(root));

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -12,8 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import java.lang.String?>
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.InscriptionEnseignantController">
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.InscriptionEnseignantController">
     <children>
         <GridPane VBox.vgrow="ALWAYS">
             <columnConstraints>
@@ -39,7 +39,7 @@
                 <TextField fx:id="motDePasseField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <Label text="Date de naissance" GridPane.rowIndex="4" />
                 <DatePicker fx:id="dateNaissancePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <Label text="Formation" GridPane.rowIndex="5" />
+                <Label text="UFR" GridPane.rowIndex="5" />
                 <ChoiceBox fx:id="ufrChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
@@ -53,7 +53,7 @@
             </children>
         </GridPane>
         <HBox alignment="CENTER_RIGHT" spacing="10.0">
-            <Button text="Inscrire" onAction="#inscrireEnseignant" />
+            <Button onAction="#inscrireEnseignant" text="Inscrire" />
             <Button text="Annuler" />
         </HBox>
     </children>
