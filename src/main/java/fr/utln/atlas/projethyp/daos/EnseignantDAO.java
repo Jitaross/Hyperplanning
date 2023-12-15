@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp.daos;
 
+import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.entities.Enseignant;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import lombok.extern.java.Log;
@@ -50,6 +51,19 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
         }
         super.update();
     }
+
+    public Devoir createDevoir(Devoir devoir) throws DataAccessException {
+        try (DevoirDAO devoirDAO = new DevoirDAO()) {
+            return devoirDAO.persist(devoir);
+        }
+    }
+
+    public void updateDevoir(Devoir devoir) throws DataAccessException {
+        try (DevoirDAO devoirDAO = new DevoirDAO()) {
+            devoirDAO.update(devoir);
+        }
+    }
+
     @Override
     public String getTableName() {
         return "ENSEIGNANT";
