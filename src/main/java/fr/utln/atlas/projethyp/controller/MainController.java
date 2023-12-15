@@ -92,6 +92,7 @@ public class MainController {
 			FXMLLoader loader = new FXMLLoader();
 			Parent root = loader.load(fxmlStream);
 			Stage popupStage = new Stage();
+			popupStage.setResizable(false);
 			popupStage.initModality(Modality.APPLICATION_MODAL);
 
 

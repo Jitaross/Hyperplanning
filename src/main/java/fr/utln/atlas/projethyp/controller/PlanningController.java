@@ -4,6 +4,7 @@ import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -64,7 +65,7 @@ public class PlanningController {
 
 
 
-    public void initialize() throws DataAccessException {
+    public void initialize(Scene scene) throws DataAccessException {
 
         this.planningPane.setVisible(false);
 
