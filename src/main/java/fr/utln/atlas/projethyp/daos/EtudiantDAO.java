@@ -1,7 +1,7 @@
 package fr.utln.atlas.projethyp.daos;
 
-import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Etudiant;
+import fr.utln.atlas.projethyp.entities.Formation;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import lombok.extern.java.Log;
 
@@ -14,10 +14,13 @@ import java.util.List;
 @Log
 public class EtudiantDAO extends AbstractDAO<Etudiant> {
     private final PreparedStatement findEtudiantFromFormationPS;
+    private final PreparedStatement findFormation;
     public EtudiantDAO() throws DataAccessException {
         super("INSERT INTO ETUDIANT(ID,IDFORMATION) VALUES (?,?)",
                 "UPDATE ETUDIANT SET IDFORMATION=? WHERE ID=?");
         try{
+            findFormation = getConnection().prepareStatement("SELECT f.* FROM ETUDIANT as e,FORMATION as f where e.ID=?" +
+                    "AND e.IDFORMATION=f.ID");
             findEtudiantFromFormationPS = getConnection().prepareStatement("SELECT * FROM ETUDIANT WHERE IDFORMATION = ?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
@@ -79,6 +82,22 @@ public class EtudiantDAO extends AbstractDAO<Etudiant> {
 
         return listeEtudiants;
     }
+
+    public Formation findFormation(int idEtud) throws DataAccessException {
+        Formation formation = null;
+        try {
+            findFormation.setInt(1, idEtud);
+            ResultSet resultSet = findFormation.executeQuery();
+            while (resultSet.next()) formation = Formation.builder()
+                    .id(resultSet.getInt("ID"))
+                    .nomFormation(resultSet.getString("NOMFORMATION"))
+                    .build();
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+        return formation;
+    }
+
     @Override
     public String getTableName() {
         return "ETUDIANT";

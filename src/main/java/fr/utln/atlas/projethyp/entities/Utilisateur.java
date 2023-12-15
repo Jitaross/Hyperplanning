@@ -18,4 +18,11 @@ public class Utilisateur implements Entity {
     private String mail;
     private String motDePasse;
     private Date dateNaissance;
+    public enum TypeUser {
+        Etudiant,
+        Enseignant,
+        Gestionnaire,
+        SuperAdmin
+    }
+    private TypeUser typeUser;
 }

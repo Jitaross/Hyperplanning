@@ -29,8 +29,8 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     private final PreparedStatement findLogin;
 
     public UtilisateurDAO() throws DataAccessException {
-        super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE) VALUES (?,?,?,?,?)",
-                "UPDATE UTILISATEUR SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=? WHERE ID=?");
+        super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE, TYPEUTILISATEUR) VALUES (?,?,?,?,?,?)",
+                "UPDATE UTILISATEUR SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=?, TYPEUTILISATEUR=? WHERE ID=?");
         try {
             findUtilisateurPS = getConnection().prepareStatement("SELECT * FROM UTILISATEUR WHERE ID=?");
             findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
@@ -49,21 +49,24 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
                 .mail(resultSet.getString("MAIL"))
                 .motDePasse(resultSet.getString("PASSWORD"))
                 .dateNaissance(resultSet.getDate("DATENAISSANCE"))
+                .typeUser(Utilisateur.TypeUser.valueOf(resultSet.getString("TYPEUTILISATEUR")))
                 .build();
     }
 
     @Override
     public Utilisateur persist(Utilisateur utilisateur) throws DataAccessException {
-        return persist(utilisateur.getNom(),utilisateur.getPrenom(),utilisateur.getMail(),utilisateur.getMotDePasse(),utilisateur.getDateNaissance());
+        return persist(utilisateur.getNom(),utilisateur.getPrenom(),utilisateur.getMail(),
+                utilisateur.getMotDePasse(),utilisateur.getDateNaissance(), utilisateur.getTypeUser());
     }
 
-    public Utilisateur persist(String nom, String prenom, String mail, String motdepasse, Date datenaissance) throws DataAccessException {
+    public Utilisateur persist(String nom, String prenom, String mail, String motdepasse, Date datenaissance, Utilisateur.TypeUser typeUser) throws DataAccessException {
         try {
             persistPS.setString(1, nom);
             persistPS.setString(2, prenom);
             persistPS.setString(3, mail);
             persistPS.setString(4, motdepasse);
             persistPS.setDate(5,datenaissance);
+            persistPS.setString(6, String.valueOf(typeUser));
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
@@ -77,7 +80,8 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
             updatePS.setString(3, utilisateur.getMail());
             updatePS.setString(4, utilisateur.getMotDePasse());
             updatePS.setDate(5,utilisateur.getDateNaissance());
-            updatePS.setInt(6,utilisateur.getId());
+            updatePS.setString(6, String.valueOf(utilisateur.getTypeUser()));
+            updatePS.setInt(7,utilisateur.getId());
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
