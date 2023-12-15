@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="identificationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.IdentificationController">
    <center>
@@ -16,4 +17,7 @@
          </children>
       </VBox>
    </center>
+   <bottom>
+      <Text fx:id="textErreurLogin" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" translateY="-135.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

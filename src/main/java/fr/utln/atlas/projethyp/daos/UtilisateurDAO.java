@@ -1,15 +1,18 @@
 package fr.utln.atlas.projethyp.daos;
 
 
+import fr.utln.atlas.projethyp.authentications.Authentication;
 import fr.utln.atlas.projethyp.entities.Enseignant;
 import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.entities.DateSemaine;
 import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+import fr.utln.atlas.projethyp.exceptions.NotFoundException;
 import lombok.Data;
 import lombok.extern.java.Log;
 
 
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +25,15 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
 @Log
 public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
-    private final PreparedStatement findNomUtilisateurPS;
+    private final PreparedStatement findUtilisateurPS;
+    private final PreparedStatement findLogin;
 
     public UtilisateurDAO() throws DataAccessException {
-        super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,MOTDEPASSE,DATENAISSANCE) VALUES (?,?,?,?,?)",
-                "UPDATE COURS SET NOM=?, PRENOM=?, MAIL=?, MOTDEPASSE=?, DATENAISSANCE=? WHERE ID=?");
-
-        try{
-            findNomUtilisateurPS = getConnection().prepareStatement("SELECT NOM FROM UTILISATEUR WHERE ID = ?");
+        super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE) VALUES (?,?,?,?,?)",
+                "UPDATE UTILISATEUR SET NOM=?, PRENOM=?, MAIL=?, PASSWORD=?, DATENAISSANCE=? WHERE ID=?");
+        try {
+            findUtilisateurPS = getConnection().prepareStatement("SELECT * FROM UTILISATEUR WHERE ID=?");
+            findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -43,7 +47,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
                 .nom(resultSet.getString("NOM"))
                 .prenom(resultSet.getString("PRENOM"))
                 .mail(resultSet.getString("MAIL"))
-                .motDePasse(resultSet.getString("MOTDEPASSE"))
+                .motDePasse(resultSet.getString("PASSWORD"))
                 .dateNaissance(resultSet.getDate("DATENAISSANCE"))
                 .build();
     }
@@ -80,24 +84,38 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         super.update();
     }
 
+    public int login(Authentication authentication) throws DataAccessException{
+        int idUtilisateur = -1;
+        try {
+            findLogin.setString(1, authentication.getUserMail());
+            findLogin.setString(2, new String(authentication.getPasswordHash(), StandardCharsets.UTF_8));
+            ResultSet person = findLogin.executeQuery();
+            while (person.next())
+                idUtilisateur = person.getInt("ID");
+
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+        return idUtilisateur;
+    }
 
 
-    public String findUtilisateurNom(int id) throws DataAccessException {
-        String nom;
+    public Utilisateur findUtilisateur(int id) throws DataAccessException {
+        Utilisateur user = null;
 
         try {
-            findNomUtilisateurPS.setInt(1, id);
+            findUtilisateurPS.setInt(1, id);
 
-            ResultSet resultSet = findNomUtilisateurPS.executeQuery();
-            nom = fromResultSet(resultSet).getNom();
-
-            resultSet.close();
+            ResultSet resultSet = findUtilisateurPS.executeQuery();
+            while(resultSet.next()){
+                user = fromResultSet(resultSet);
+            }
 
         } catch (SQLException throwables) {
             throw new DataAccessException(throwables.getLocalizedMessage());
         }
 
-        return nom;
+        return user;
     }
 
 
