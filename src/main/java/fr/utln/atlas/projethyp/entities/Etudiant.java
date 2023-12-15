@@ -12,4 +12,5 @@ import java.util.Arrays;
 @SuperBuilder
 public class Etudiant extends Utilisateur{
     private int idFormation;
+    private String nomFormation;
 }

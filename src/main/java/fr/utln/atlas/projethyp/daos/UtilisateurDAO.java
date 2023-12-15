@@ -28,6 +28,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     private final PreparedStatement findLogin;
     private final PreparedStatement modifyMDPPS;
     private final PreparedStatement getMailWithIDPS;
+    private final PreparedStatement getNomFormationWithIdPS;
 
     public UtilisateurDAO() throws DataAccessException {
         super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE, TYPEUTILISATEUR) VALUES (?,?,?,?,?,?)",
@@ -37,6 +38,8 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
             findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
             modifyMDPPS = getConnection().prepareStatement("UPDATE UTILISATEUR SET PASSWORD=? WHERE ID=?");
             getMailWithIDPS = getConnection().prepareStatement("SELECT MAIL FROM UTILISATEUR WHERE ID=?");
+            getNomFormationWithIdPS = getConnection().prepareStatement("SELECT NOMFORMATION FROM FORMATION WHERE ID=(SELECT IDFORMATION FROM ETUDIANT WHERE ID=?)");
+
 
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
@@ -163,6 +166,22 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         }
 
         return mail;
+    }
+
+    public String getNomFormationWithId(int id) throws DataAccessException {
+        String nomFormation = null;
+        try {
+            getNomFormationWithIdPS.setInt(1, id);
+
+            ResultSet resultSet = getNomFormationWithIdPS.executeQuery();
+            while (resultSet.next())
+                nomFormation = resultSet.getString("NOMFORMATION");
+
+        } catch (SQLException throwables) {
+            throw new DataAccessException(throwables.getLocalizedMessage());
+        }
+
+        return nomFormation;
     }
 
     public int modifyMDP(String mail, String oldMDP, String newMdp) throws DataAccessException {

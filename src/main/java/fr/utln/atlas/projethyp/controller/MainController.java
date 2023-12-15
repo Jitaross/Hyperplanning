@@ -50,7 +50,7 @@ public class MainController {
 	@FXML
 	private void initialize() throws Exception {
 		try (UtilisateurDAO userdao = new UtilisateurDAO()) {
-			textInfos.setText(userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " (" + ")");
+			textInfos.setText("Espace "+userdao.findUtilisateur(userId).getTypeUser()+" | "+userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
 		}
 
 		IdentificationController identificationController = new IdentificationController();
@@ -99,7 +99,7 @@ public class MainController {
 			Scene scene = new Scene(root);
 
 			popupStage.setScene(scene);
-			popupStage.setTitle("Fenêtre pop-up");
+			popupStage.setTitle("Changer mon mot de passe");
 			popupStage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace(); // Gérer l'exception de chargement du FXML

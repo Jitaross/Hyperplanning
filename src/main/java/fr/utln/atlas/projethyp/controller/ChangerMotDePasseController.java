@@ -34,15 +34,20 @@ public class ChangerMotDePasseController {
 
     @FXML
     private void confirm() throws DataAccessException {
+        UtilisateurDAO userDAO = null;
         if((newPassword.getText()).equals(newPasswordRepeated.getText())) {
-            UtilisateurDAO userDAO = new UtilisateurDAO();
-            if(userDAO.modifyMDP(userDAO.getMailWithId(MainController.getUserId()), oldPassword.getText(), newPassword.getText())>=0){
-                Stage stage = (Stage) cancelButton.getScene().getWindow();
-                stage.close();
+            try{userDAO = new UtilisateurDAO();
+                if(userDAO.modifyMDP(userDAO.getMailWithId(MainController.getUserId()), oldPassword.getText(), newPassword.getText())>=0){
+                    Stage stage = (Stage) cancelButton.getScene().getWindow();
+                    stage.close();
+                }
+                else{
+                    statusText.setText("L'ancien mot de passe n'est pas correct.");
+                }}finally {
+                assert userDAO != null;
+                userDAO.close();
             }
-            else{
-                statusText.setText("L'ancien mot de passe n'est pas correct.");
-            }
+
 
         }
         else{
