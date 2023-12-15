@@ -124,15 +124,15 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     }
 
     public Utilisateur createUser(String nom, String prenom, String mail,
-                                  String motDePasse, Date dateNaissance) throws DataAccessException {
+                                  String motDePasse, Date dateNaissance, Utilisateur.TypeUser typeuser) throws DataAccessException {
         Authentication authentication = new Authentication(mail, motDePasse);
         return persist(nom, prenom, authentication.getUserMail(),
-                new String(authentication.getPasswordHash(), StandardCharsets.UTF_8), dateNaissance);
+                new String(authentication.getPasswordHash(), StandardCharsets.UTF_8), dateNaissance, typeuser);
     }
 
     public Etudiant createEtudiant(String nom, String prenom, String mail, String motDePasse,
                                    Date dateNaissance, int idFormation) throws DataAccessException {
-        Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance);
+        Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance, Utilisateur.TypeUser.Etudiant);
         try (EtudiantDAO etudiantDAO = new EtudiantDAO()) {
             return etudiantDAO.persist(utilisateur.getId(), idFormation);
         }
@@ -140,7 +140,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
 
     public Enseignant createEnseignant(String nom, String prenom, String mail, String motDePasse,
                                    Date dateNaissance, String ufr) throws DataAccessException {
-        Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance);
+        Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance, Utilisateur.TypeUser.Enseignant);
         try (EnseignantDAO enseignantDAO = new EnseignantDAO()) {
             return enseignantDAO.persist(utilisateur.getId(), ufr);
         }
