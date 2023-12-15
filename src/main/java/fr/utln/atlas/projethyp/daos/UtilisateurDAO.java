@@ -26,6 +26,7 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     private final PreparedStatement findUtilisateurPS;
     private final PreparedStatement findLogin;
+    private final PreparedStatement modifyMDPPS;
 
     public UtilisateurDAO() throws DataAccessException {
         super("INSERT INTO UTILISATEUR(NOM,PRENOM,MAIL,PASSWORD,DATENAISSANCE) VALUES (?,?,?,?,?)",
@@ -33,6 +34,7 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         try {
             findUtilisateurPS = getConnection().prepareStatement("SELECT * FROM UTILISATEUR WHERE ID=?");
             findLogin = getConnection().prepareStatement("SELECT ID FROM UTILISATEUR WHERE MAIL=? AND PASSWORD=?");
+            modifyMDPPS = getConnection().prepareStatement("UPDATE UTILISATEUR SET PASSWORD=? WHERE ID=?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -138,6 +140,26 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
         try (EnseignantDAO enseignantDAO = new EnseignantDAO()) {
             return enseignantDAO.persist(utilisateur.getId(), ufr);
         }
+    }
+
+    public int modifyMDP(String mail, String oldMDP, String newMdp) throws DataAccessException {
+        Authentication authentication = new Authentication(mail, oldMDP);
+        String newMDP = new String(authentication.hashPassword(newMdp.getBytes(StandardCharsets.UTF_8)));
+        try {
+            int ret = -1;
+            int idUser = login(authentication);
+            if (idUser != -1) {
+                modifyMDPPS.setString(1, newMDP);
+                modifyMDPPS.setInt(2, idUser);
+                modifyMDPPS.executeUpdate();
+                ret = 1;
+            }
+            return ret;
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+
+
     }
 
 
