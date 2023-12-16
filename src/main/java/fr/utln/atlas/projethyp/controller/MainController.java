@@ -2,7 +2,7 @@ package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.App;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
-import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import lombok.extern.java.Log;
 
 import java.io.IOException;

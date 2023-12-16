@@ -2,8 +2,8 @@ package fr.utln.atlas.projethyp.daos;
 
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
-import lombok.extern.java.Log;
 
+import lombok.extern.java.Log;
 
 import java.sql.*;
 import java.util.ArrayList;

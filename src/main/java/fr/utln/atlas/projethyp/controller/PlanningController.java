@@ -3,15 +3,15 @@ package fr.utln.atlas.projethyp.controller;
 import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+
 import lombok.extern.java.Log;
 
 import java.time.DayOfWeek;

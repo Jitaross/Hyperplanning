@@ -4,6 +4,7 @@ import fr.utln.atlas.projethyp.App;
 import fr.utln.atlas.projethyp.authentications.Authentication;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;

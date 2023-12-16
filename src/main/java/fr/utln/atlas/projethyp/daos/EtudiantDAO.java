@@ -3,13 +3,12 @@ package fr.utln.atlas.projethyp.daos;
 import fr.utln.atlas.projethyp.entities.Etudiant;
 import fr.utln.atlas.projethyp.entities.Formation;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
-import lombok.extern.java.Log;
 
+import lombok.extern.java.Log;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Log
 public class EtudiantDAO extends AbstractDAO<Etudiant> {

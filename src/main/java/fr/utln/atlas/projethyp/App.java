@@ -2,6 +2,7 @@ package fr.utln.atlas.projethyp;
 
 import fr.utln.atlas.projethyp.controller.IdentificationController;
 import fr.utln.atlas.projethyp.controller.MainController;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-/**
- * Hello world!
- *
- */
 public class App extends Application {
 
 

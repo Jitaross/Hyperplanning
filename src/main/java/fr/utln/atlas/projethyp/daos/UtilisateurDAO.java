@@ -1,26 +1,16 @@
 package fr.utln.atlas.projethyp.daos;
 
-
 import fr.utln.atlas.projethyp.authentications.Authentication;
 import fr.utln.atlas.projethyp.entities.*;
 import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
-import fr.utln.atlas.projethyp.exceptions.NotFoundException;
-import lombok.Data;
-import lombok.extern.java.Log;
 
+import lombok.extern.java.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.sql.Time;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-
-import static fr.utln.atlas.projethyp.datasources.DBCPDataSource.getConnection;
-import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 
 @Log
 public class UtilisateurDAO extends AbstractDAO<Utilisateur> {

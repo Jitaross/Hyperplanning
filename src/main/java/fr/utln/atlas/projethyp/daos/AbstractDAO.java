@@ -4,6 +4,7 @@ import fr.utln.atlas.projethyp.entities.Entity;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import fr.utln.atlas.projethyp.exceptions.NotFoundException;
 import fr.utln.atlas.projethyp.datasources.DBCPDataSource;
+
 import lombok.Getter;
 import lombok.extern.java.Log;
 
