@@ -5,11 +5,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane fx:id="notesPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.NotesEtudiantController">
+<BorderPane fx:id="notesPane" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.NotesEtudiantController">
    <center>
       <VBox>
-          <Label text="Notes des Devoirs" />
+          <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="608.0" text="Notes des Devoirs" textAlignment="CENTER" />
       
           <ListView fx:id="devoirListView" VBox.vgrow="ALWAYS" />
       
