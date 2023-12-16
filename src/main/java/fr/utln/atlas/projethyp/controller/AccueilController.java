@@ -1,7 +1,10 @@
 package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.CoursDAO;
+import fr.utln.atlas.projethyp.daos.DevoirDAO;
+import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Cours;
+import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
@@ -26,6 +29,8 @@ public class AccueilController {
 	private ScrollPane scrollPane;
 	@FXML
 	private DatePicker datePicker;
+	@FXML
+	private GridPane notesPane;
 
 	@FXML
 	private void initialize() throws DataAccessException {
@@ -47,6 +52,30 @@ public class AccueilController {
 				throw new RuntimeException(e);
 			}
 		});
+
+		DevoirDAO devoirDAO = new DevoirDAO();
+		Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(5,1,MainController.getUserId());
+		List<Devoir> devoirs = pageDevoirs.getResultList();
+		int i = 2;
+		for(Devoir d:devoirs) {
+			//Ajouter devoir
+			TextArea matiere = new TextArea();
+			TextArea type = new TextArea();
+			TextArea note = new TextArea();
+
+			matiere.setEditable(false);
+			type.setEditable(false);
+			note.setEditable(false);
+
+			matiere.setText("Matière");
+			type.setText("D" + d.getTypeDevoir().toString().substring(0, 1));
+			note.setText(String.valueOf(d.getNote()));
+
+			this.notesPane.add(matiere, 0, i);
+			this.notesPane.add(type, 1, i);
+			this.notesPane.add(note, 2, i);
+			i++;
+		}
 	}
 
 	private void ajouterCours(Cours cours){
