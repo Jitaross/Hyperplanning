@@ -67,6 +67,8 @@ public class PlanningController {
     private static final int START_WEEK = 1;
     private static final int DAYS_IN_WEEK = 7;
 
+    private Integer annee = LocalDate.now().getYear();
+
     int userId = MainController.getUserId();
 
 
@@ -95,6 +97,9 @@ public class PlanningController {
         ObservableList<Integer> items = FXCollections.observableArrayList(LocalDate.now().getYear()+1,LocalDate.now().getYear(),LocalDate.now().getYear()-1,LocalDate.now().getYear()-2);
         anneeChoice.setItems(items);
         anneeChoice.getSelectionModel().select(1);
+
+        anneeChoice.setOnAction(event -> {this.annee=anneeChoice.getValue();
+                                            createPage(paginationPlanning.getCurrentPageIndex());});
     }
 
     private GridPane createPage(Integer weekIndex) {
@@ -111,7 +116,7 @@ public class PlanningController {
 
         // Mise à jour des jours de la semaine en fonction du numéro de la semaine sélectionné
         LocalDate startDate = LocalDate.now(); // Obtient la date actuelle
-        startDate = startDate.withYear(LocalDate.now().getYear()).with(WeekFields.ISO.weekOfWeekBasedYear(), 1).with(DayOfWeek.MONDAY);
+        startDate = startDate.withYear(this.annee).with(WeekFields.ISO.weekOfWeekBasedYear(), 1).with(DayOfWeek.MONDAY);
         //LocalDate startDate = LocalDate.of(2023, 01, 02); // Lundi 02 Janvier 2023 (date de référence pour les calculs)
         startDate = startDate.plusWeeks(currentWeek - 1); // Ajoute le nombre du numéro de la semaine sélectionnée
 
