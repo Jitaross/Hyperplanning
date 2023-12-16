@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -23,6 +24,9 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
+        //Image icon = new Image("@images/DALL_E_2023-12-16_18.06.04_Hyper-planning.png");
+        //primaryStage.getIcons().add(new Image("DALL_E_2023-12-16_18.06.04_Hyper-planning.png"));
+
         primaryStage.setResizable(false);
         showAuthWindow();
     }

@@ -4,6 +4,7 @@ import fr.utln.atlas.projethyp.daos.CoursDAO;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -23,6 +24,8 @@ public class AccueilController {
 	private GridPane gridPane;
 	@FXML
 	private ScrollPane scrollPane;
+	@FXML
+	private DatePicker datePicker;
 
 	@FXML
 	private void initialize() throws DataAccessException {
@@ -34,9 +37,20 @@ public class AccueilController {
 			this.ajouterCours(c);
 
 		}
+		datePicker.setOnAction(event->{
+			try {
+				List<Cours> lcours = coursDAO.findCoursJourEtudiant(Date.valueOf(datePicker.getValue()),MainController.getUserId());
+				for(Cours c:lcours){
+					this.ajouterCours(c);
+				}
+			} catch (DataAccessException e) {
+				throw new RuntimeException(e);
+			}
+		});
 	}
 
 	private void ajouterCours(Cours cours){
+		this.gridPane.getChildren().removeIf(TextArea.class::isInstance);
 
 		HashMap<String, String> couleurs = new HashMap<String, String>();
 		couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");

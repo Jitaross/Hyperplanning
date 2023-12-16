@@ -3,21 +3,30 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="identificationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.IdentificationController">
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="204.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="identifiant" maxWidth="-Infinity" prefHeight="24.0" prefWidth="300.0" promptText="Identifiant" translateX="150.0" translateY="150.0" />
-            <PasswordField fx:id="motDePasse" maxWidth="-Infinity" prefWidth="300.0" promptText="Mot de passe" translateX="150.0" translateY="160.0" />
-            <Button fx:id="seConnecter" contentDisplay="CENTER" mnemonicParsing="false" text="Se connecter" translateX="340.0" translateY="170.0" />
+            <TextField fx:id="identifiant" maxWidth="-Infinity" prefHeight="24.0" prefWidth="300.0" promptText="Identifiant" translateX="150.0" />
+            <PasswordField fx:id="motDePasse" maxWidth="-Infinity" prefWidth="300.0" promptText="Mot de passe" translateX="150.0" translateY="10.0" />
+            <Button fx:id="seConnecter" contentDisplay="CENTER" mnemonicParsing="false" text="Se connecter" translateX="340.0" translateY="20.0" />
          </children>
       </VBox>
    </center>
    <bottom>
-      <Text fx:id="textErreurLogin" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" translateY="-135.0" BorderPane.alignment="CENTER" />
+      <Text fx:id="textErreurLogin" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" translateY="-50.0" BorderPane.alignment="CENTER" />
    </bottom>
+   <top>
+      <ImageView fitHeight="221.0" fitWidth="247.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@DALL_E_2023-12-16_18.06.04_Hyper-planning.png" />
+         </image>
+      </ImageView>
+   </top>
 </BorderPane>
