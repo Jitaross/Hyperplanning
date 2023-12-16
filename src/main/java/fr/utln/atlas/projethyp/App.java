@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

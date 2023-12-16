@@ -28,11 +28,15 @@ public class MainController {
 	private AccueilController accueilController;
 	@FXML
 	private PlanningController planningController;
+	@FXML
+	private NotesEtudiantController notesEtudiantController;
 
 	@FXML
 	private Button btnAccueil;
 	@FXML
 	private Button btnPlanning;
+	@FXML
+	private Button btnNotes;
 	@FXML
 	private Text textInfos;
 	@FXML
@@ -68,12 +72,14 @@ public class MainController {
 		this.currentPage = Page.ACCUEIL;
 		this.btnAccueil.setOnAction(event -> showNewPage(Page.ACCUEIL));
 		this.btnPlanning.setOnAction(event -> showNewPage(Page.PLANNING));
+		this.btnNotes.setOnAction(event -> showNewPage(Page.NOTES));
 	}
 
 	private void hideCurrentPage(){
 		switch (this.currentPage){
 			case ACCUEIL -> accueilController.hide();
 			case PLANNING -> planningController.hide();
+			case NOTES -> notesEtudiantController.hide();
 		}
 	}
 
@@ -83,6 +89,7 @@ public class MainController {
 		switch (nextPage){
 			case ACCUEIL -> accueilController.show();
 			case PLANNING -> planningController.show();
+			case NOTES -> notesEtudiantController.show();
 		}
 	}
 
