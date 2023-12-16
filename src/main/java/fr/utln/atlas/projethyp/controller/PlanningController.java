@@ -64,8 +64,8 @@ public class PlanningController {
     int userId = MainController.getUserId();
 
 
-
-    public void initialize(Scene scene) throws DataAccessException {
+    @FXML
+    public void initialize() throws DataAccessException {
 
         this.planningPane.setVisible(false);
 
