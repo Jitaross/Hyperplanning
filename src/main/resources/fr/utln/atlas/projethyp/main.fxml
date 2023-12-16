@@ -45,7 +45,7 @@
             <children>
                 <fx:include fx:id="accueil" source="accueil.fxml" />
                 <fx:include fx:id="planning" source="planning.fxml" />
-                <fx:include fx:id="notes" source="notesEtudiant.fxml" />
+                <fx:include fx:id="notesEtudiant" source="notesEtudiant.fxml" />
             </children>
         </AnchorPane>
     </center>

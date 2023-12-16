@@ -110,8 +110,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
         return listeCours;
     }
 
-    public Page<Cours> findCoursSemaine(int numeroSemaine, int pageNumber, int pageSize) throws  DataAccessException {
-        List<Date> semaine = JourSemaine(numeroSemaine, 2023);
+    public Page<Cours> findCoursSemaine(int numeroSemaine, int pageNumber, int pageSize, int annee) throws  DataAccessException {
+        List<Date> semaine = JourSemaine(numeroSemaine, annee);
         List<Cours> listeCours = new ArrayList<>();
         for (Date jour : semaine) {
             listeCours.addAll(findCoursJour(jour));
@@ -146,8 +146,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
     }
 
 
-    public Page<Cours> findCoursSemaineEtudiant(int numeroSemaine,int id, int pageNumber, int pageSize) throws  DataAccessException {
-        List<Date> semaine = JourSemaine(numeroSemaine, 2023);
+    public Page<Cours> findCoursSemaineEtudiant(int numeroSemaine,int id, int pageNumber, int pageSize, int annee) throws  DataAccessException {
+        List<Date> semaine = JourSemaine(numeroSemaine, annee);
         List<Cours> listeCours = new ArrayList<>();
         for (Date jour : semaine) {
             listeCours.addAll(findCoursJourEtudiant(jour,id));

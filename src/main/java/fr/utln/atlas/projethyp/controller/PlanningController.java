@@ -146,7 +146,7 @@ public class PlanningController {
         // Enlève tous les cours présent à l'écran
         this.planning.getChildren().removeIf(TextArea.class::isInstance);
         try{
-            Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineEtudiant(currentWeek,userId, 1, 10);
+            Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineEtudiant(currentWeek,userId, 1, 10,this.annee);
             List<Cours> cours = pageCoursSemaine.getResultList();
             for (Cours c : cours) {
                 this.ajouterCours(c);
