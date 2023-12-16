@@ -4,7 +4,10 @@ import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -54,6 +57,9 @@ public class PlanningController {
     @FXML
     private Text jour5;
 
+    @FXML
+    private ChoiceBox<Integer> anneeChoice;
+
     private CoursDAO coursDAO;
     private MatiereDAO matiereDAO;
     private UtilisateurDAO utilisateurDAO;
@@ -84,6 +90,11 @@ public class PlanningController {
         paginationPlanning.setCurrentPageIndex(LocalDate.now().get(java.time.temporal.WeekFields.of(java.util.Locale.getDefault()).weekOfWeekBasedYear())-1); // On place la pagination sur la semaine actuelle
         createPage(paginationPlanning.getCurrentPageIndex()); // On crée la page avec comme index la semaine actuelle
         paginationPlanning.setOnMouseClicked(event -> createPage(paginationPlanning.getCurrentPageIndex())); // Ajout de l'évènement du clique sur la pagination pour générer les nouvelles pages
+
+
+        ObservableList<Integer> items = FXCollections.observableArrayList(LocalDate.now().getYear()+1,LocalDate.now().getYear(),LocalDate.now().getYear()-1,LocalDate.now().getYear()-2);
+        anneeChoice.setItems(items);
+        anneeChoice.getSelectionModel().select(1);
     }
 
     private GridPane createPage(Integer weekIndex) {
