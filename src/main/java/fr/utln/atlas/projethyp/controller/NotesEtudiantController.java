@@ -41,7 +41,7 @@ public class NotesEtudiantController {
         DevoirDAO devoirDAO = new DevoirDAO();
         Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(10,1,MainController.getUserId());
         List<Devoir> devoirs = pageDevoirs.getResultList();
-        int i = 2;
+        int i = 1;
         for(Devoir d:devoirs){
             //Ajouter devoir
             TextArea matiere = new TextArea();
@@ -66,6 +66,7 @@ public class NotesEtudiantController {
                 this.gridPane.add(matiere,0,i,1,span);
                 this.gridPane.add(type,1,i,1,span);
                 this.gridPane.add(note,2,i,1,span);
+                span--;
             }else{
                 commentaire.setText(d.getCommentaire());
                 this.gridPane.add(commentaire,3,i);

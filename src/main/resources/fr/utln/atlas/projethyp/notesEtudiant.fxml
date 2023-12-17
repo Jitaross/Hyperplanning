@@ -27,7 +27,7 @@
                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="559.0" minWidth="10.0" prefWidth="518.0" />
                  </columnConstraints>
                  <rowConstraints>
-                   <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                   <RowConstraints maxHeight="43.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
                    <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
                    <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
                      <RowConstraints maxHeight="74.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
@@ -54,10 +54,22 @@
                      <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="55.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Matière" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" GridPane.columnIndex="1" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Note" GridPane.columnIndex="2" />
-                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Commentaire" GridPane.columnIndex="3" />
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Matière">
+                        <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0" />
+                        </GridPane.margin></Text>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type" GridPane.columnIndex="1">
+                        <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0" />
+                        </GridPane.margin></Text>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Note" GridPane.columnIndex="2">
+                        <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0" />
+                        </GridPane.margin></Text>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Commentaire" GridPane.columnIndex="3">
+                        <GridPane.margin>
+                           <Insets bottom="5.0" top="5.0" />
+                        </GridPane.margin></Text>
                   </children>
                   <padding>
                      <Insets left="5.0" right="5.0" top="5.0" />
