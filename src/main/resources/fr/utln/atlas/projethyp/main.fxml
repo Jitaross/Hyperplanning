@@ -30,7 +30,7 @@
                   <Button fx:id="btnAccueil" mnemonicParsing="false" text="Accueil" />
                   <Separator orientation="VERTICAL" />
                   <Button fx:id="btnPlanning" mnemonicParsing="false" text="Planning" />
-                  <Button fx:id="btnAbsences" disable="true" mnemonicParsing="false" text="Absences" />
+                  <Button fx:id="btnAbsences" mnemonicParsing="false" text="Absences" />
                   <Button fx:id="btnNotes" mnemonicParsing="false" text="Notes" />
                   <Separator orientation="VERTICAL" />
                   <Button fx:id="changerMotDePasse" mnemonicParsing="false" text="Changer mon mot de passe" translateX="650.0" onAction="#openChangerMotDePasse"/>
@@ -46,6 +46,7 @@
                 <fx:include fx:id="accueil" source="accueil.fxml" />
                 <fx:include fx:id="planning" source="planning.fxml" />
                 <fx:include fx:id="notesEtudiant" source="notesEtudiant.fxml" />
+                <fx:include fx:id="absences" source="absences.fxml"/>
             </children>
         </AnchorPane>
     </center>

@@ -30,6 +30,8 @@ public class MainController {
 	private PlanningController planningController;
 	@FXML
 	private NotesEtudiantController notesEtudiantController;
+	@FXML
+	private AbsencesController absencesController;
 
 	@FXML
 	private Button btnAccueil;
@@ -37,6 +39,8 @@ public class MainController {
 	private Button btnPlanning;
 	@FXML
 	private Button btnNotes;
+	@FXML
+	private Button btnAbsences;
 	@FXML
 	private Text textInfos;
 	@FXML
@@ -73,6 +77,7 @@ public class MainController {
 		this.btnAccueil.setOnAction(event -> showNewPage(Page.ACCUEIL));
 		this.btnPlanning.setOnAction(event -> showNewPage(Page.PLANNING));
 		this.btnNotes.setOnAction(event -> showNewPage(Page.NOTES));
+		this.btnAbsences.setOnAction(event->showNewPage(Page.ABSENCES));
 	}
 
 	private void hideCurrentPage(){
@@ -80,6 +85,7 @@ public class MainController {
 			case ACCUEIL -> accueilController.hide();
 			case PLANNING -> planningController.hide();
 			case NOTES -> notesEtudiantController.hide();
+			case ABSENCES -> absencesController.hide();
 		}
 	}
 
@@ -90,6 +96,7 @@ public class MainController {
 			case ACCUEIL -> accueilController.show();
 			case PLANNING -> planningController.show();
 			case NOTES -> notesEtudiantController.show();
+			case ABSENCES -> absencesController.show();
 		}
 	}
 
