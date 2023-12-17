@@ -17,5 +17,6 @@ public class Devoir implements Entity{
     }
 
     private TypeDevoir typeDevoir;
+    private String nomMatiere;
 
 }
