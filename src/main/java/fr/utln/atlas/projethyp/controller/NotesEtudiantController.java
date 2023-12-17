@@ -4,16 +4,21 @@ import fr.utln.atlas.projethyp.daos.DevoirDAO;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.chart.*;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 public class NotesEtudiantController {
 
@@ -21,10 +26,18 @@ public class NotesEtudiantController {
     private GridPane gridPane;
     @FXML
     private BorderPane notesPane;
+    @FXML
+    private StackedBarChart<String,Number> moyennes;
+    @FXML
+    private CategoryAxis categoryAxis;
+    @FXML
+    private NumberAxis numberAxis;
 
     @FXML
     public void initialize() throws DataAccessException {
         this.notesPane.setVisible(false);
+
+        // Affichages des notes
         DevoirDAO devoirDAO = new DevoirDAO();
         Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(10,1,MainController.getUserId());
         List<Devoir> devoirs = pageDevoirs.getResultList();
@@ -63,6 +76,19 @@ public class NotesEtudiantController {
 
             i = i+1+span;
         }
+
+        // Affichages des moyennes
+        Map<String, Double> notes = Map.of("Maths", 15.46, "Physique", 13.5, "Chimie", 17.0,"Informatique",18.0,"IA",12.68,"Cybersécurité",13.5);
+
+        for (Map.Entry<String, Double> entry : notes.entrySet()) {
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
+            moyennes.getData().add(series);
+        }
+
+        categoryAxis.setCategories(FXCollections.observableArrayList(notes.keySet()));
+        moyennes.setLegendVisible(false);
+
     }
 
     public String ajouterSautsDeLigne(String texte, int longueurLigne) {

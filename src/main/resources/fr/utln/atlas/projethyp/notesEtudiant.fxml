@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.StackedBarChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="notesPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.NotesEtudiantController">
-   <center>
-      <VBox>
+<BorderPane fx:id="notesPane" prefHeight="600.0" prefWidth="1278.0" maxWidth="1278.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.utln.atlas.projethyp.controller.NotesEtudiantController">
+   <left>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" BorderPane.alignment="CENTER">
           <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="801.0" text="Notes des Devoirs" textAlignment="CENTER" />
          <ScrollPane prefHeight="586.0" prefWidth="800.0">
             <content>
@@ -64,5 +67,21 @@
          </ScrollPane>
       
       </VBox>
-   </center>
+   </left>
+   <right>
+      <StackedBarChart fx:id="moyennes" legendVisible="false" title="Moyennes" BorderPane.alignment="CENTER">
+          <xAxis>
+              <CategoryAxis fx:id="categoryAxis" label="Matières" />
+          </xAxis>
+          <yAxis>
+              <NumberAxis fx:id="numberAxis" autoRanging="false" label="Notes" upperBound="20" />
+          </yAxis>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </StackedBarChart>
+   </right>
+   <padding>
+      <Insets right="5.0" />
+   </padding>
 </BorderPane>
