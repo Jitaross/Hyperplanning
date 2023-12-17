@@ -8,7 +8,7 @@ import lombok.Data;
 public class Devoir implements Entity{
     private int id;
     private int idUtilisateur;
-    private int note;
+    private Double note;
     private String commentaire;
 
     public enum TypeDevoir {

@@ -54,14 +54,14 @@ public class NotesEtudiantController {
             note.setEditable(false);
             commentaire.setEditable(false);
 
-            matiere.setText("Matière");
+            matiere.setText(d.getNomMatiere());
             type.setText("D"+d.getTypeDevoir().toString().substring(0,1));
             note.setText(String.valueOf(d.getNote()));
 
             int span=0;
-            if((d.getCommentaire().length())>=80){
-                span = (d.getCommentaire().length()/80)+1;
-                commentaire.setText(ajouterSautsDeLigne(d.getCommentaire(),80));
+            if((d.getCommentaire().length())>=75){
+                span = (d.getCommentaire().length()/75)+1;
+                commentaire.setText(ajouterSautsDeLigne(d.getCommentaire(),75));
                 this.gridPane.add(commentaire,3,i,1,span);
                 this.gridPane.add(matiere,0,i,1,span);
                 this.gridPane.add(type,1,i,1,span);
@@ -78,8 +78,8 @@ public class NotesEtudiantController {
         }
 
         // Affichages des moyennes
-        Map<String, Double> notes = Map.of("Maths", 15.46, "Physique", 13.5, "Chimie", 17.0,"Informatique",18.0,"IA",12.68,"Cybersécurité",13.5);
-
+        //Map<String, Double> notes = Map.of("Maths", 15.46, "Physique", 13.5, "Chimie", 17.0,"Informatique",18.0,"IA",12.68,"Cybersécurité",13.5);
+        Map<String, Double> notes = devoirDAO.findMoyennesUser(MainController.getUserId());
         for (Map.Entry<String, Double> entry : notes.entrySet()) {
             XYChart.Series<String, Number> series = new XYChart.Series<>();
             series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue()));
