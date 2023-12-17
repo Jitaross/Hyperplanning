@@ -12,8 +12,8 @@ import java.util.List;
 public class DevoirDAO extends AbstractDAO<Devoir>{
     private PreparedStatement findAllNotesUser;
     public DevoirDAO() throws DataAccessException {
-        super("INSERT INTO DEVOIR(NOTE, COMMENTAIRE, TYPEDEVOIR, IDUSER) VALUES (?, ?, ?, ?)",
-                "UPDATE DEVOIR SET NOTE=?, COMMENTAIRE=?, TYPEDEVOIR=?, IDUSER=? WHERE ID=?");
+        super("INSERT INTO DEVOIR(NOTE, COMMENTAIRE, TYPEDEVOIR, IDUSER, NOMMATIERE) VALUES (?, ?, ?, ?, ?)",
+                "UPDATE DEVOIR SET NOTE=?, COMMENTAIRE=?, TYPEDEVOIR=?, IDUSER=?, NOMMATIERE=? WHERE ID=?");
         try {
             findAllNotesUser = getConnection().prepareStatement("SELECT d.* FROM DEVOIR as d, UTILISATEUR as u WHERE d.IDUSER=?" +
                     "AND d.IDUSER=u.ID LIMIT ? OFFSET ?");
@@ -43,6 +43,7 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
                 .note(resultSet.getInt("NOTE"))
                 .commentaire(resultSet.getString("COMMENTAIRE"))
                 .typeDevoir(Devoir.TypeDevoir.valueOf(resultSet.getString("TYPEDEVOIR")))
+                .nomMatiere(resultSet.getString("NOMMATIERE"))
                 .build();
     }
     /**
@@ -52,15 +53,16 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
      */
     @Override
     public Devoir persist(Devoir devoir) throws DataAccessException {
-        return persist(devoir.getNote(), devoir.getCommentaire(), devoir.getTypeDevoir(), devoir.getIdUtilisateur());
+        return persist(devoir.getNote(), devoir.getCommentaire(), devoir.getTypeDevoir(), devoir.getIdUtilisateur(), devoir.getNomMatiere());
     }
 
-    public Devoir persist(int note, String commentaire, Devoir.TypeDevoir typeDevoir, int idUser) throws DataAccessException {
+    public Devoir persist(int note, String commentaire, Devoir.TypeDevoir typeDevoir, int idUser, String nomMatiere) throws DataAccessException {
         try {
             persistPS.setInt(1, note);
             persistPS.setString(2, commentaire);
             persistPS.setString(3, String.valueOf(typeDevoir));
             persistPS.setInt(4, idUser);
+            persistPS.setString(5, nomMatiere);
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -78,7 +80,8 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
             updatePS.setString(2, devoir.getCommentaire());
             updatePS.setString(3, String.valueOf(devoir.getTypeDevoir()));
             updatePS.setInt(4, devoir.getIdUtilisateur());
-            updatePS.setInt(5, devoir.getId());
+            updatePS.setString(5, devoir.getNomMatiere());
+            updatePS.setInt(6, devoir.getId());
 
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
