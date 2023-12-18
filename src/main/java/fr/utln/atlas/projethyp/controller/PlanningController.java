@@ -163,10 +163,10 @@ public class PlanningController {
         couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");
         couleurs.put("TD", "-fx-control-inner-background:#9fff90;");
         couleurs.put("TP", "-fx-control-inner-background:#d790ff;");
-        couleurs.put("CC", "-fx-control-inner-background:#9fff90;");
-        couleurs.put("EXAM", "-fx-control-inner-background:#9fff90;");
-        couleurs.put("EXAMTP", "-fx-control-inner-background:#9fff90;");
-        couleurs.put("REUNION", "-fx-control-inner-background:#9fff90;");
+        couleurs.put("CC", "-fx-control-inner-background:#DFCAD6;");
+        couleurs.put("EXAMEN", "-fx-control-inner-background:#bf94a2;");
+        couleurs.put("EXAMTP", "-fx-control-inner-background:#bf94a2;");
+        couleurs.put("REUNION", "-fx-control-inner-background:#7f82b2;");
 
         LocalTime debut = cours.getDebut().toLocalTime();
         LocalTime fin = cours.getFin().toLocalTime();
@@ -192,7 +192,6 @@ public class PlanningController {
         */
         TextArea coursTextArea = new TextArea(cours.getDescription());
         coursTextArea.setEditable(false);
-
 
         coursTextArea.setStyle(couleurs.get(cours.getTypeCours().toString()));
 
