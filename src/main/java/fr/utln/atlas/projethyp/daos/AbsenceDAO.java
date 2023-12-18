@@ -5,6 +5,7 @@ import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Etudiant;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,12 +15,14 @@ import java.util.List;
 public class AbsenceDAO extends AbstractDAO<Absence>{
 	private final PreparedStatement findAbsenceEtudiantPS;
 	private final PreparedStatement findAbsenceCoursPS;
+	private final PreparedStatement insertJustificatifPS;
 	public AbsenceDAO() throws DataAccessException {
-		super("INSERT INTO ABSENCE(IDCOURS,IDETUDIANT) VALUES (?,?)",
+		super("INSERT INTO ABSENCE(IDCOURS,IDETUDIANT,MOTIF) VALUES (?,?,?)",
 				"UPDATE ABSENCE SET IDCOURS=?, IDETUDIANT=? WHERE ID=?");
 		try{
-			findAbsenceEtudiantPS = getConnection().prepareStatement("SELECT * FROM ABSENCE WHERE IDETUDIANT = ?");
-			findAbsenceCoursPS = getConnection().prepareStatement("SELECT * FROM ABSENCE WHERE IDCOURS = ?");
+			findAbsenceEtudiantPS = getConnection().prepareStatement("SELECT ID,IDCOURS,IDETUDIANT,MOTIF FROM ABSENCE WHERE IDETUDIANT = ?");
+			findAbsenceCoursPS = getConnection().prepareStatement("SELECT ID,IDCOURS,IDETUDIANT,MOTIF FROM ABSENCE WHERE IDCOURS = ?");
+			insertJustificatifPS = getConnection().prepareStatement("UPDATE ABSENCE SET JUSTIFICATIF=? WHERE ID=?");
 		} catch(SQLException e) {
 			throw new DataAccessException(e.getLocalizedMessage());
 		}
@@ -32,18 +35,20 @@ public class AbsenceDAO extends AbstractDAO<Absence>{
 				.id(resultSet.getInt("ID"))
 				.idCours(resultSet.getInt("IDCOURS"))
 				.idEtudiant(resultSet.getInt("IDETUDIANT"))
+				.motif(resultSet.getString("MOTIF"))
 				.build();
 	}
 
 	@Override
 	public Absence persist(Absence absence) throws DataAccessException {
-		return persist(absence.getId(),absence.getIdCours(),absence.getIdEtudiant());
+		return persist(absence.getId(),absence.getIdCours(),absence.getIdEtudiant(),absence.getMotif());
 	}
 
-	public Absence persist(int id, int idCours, int idEtudiant ) throws DataAccessException {
+	public Absence persist(int id, int idCours, int idEtudiant , String motif) throws DataAccessException {
 		try {
 			persistPS.setInt(1,idCours);
 			persistPS.setInt(2,idEtudiant);
+			persistPS.setString(3,motif);
 		} catch (SQLException throwables) {
 			throw new DataAccessException(throwables.getLocalizedMessage());
 		}
@@ -61,6 +66,16 @@ public class AbsenceDAO extends AbstractDAO<Absence>{
 		}
 		super.update();
 	}
+
+	public void insertJustificatif(int id, byte[] justificatif) throws DataAccessException, SQLException {
+		try{
+			insertJustificatifPS.setBytes(1,justificatif);
+			insertJustificatifPS.setInt(2,id);
+		} catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+		insertJustificatifPS.executeUpdate();
+    }
 
 	public List<Absence> findAbsenceEtudiant(int id) throws DataAccessException {
 		List<Absence> listeAbsences = new ArrayList<>();

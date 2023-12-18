@@ -18,6 +18,7 @@ import static fr.utln.atlas.projethyp.entities.DateSemaine.JourSemaine;
 public class CoursDAO extends AbstractDAO<Cours> {
     private final PreparedStatement findCoursPS;
     private final PreparedStatement findCoursEtudiantPS;
+    private final PreparedStatement findCoursByIdPS;
 
     public CoursDAO() throws DataAccessException {
         super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE,TYPECOURS) VALUES (?,?,?,?,?,?,?,?)",
@@ -27,6 +28,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
             findCoursPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ?");
             findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
                     "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
+            findCoursByIdPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE ID=?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -153,6 +155,20 @@ public class CoursDAO extends AbstractDAO<Cours> {
             listeCours.addAll(findCoursJourEtudiant(jour,id));
         }
         return new Page<>(pageNumber, pageSize, listeCours);
+    }
+
+    public Cours findCoursById(int id) throws SQLException {
+        Cours cours = null;
+        try{
+            findCoursByIdPS.setInt(1,id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ResultSet resultSet = findCoursByIdPS.executeQuery();
+        while (resultSet.next()) {cours = fromResultSet(resultSet);}
+
+        return cours;
+
     }
 
 
