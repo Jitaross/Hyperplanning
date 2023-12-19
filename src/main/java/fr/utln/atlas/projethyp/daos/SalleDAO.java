@@ -10,15 +10,16 @@ import java.util.List;
 public class SalleDAO extends AbstractDAO<Salle>{
 
     private final PreparedStatement notTakenPS;
-    protected SalleDAO(String persistPS, String updatePS) throws DataAccessException {
-        super("INSERT INTO SALLE(ID, NOMSALLE, NOMBREPLACE) VALUE (?, ?, ?)",
-                "UPDATE SALLE SET NOMSALLE=?, NOMNREPLACE=? WHERE ID=?");
+    public SalleDAO() throws DataAccessException {
+        super("INSERT INTO SALLE(NOMSALLE, NOMBREPLACE) VALUES (?, ?)",
+                "UPDATE SALLE SET NOMSALLE=?, NOMBREPLACE=? WHERE ID=?");
         try{
             notTakenPS = getConnection().prepareStatement("SELECT DISTINCT s.ID, NOMSALLE FROM SALLE AS s, COURS AS cs " +
                     "WHERE cs.IDSALLE = s.ID " +
                     "AND cs.DATE=?" +
                     "AND NOT cs.DEBUT=? " +
-                    "AND cs.FIN - cs.DEBUT < 0");
+                    "AND cs.FIN - cs.DEBUT < '00:00:00'" +
+                    "LIMIT ? OFFSET ?");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -58,6 +59,8 @@ public class SalleDAO extends AbstractDAO<Salle>{
         try {
             notTakenPS.setDate(1, date);
             notTakenPS.setTime(2, deb);
+            notTakenPS.setInt(3, pageSize);
+            notTakenPS.setInt(4, (pageNumber - 1) * pageSize);
             ResultSet resultSet = notTakenPS.executeQuery();
             while (resultSet.next()) salleList.add(fromResultSet(resultSet));
         }catch (SQLException e) {
