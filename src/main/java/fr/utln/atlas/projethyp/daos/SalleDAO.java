@@ -11,8 +11,8 @@ public class SalleDAO extends AbstractDAO<Salle>{
 
     private final PreparedStatement notTakenPS;
     protected SalleDAO() throws DataAccessException {
-        super("INSERT INTO SALLE(ID, NOMSALLE, NOMBREPLACE) VALUE (?, ?, ?)",
-                "UPDATE SALLE SET NOMSALLE=?, NOMNREPLACE=? WHERE ID=?");
+        super("INSERT INTO SALLE(ID, NOMSALLE, NOMBREPLACE) VALUES (?, ?, ?)",
+                "UPDATE SALLE SET NOMSALLE=?, NOMBREPLACE=? WHERE ID=?");
         try{
             notTakenPS = getConnection().prepareStatement("SELECT DISTINCT s.ID, NOMSALLE FROM SALLE AS s, COURS AS cs " +
                     "WHERE cs.IDSALLE = s.ID " +

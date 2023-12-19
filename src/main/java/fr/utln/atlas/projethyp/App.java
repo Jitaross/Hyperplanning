@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+import fr.utln.atlas.projethyp.daos.InitDAOS;
+import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +24,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        InitDAOS initDAOS = new InitDAOS();
         this.primaryStage = primaryStage;
         //Image icon = new Image("@images/DALL_E_2023-12-16_18.06.04_Hyper-planning.png");
         //primaryStage.getIcons().add(new Image("DALL_E_2023-12-16_18.06.04_Hyper-planning.png"));
@@ -59,7 +62,7 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataAccessException {
         launch(args);
     }
 

@@ -19,7 +19,7 @@ public class InitDAOS {
         enseignantDAO = new EnseignantDAO();
         etudiantDAO = new EtudiantDAO();
         matiereDAO = new MatiereDAO();
-        salleDAO = new SalleDAO();
+        //salleDAO = new SalleDAO();
         utilisateurDAO = new UtilisateurDAO();
     }
 }
