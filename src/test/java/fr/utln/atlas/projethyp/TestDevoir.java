@@ -15,17 +15,17 @@ public class TestDevoir {
                 .id(1)
                 .idUtilisateur(1)
                 .typeDevoir(Devoir.TypeDevoir.Surveille)
-                .note(16)
+                .note(16.0)
                 .commentaire("Bon travail, quelques coquilles, mais rien d'inquiétant, continuez ainsi.")
-                .nomMatiere("IA")
+                .idMatiere(43)
                 .build();
         Devoir devoir1 = Devoir.builder()
                 .id(1)
                 .idUtilisateur(2)
                 .typeDevoir(Devoir.TypeDevoir.Maison)
-                .note(10)
+                .note(10.25)
                 .commentaire("Moyen, il faut revoir les notions de bases du cours, vous devez travailler plus.")
-                .nomMatiere("Cybersécurité")
+                .idMatiere(44)
                 .build();
         assertNotNull(devoir1);
         assertNotNull(devoir);

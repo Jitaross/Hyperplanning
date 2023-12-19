@@ -15,12 +15,16 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
     private PreparedStatement findAllNotesUser;
     private PreparedStatement findAllMoyennesUser;
     public DevoirDAO() throws DataAccessException {
-        super("INSERT INTO DEVOIR(NOTE, COMMENTAIRE, TYPEDEVOIR, IDUSER, NOMMATIERE) VALUES (?, ?, ?, ?, ?)",
-                "UPDATE DEVOIR SET NOTE=?, COMMENTAIRE=?, TYPEDEVOIR=?, IDUSER=?, NOMMATIERE=? WHERE ID=?");
+        super("INSERT INTO DEVOIR(NOTE, COMMENTAIRE, TYPEDEVOIR, IDUSER, IDMATIERE) VALUES (?, ?, ?, ?, ?)",
+                "UPDATE DEVOIR SET NOTE=?, COMMENTAIRE=?, TYPEDEVOIR=?, IDUSER=?, IDMATIERE=? WHERE ID=?");
         try {
-            findAllNotesUser = getConnection().prepareStatement("SELECT d.* FROM DEVOIR as d, UTILISATEUR as u WHERE d.IDUSER=?" +
-                    "AND d.IDUSER=u.ID LIMIT ? OFFSET ?");
-            findAllMoyennesUser = getConnection().prepareStatement("SELECT NOMMATIERE, AVG(NOTE) AS MOYENNE FROM DEVOIR WHERE IDUSER = ? GROUP BY NOMMATIERE");
+            findAllNotesUser = getConnection().prepareStatement("SELECT d.*, m.* FROM DEVOIR as d, UTILISATEUR as u," +
+                    " MATIERE as m WHERE d.IDUSER=?" +
+                    "AND d.IDUSER=u.ID " +
+                    "AND d.IDMATIERE=m.ID LIMIT ? OFFSET ?");
+            findAllMoyennesUser = getConnection().prepareStatement("SELECT m.NOMMATIERE, AVG(d.NOTE) AS MOYENNE FROM DEVOIR as d, MATIERE as m" +
+                    " WHERE IDUSER = ? " +
+                    "AND d.IDMATIERE=m.ID GROUP BY IDMATIERE");
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -47,7 +51,7 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
                 .note(resultSet.getDouble("NOTE"))
                 .commentaire(resultSet.getString("COMMENTAIRE"))
                 .typeDevoir(Devoir.TypeDevoir.valueOf(resultSet.getString("TYPEDEVOIR")))
-                .nomMatiere(resultSet.getString("NOMMATIERE"))
+                .idMatiere(resultSet.getInt("IDMATIERE"))
                 .build();
     }
     /**
@@ -57,16 +61,16 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
      */
     @Override
     public Devoir persist(Devoir devoir) throws DataAccessException {
-        return persist(devoir.getNote(), devoir.getCommentaire(), devoir.getTypeDevoir(), devoir.getIdUtilisateur(), devoir.getNomMatiere());
+        return persist(devoir.getNote(), devoir.getCommentaire(), devoir.getTypeDevoir(), devoir.getIdUtilisateur(), devoir.getIdMatiere());
     }
 
-    public Devoir persist(Double note, String commentaire, Devoir.TypeDevoir typeDevoir, int idUser, String nomMatiere) throws DataAccessException {
+    public Devoir persist(Double note, String commentaire, Devoir.TypeDevoir typeDevoir, int idUser, int idMatiere) throws DataAccessException {
         try {
             persistPS.setDouble(1, note);
             persistPS.setString(2, commentaire);
             persistPS.setString(3, String.valueOf(typeDevoir));
             persistPS.setInt(4, idUser);
-            persistPS.setString(5, nomMatiere);
+            persistPS.setInt(5, idMatiere);
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -84,7 +88,7 @@ public class DevoirDAO extends AbstractDAO<Devoir>{
             updatePS.setString(2, devoir.getCommentaire());
             updatePS.setString(3, String.valueOf(devoir.getTypeDevoir()));
             updatePS.setInt(4, devoir.getIdUtilisateur());
-            updatePS.setString(5, devoir.getNomMatiere());
+            updatePS.setInt(5, devoir.getIdMatiere());
             updatePS.setInt(6, devoir.getId());
 
         } catch (SQLException e) {

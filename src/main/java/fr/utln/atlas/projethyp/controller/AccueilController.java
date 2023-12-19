@@ -67,7 +67,7 @@ public class AccueilController {
 			type.setEditable(false);
 			note.setEditable(false);
 
-			matiere.setText(d.getNomMatiere());
+			matiere.setText(String.valueOf(d.getIdMatiere()));
 			type.setText("D" + d.getTypeDevoir().toString().substring(0, 1));
 			note.setText(String.valueOf(d.getNote()));
 
