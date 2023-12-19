@@ -59,9 +59,9 @@ public class MainController {
 
 	@FXML
 	private void initialize() throws Exception {
-		try (UtilisateurDAO userdao = InitDAOS.utilisateurDAO) {
-			textInfos.setText("Espace "+userdao.findUtilisateur(userId).getTypeUser()+" | "+userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
-		}
+		UtilisateurDAO userdao = InitDAOS.getUtilisateurDAO();
+		textInfos.setText("Espace "+userdao.findUtilisateur(userId).getTypeUser()+" | "+userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
+
 
 		IdentificationController identificationController = new IdentificationController();
 

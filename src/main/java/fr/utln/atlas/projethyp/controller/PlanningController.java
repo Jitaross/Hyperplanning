@@ -78,14 +78,9 @@ public class PlanningController {
         this.planningPane.setVisible(false);
 
 
-        try{
-            this.coursDAO = new CoursDAO();
-            this.utilisateurDAO = new UtilisateurDAO();
-            /*this.matiereDAO = new MatiereDAO();*/
-
-        }catch(DataAccessException e) {
-            e.printStackTrace();
-        }
+        this.coursDAO = InitDAOS.getCoursDAO();
+        this.utilisateurDAO = InitDAOS.getUtilisateurDAO();
+        /*this.matiereDAO = new MatiereDAO();*/
 
         paginationPlanning.setCurrentPageIndex(START_WEEK); // On initialise à la première semaine de l'année (plus simple pour les calculs suivants)
         paginationPlanning.setPageFactory(this::createPage); // Notre méthode de création de page est createPage

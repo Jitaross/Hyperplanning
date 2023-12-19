@@ -38,7 +38,7 @@ public class ChangerMotDePasseController {
     private void confirm() throws DataAccessException {
         UtilisateurDAO userDAO = null;
         if((newPassword.getText()).equals(newPasswordRepeated.getText())) {
-            try{userDAO = InitDAOS.utilisateurDAO;
+            try{userDAO = InitDAOS.getUtilisateurDAO();
                 if(userDAO.modifyMDP(userDAO.getMailWithId(MainController.getUserId()), oldPassword.getText(), newPassword.getText())>=0){
                     Stage stage = (Stage) cancelButton.getScene().getWindow();
                     stage.close();

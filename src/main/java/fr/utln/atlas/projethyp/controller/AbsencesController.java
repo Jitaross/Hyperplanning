@@ -31,14 +31,14 @@ public class AbsencesController {
     @FXML
     private void initialize() throws DataAccessException, SQLException {
         this.borderPane.setVisible(false);
-        absenceDAO = InitDAOS.absenceDAO;
+        absenceDAO = InitDAOS.getAbsenceDAO();
         afficherAbsences();
 
 
     }
 
     private void afficherAbsences() throws DataAccessException, SQLException {
-        CoursDAO coursDAO = InitDAOS.coursDAO;
+        CoursDAO coursDAO = InitDAOS.getCoursDAO();
         Cours c;
         List<Absence> absences = absenceDAO.findAbsenceEtudiant(MainController.getUserId());
         int i=0;

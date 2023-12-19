@@ -1,6 +1,7 @@
 package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.DevoirDAO;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.MatiereDAO;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Devoir;
@@ -38,10 +39,10 @@ public class NotesEtudiantController {
     public void initialize() throws DataAccessException {
         this.notesPane.setVisible(false);
 
-        MatiereDAO matiereDAO = new MatiereDAO();
+        MatiereDAO matiereDAO = InitDAOS.getMatiereDAO();
 
         // Affichages des notes
-        DevoirDAO devoirDAO = new DevoirDAO();
+        DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
         Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(10,1,MainController.getUserId());
         List<Devoir> devoirs = pageDevoirs.getResultList();
         int i = 1;

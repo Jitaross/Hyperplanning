@@ -37,7 +37,7 @@ public class AccueilController {
 	private void initialize() throws DataAccessException {
 
 		this.accueil.setVisible(true);
-		CoursDAO coursDAO = InitDAOS.coursDAO;
+		CoursDAO coursDAO = InitDAOS.getCoursDAO();
 		List<Cours> cours = coursDAO.findCoursJourEtudiant(Date.valueOf(LocalDate.now()),MainController.getUserId());
 		for(Cours c:cours){
 			this.ajouterCours(c);
@@ -54,7 +54,7 @@ public class AccueilController {
 			}
 		});
 
-		DevoirDAO devoirDAO = InitDAOS.devoirDAO;
+		DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
 		Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(5,1,MainController.getUserId());
 		List<Devoir> devoirs = pageDevoirs.getResultList();
 		int i = 2;

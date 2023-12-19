@@ -1,6 +1,7 @@
 package fr.utln.atlas.projethyp;
 
 import fr.utln.atlas.projethyp.daos.DevoirDAO;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
@@ -30,12 +31,16 @@ public class TestDevoir {
         assertNotNull(devoir1);
         assertNotNull(devoir);
 
-        try (DevoirDAO devoirDAO = new DevoirDAO()) {
+        try {
+            DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
+
             devoirDAO.persist(devoir);
             Page<Devoir> devoirPage = devoirDAO.findNotesUser(1, 2, 1);
             assertNotNull(devoirPage);
             System.out.println(devoirPage);
             devoirDAO.update(devoir1);
+        } finally {
+
         }
     }
 }

@@ -74,10 +74,9 @@ public class IdentificationController {
 
             Authentication auth = new Authentication(identifiantValue,motDePasseValue);
             try {
-                UtilisateurDAO utilisateurDAO = InitDAOS.utilisateurDAO;
+                UtilisateurDAO utilisateurDAO = InitDAOS.getUtilisateurDAO();
                 iduser = utilisateurDAO.login(auth);
                 MainController.setUserId(iduser);
-                utilisateurDAO.close();
             } catch (DataAccessException e) {
                 throw new RuntimeException(e);
             }
