@@ -58,26 +58,37 @@ public class NotesEtudiantController {
             note.setEditable(false);
             commentaire.setEditable(false);
 
-            matiere.setText(matiereDAO.findMatId(d.getIdMatiere()));
+
             type.setText("D"+d.getTypeDevoir().toString().substring(0,1));
             note.setText(String.valueOf(d.getNote()));
 
             int span=0;
+
+            if(matiereDAO.findMatId(d.getIdMatiere()).length()>10){
+                matiere.setText(ajouterSautsDeLigne(matiereDAO.findMatId(d.getIdMatiere()),10));
+                span=span+((matiereDAO.findMatId(d.getIdMatiere()).length())/10)+1;
+                span--;
+
+            }else{
+                matiere.setText(matiereDAO.findMatId(d.getIdMatiere()));
+            }
+
+
             if((d.getCommentaire().length())>=75){
-                span = (d.getCommentaire().length()/75)+1;
+                span = span+(d.getCommentaire().length()/75)+1;
                 commentaire.setText(ajouterSautsDeLigne(d.getCommentaire(),75));
-                this.gridPane.add(commentaire,3,i,1,span);
-                this.gridPane.add(matiere,0,i,1,span);
-                this.gridPane.add(type,1,i,1,span);
-                this.gridPane.add(note,2,i,1,span);
+
                 span--;
             }else{
                 commentaire.setText(d.getCommentaire());
-                this.gridPane.add(commentaire,3,i);
-                this.gridPane.add(matiere,0,i);
-                this.gridPane.add(type,1,i);
-                this.gridPane.add(note,2,i);
             }
+
+            this.gridPane.add(commentaire,3,i,1,span);
+            this.gridPane.add(matiere,0,i,1,span);
+            this.gridPane.add(type,1,i,1,span);
+            this.gridPane.add(note,2,i,1,span);
+
+            if(span>0)i--;
 
             i = i+1+span;
         }
@@ -96,7 +107,7 @@ public class NotesEtudiantController {
 
     }
 
-    public String ajouterSautsDeLigne(String texte, int longueurLigne) {
+    public static String ajouterSautsDeLigne(String texte, int longueurLigne) {
         StringBuilder texteModifie = new StringBuilder(texte.length());
         int index = 0;
 

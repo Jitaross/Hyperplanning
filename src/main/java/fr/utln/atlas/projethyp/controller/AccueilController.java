@@ -1,9 +1,6 @@
 package fr.utln.atlas.projethyp.controller;
 
-import fr.utln.atlas.projethyp.daos.CoursDAO;
-import fr.utln.atlas.projethyp.daos.DevoirDAO;
-import fr.utln.atlas.projethyp.daos.InitDAOS;
-import fr.utln.atlas.projethyp.daos.Page;
+import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
@@ -54,6 +51,7 @@ public class AccueilController {
 			}
 		});
 
+		MatiereDAO matiereDAO = InitDAOS.getMatiereDAO();
 		DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
 		Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(5,1,MainController.getUserId());
 		List<Devoir> devoirs = pageDevoirs.getResultList();
@@ -68,14 +66,25 @@ public class AccueilController {
 			type.setEditable(false);
 			note.setEditable(false);
 
-			matiere.setText(String.valueOf(d.getIdMatiere()));
+			int span=0;
+
+			if(matiereDAO.findMatId(d.getIdMatiere()).length()>10){
+				matiere.setText(NotesEtudiantController.ajouterSautsDeLigne(matiereDAO.findMatId(d.getIdMatiere()),10));
+				span=span+((matiereDAO.findMatId(d.getIdMatiere()).length())/10);
+
+
+			}else{
+				matiere.setText(matiereDAO.findMatId(d.getIdMatiere()));
+			}
+
 			type.setText("D" + d.getTypeDevoir().toString().substring(0, 1));
 			note.setText(String.valueOf(d.getNote()));
 
-			this.notesPane.add(matiere, 0, i);
-			this.notesPane.add(type, 1, i);
-			this.notesPane.add(note, 2, i);
-			i++;
+			this.notesPane.add(matiere, 0, i,1,span);
+			this.notesPane.add(type, 1, i,1,span);
+			this.notesPane.add(note, 2, i,1,span);
+			if(span>0)i--;
+			i = i+1+span;
 		}
 	}
 
