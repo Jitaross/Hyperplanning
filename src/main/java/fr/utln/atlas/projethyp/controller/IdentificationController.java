@@ -2,6 +2,7 @@ package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.App;
 import fr.utln.atlas.projethyp.authentications.Authentication;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
@@ -73,10 +74,9 @@ public class IdentificationController {
 
             Authentication auth = new Authentication(identifiantValue,motDePasseValue);
             try {
-                UtilisateurDAO utilisateurDAO = new UtilisateurDAO();
+                UtilisateurDAO utilisateurDAO = InitDAOS.getUtilisateurDAO();
                 iduser = utilisateurDAO.login(auth);
                 MainController.setUserId(iduser);
-                utilisateurDAO.close();
             } catch (DataAccessException e) {
                 throw new RuntimeException(e);
             }

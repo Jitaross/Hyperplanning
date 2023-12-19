@@ -1,6 +1,8 @@
 package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.DevoirDAO;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
+import fr.utln.atlas.projethyp.daos.MatiereDAO;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
@@ -37,8 +39,10 @@ public class NotesEtudiantController {
     public void initialize() throws DataAccessException {
         this.notesPane.setVisible(false);
 
+        MatiereDAO matiereDAO = InitDAOS.getMatiereDAO();
+
         // Affichages des notes
-        DevoirDAO devoirDAO = new DevoirDAO();
+        DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
         Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(10,1,MainController.getUserId());
         List<Devoir> devoirs = pageDevoirs.getResultList();
         int i = 1;
@@ -54,7 +58,7 @@ public class NotesEtudiantController {
             note.setEditable(false);
             commentaire.setEditable(false);
 
-            matiere.setText(String.valueOf(d.getIdMatiere()));
+            matiere.setText(matiereDAO.findMatId(d.getIdMatiere()));
             type.setText("D"+d.getTypeDevoir().toString().substring(0,1));
             note.setText(String.valueOf(d.getNote()));
 

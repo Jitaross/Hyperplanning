@@ -2,6 +2,7 @@ package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.CoursDAO;
 import fr.utln.atlas.projethyp.daos.DevoirDAO;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Devoir;
@@ -36,7 +37,7 @@ public class AccueilController {
 	private void initialize() throws DataAccessException {
 
 		this.accueil.setVisible(true);
-		CoursDAO coursDAO = new CoursDAO();
+		CoursDAO coursDAO = InitDAOS.getCoursDAO();
 		List<Cours> cours = coursDAO.findCoursJourEtudiant(Date.valueOf(LocalDate.now()),MainController.getUserId());
 		for(Cours c:cours){
 			this.ajouterCours(c);
@@ -53,7 +54,7 @@ public class AccueilController {
 			}
 		});
 
-		DevoirDAO devoirDAO = new DevoirDAO();
+		DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
 		Page<Devoir> pageDevoirs = devoirDAO.findNotesUser(5,1,MainController.getUserId());
 		List<Devoir> devoirs = pageDevoirs.getResultList();
 		int i = 2;

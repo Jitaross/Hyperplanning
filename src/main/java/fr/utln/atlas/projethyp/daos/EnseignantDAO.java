@@ -54,15 +54,15 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
     }
 
     public Devoir createDevoir(Devoir devoir) throws DataAccessException {
-        try (DevoirDAO devoirDAO = new DevoirDAO()) {
-            return devoirDAO.persist(devoir);
-        }
+        DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
+        return devoirDAO.persist(devoir);
+
     }
 
     public void updateDevoir(Devoir devoir) throws DataAccessException {
-        try (DevoirDAO devoirDAO = new DevoirDAO()) {
-            devoirDAO.update(devoir);
-        }
+        DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
+        devoirDAO.update(devoir);
+
     }
 
     @Override

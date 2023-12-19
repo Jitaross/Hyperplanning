@@ -74,6 +74,13 @@
           <artifactId>lanterna</artifactId>
           <version>3.1.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mnode.ical4j</groupId>
+            <artifactId>ical4j</artifactId>
+            <version>3.0.26</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

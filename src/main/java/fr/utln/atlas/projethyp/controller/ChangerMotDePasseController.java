@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp.controller;
 
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
@@ -37,7 +38,7 @@ public class ChangerMotDePasseController {
     private void confirm() throws DataAccessException {
         UtilisateurDAO userDAO = null;
         if((newPassword.getText()).equals(newPasswordRepeated.getText())) {
-            try{userDAO = new UtilisateurDAO();
+            try{userDAO = InitDAOS.getUtilisateurDAO();
                 if(userDAO.modifyMDP(userDAO.getMailWithId(MainController.getUserId()), oldPassword.getText(), newPassword.getText())>=0){
                     Stage stage = (Stage) cancelButton.getScene().getWindow();
                     stage.close();

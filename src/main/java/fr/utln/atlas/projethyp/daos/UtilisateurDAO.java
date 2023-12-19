@@ -129,17 +129,15 @@ public class UtilisateurDAO extends AbstractDAO<Utilisateur> {
     public Etudiant createEtudiant(String nom, String prenom, String mail, String motDePasse,
                                    Date dateNaissance, int idFormation) throws DataAccessException {
         Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance, Utilisateur.TypeUser.Etudiant);
-        try (EtudiantDAO etudiantDAO = new EtudiantDAO()) {
-            return etudiantDAO.persist(utilisateur.getId(), idFormation);
-        }
+        EtudiantDAO etudiantDAO = InitDAOS.getEtudiantDAO();
+        return etudiantDAO.persist(utilisateur.getId(), idFormation);
     }
 
     public Enseignant createEnseignant(String nom, String prenom, String mail, String motDePasse,
                                    Date dateNaissance, String ufr) throws DataAccessException {
         Utilisateur utilisateur = createUser(nom, prenom, mail, motDePasse, dateNaissance, Utilisateur.TypeUser.Enseignant);
-        try (EnseignantDAO enseignantDAO = new EnseignantDAO()) {
-            return enseignantDAO.persist(utilisateur.getId(), ufr);
-        }
+        EnseignantDAO enseignantDAO = InitDAOS.getEnseignantDAO();
+        return enseignantDAO.persist(utilisateur.getId(), ufr);
     }
 
     public String getMailWithId(int id) throws DataAccessException {

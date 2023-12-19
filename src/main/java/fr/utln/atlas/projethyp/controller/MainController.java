@@ -1,6 +1,7 @@
 package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.App;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 
 import javafx.fxml.FXML;
@@ -58,9 +59,9 @@ public class MainController {
 
 	@FXML
 	private void initialize() throws Exception {
-		try (UtilisateurDAO userdao = new UtilisateurDAO()) {
-			textInfos.setText("Espace "+userdao.findUtilisateur(userId).getTypeUser()+" | "+userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
-		}
+		UtilisateurDAO userdao = InitDAOS.getUtilisateurDAO();
+		textInfos.setText("Espace "+userdao.findUtilisateur(userId).getTypeUser()+" | "+userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
+
 
 		IdentificationController identificationController = new IdentificationController();
 

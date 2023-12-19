@@ -2,6 +2,7 @@ package fr.utln.atlas.projethyp.controller;
 
 import fr.utln.atlas.projethyp.daos.AbsenceDAO;
 import fr.utln.atlas.projethyp.daos.CoursDAO;
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.entities.Absence;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
@@ -30,14 +31,14 @@ public class AbsencesController {
     @FXML
     private void initialize() throws DataAccessException, SQLException {
         this.borderPane.setVisible(false);
-        absenceDAO = new AbsenceDAO();
+        absenceDAO = InitDAOS.getAbsenceDAO();
         afficherAbsences();
 
 
     }
 
     private void afficherAbsences() throws DataAccessException, SQLException {
-        CoursDAO coursDAO = new CoursDAO();
+        CoursDAO coursDAO = InitDAOS.getCoursDAO();
         Cours c;
         List<Absence> absences = absenceDAO.findAbsenceEtudiant(MainController.getUserId());
         int i=0;

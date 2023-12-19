@@ -10,6 +10,7 @@ import java.util.List;
 public class SalleDAO extends AbstractDAO<Salle>{
 
     private final PreparedStatement notTakenPS;
+
     public SalleDAO() throws DataAccessException {
         super("INSERT INTO SALLE(NOMSALLE, NOMBREPLACE) VALUES (?, ?)",
                 "UPDATE SALLE SET NOMSALLE=?, NOMBREPLACE=? WHERE ID=?");
