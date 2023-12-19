@@ -9,14 +9,17 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+import fr.utln.atlas.projethyp.controller.PlanningController;
 import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.h2.table.Plan;
 
 public class App extends Application {
 
@@ -26,7 +29,6 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-
         //Image icon = new Image("@images/DALL_E_2023-12-16_18.06.04_Hyper-planning.png");
         //primaryStage.getIcons().add(new Image("DALL_E_2023-12-16_18.06.04_Hyper-planning.png"));
 

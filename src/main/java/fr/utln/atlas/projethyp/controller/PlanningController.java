@@ -15,8 +15,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import javafx.stage.FileChooser;
 import lombok.extern.java.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,6 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.HashMap;
+
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.model.*;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.util.RandomUidGenerator;
 
 @Log
 public class PlanningController {
@@ -192,6 +203,71 @@ public class PlanningController {
 
 
         this.planning.add(coursTextArea, column, row, 1, rowSpan);
+    }
+
+
+
+    public void exporterEmploiDuTemps() throws Exception {
+        // Créer un nouveau calendrier
+        Calendar calendar = new Calendar();
+        calendar.getProperties().add(new ProdId("-//Mon Emploi du Temps//iCal4j 1.0//FR"));
+        calendar.getProperties().add(Version.VERSION_2_0);
+        calendar.getProperties().add(CalScale.GREGORIAN);
+
+        // Générateur d'UID pour les événements
+        RandomUidGenerator ug = new RandomUidGenerator();
+
+        CoursDAO coursDAO = InitDAOS.getCoursDAO();
+        Page<Cours> pcours = coursDAO.findAll();
+        List<Cours> lcours = pcours.getResultList();
+
+        // Pour chaque événement de l'emploi du temps
+        for (Cours c:lcours) {
+            java.util.Date date = c.getDate();
+            Time time = c.getDebut();
+
+            java.util.Calendar cal_deb = java.util.Calendar.getInstance();
+            cal_deb.setTime(date);
+            cal_deb.set(java.util.Calendar.HOUR_OF_DAY, time.getHours());
+            cal_deb.set(java.util.Calendar.MINUTE, time.getMinutes());
+            cal_deb.set(java.util.Calendar.SECOND, time.getSeconds());
+
+            Time time_fin = c.getDebut();
+
+            java.util.Calendar cal_fin = java.util.Calendar.getInstance();
+            cal_fin.setTime(date);
+            cal_fin.set(java.util.Calendar.HOUR_OF_DAY, time_fin.getHours());
+            cal_fin.set(java.util.Calendar.MINUTE, time_fin.getMinutes());
+            cal_fin.set(java.util.Calendar.SECOND, time_fin.getSeconds());
+
+
+
+            // Créer un nouvel événement
+            VEvent event = new VEvent(new DateTime(cal_deb.getTimeInMillis()),
+                    new DateTime(cal_fin.getTimeInMillis()),
+                    c.getDescription());
+
+            // Ajouter un identifiant unique
+            event.getProperties().add(ug.generateUid());
+
+            // Ajouter l'événement au calendrier
+            calendar.getComponents().add(event);
+
+            // Ajoutez d'autres propriétés comme la description, le lieu, etc. si nécessaire
+        }
+
+        // Utiliser un FileChooser pour enregistrer le fichier
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer l'emploi du temps");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("iCalendar Files", "*.ics"));
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try (FileOutputStream fout = new FileOutputStream(file)) {
+                CalendarOutputter outputter = new CalendarOutputter();
+                outputter.output(calendar, fout);
+            }
+        }
     }
 
     public void show(){
