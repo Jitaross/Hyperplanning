@@ -34,6 +34,19 @@ public class App extends Application {
         primaryStage.getIcons().add(icon);
 
         primaryStage.setResizable(false);
+
+        primaryStage.setOnCloseRequest(event->{
+            try {
+                InitDAOS.closeAll();
+            } catch (DataAccessException e) {
+                try {
+                    throw new DataAccessException(e.getLocalizedMessage());
+                } catch (DataAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
         showAuthWindow();
     }
 

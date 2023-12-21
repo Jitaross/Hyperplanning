@@ -28,7 +28,7 @@ public class InitDAOS {
         enseignantDAO = new EnseignantDAO();
         etudiantDAO = new EtudiantDAO();
         matiereDAO = new MatiereDAO();
-        //salleDAO = new SalleDAO();
+        salleDAO = new SalleDAO();
 
     }
 
@@ -71,7 +71,7 @@ public class InitDAOS {
         enseignantDAO.close();
         etudiantDAO.close();
         matiereDAO.close();
-        //salleDAO.close();
+        salleDAO.close();
         utilisateurDAO.close();
     }
 }
