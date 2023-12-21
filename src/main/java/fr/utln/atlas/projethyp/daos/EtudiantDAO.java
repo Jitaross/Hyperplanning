@@ -30,6 +30,7 @@ public class EtudiantDAO extends AbstractDAO<Etudiant> {
     @Override
     protected Etudiant fromResultSet(ResultSet resultSet) throws SQLException {
         return Etudiant.builder()
+                .id(resultSet.getInt("ID"))
                 .idFormation(resultSet.getInt("IDFORMATION"))
                 .build();
     }

@@ -41,10 +41,10 @@ public class AbsenceDAO extends AbstractDAO<Absence>{
 
 	@Override
 	public Absence persist(Absence absence) throws DataAccessException {
-		return persist(absence.getId(),absence.getIdCours(),absence.getIdEtudiant(),absence.getMotif());
+		return persist(absence.getIdCours(),absence.getIdEtudiant(),absence.getMotif());
 	}
 
-	public Absence persist(int id, int idCours, int idEtudiant , String motif) throws DataAccessException {
+	public Absence persist(int idCours, int idEtudiant , String motif) throws DataAccessException {
 		try {
 			persistPS.setInt(1,idCours);
 			persistPS.setInt(2,idEtudiant);
