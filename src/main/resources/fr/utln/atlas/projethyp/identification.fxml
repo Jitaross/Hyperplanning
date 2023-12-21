@@ -25,7 +25,7 @@
    <top>
       <ImageView fitHeight="221.0" fitWidth="247.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@DALL_E_2023-12-16_18.06.04_Hyper-planning.png" />
+            <Image url="@images/Hyper-planning.png" />
          </image>
       </ImageView>
    </top>

@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.print.PageLayout;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.h2.table.Plan;
 
@@ -29,8 +30,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        //Image icon = new Image("@images/DALL_E_2023-12-16_18.06.04_Hyper-planning.png");
-        //primaryStage.getIcons().add(new Image("DALL_E_2023-12-16_18.06.04_Hyper-planning.png"));
+        Image icon = new Image("file:src/main/resources/fr/utln/atlas/projethyp/images/Hyper-planning-ico   .png");
+        primaryStage.getIcons().add(icon);
 
         primaryStage.setResizable(false);
         showAuthWindow();

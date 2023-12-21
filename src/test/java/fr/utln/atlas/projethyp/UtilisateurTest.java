@@ -15,20 +15,12 @@ public class UtilisateurTest {
 
     @Test
     public void testUserInit() throws DataAccessException {
-        Utilisateur utilisateur = Utilisateur.builder()
-                .id(7)
-                .nom("Prout")
-                .prenom("Lola")
-                .mail("lola.prout@gmail.com")
-                .typeUser(Utilisateur.TypeUser.Gestionnaire)
-                .dateNaissance(Date.valueOf("2023-05-06"))
-                .motDePasse("gestionnaire")
-                .build();
+        Utilisateur utilisateur = InitDAOS.getUtilisateurDAO().createUser("Compte","Test","az","az",Date.valueOf("2002-03-18"), Utilisateur.TypeUser.Gestionnaire);
 
         try {
             UtilisateurDAO utilisateurDAO = InitDAOS.getUtilisateurDAO();
             utilisateurDAO.persist(utilisateur);
-            int id = utilisateurDAO.login(new Authentication("lola.prout@gmail.com", "gestionnaire"));
+            int id = utilisateurDAO.login(new Authentication("az", "az"));
             System.out.println(id);
             Utilisateur user2 = utilisateurDAO.findUtilisateur(id);
             System.out.println(user2);
