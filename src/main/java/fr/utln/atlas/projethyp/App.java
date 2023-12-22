@@ -25,6 +25,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        InitDAOS.getUtilisateurDAO();
         this.primaryStage = primaryStage;
         Image icon = new Image("file:src/main/resources/fr/utln/atlas/projethyp/images/Hyper-planning-ico   .png");
         primaryStage.getIcons().add(icon);

@@ -6,9 +6,11 @@ import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -29,6 +31,10 @@ public class IdentificationController {
     Button seConnecter;
     @FXML
     Text textErreurLogin;
+    @FXML
+    ProgressBar progressBar;
+
+    private int iduser;
 
 
     @FXML
@@ -67,19 +73,36 @@ public class IdentificationController {
     }
 
     private void login() throws IOException{
-            String identifiantValue = identifiant.getText();
-            String motDePasseValue = motDePasse.getText();
+        seConnecter.setVisible(false);
+        progressBar.setVisible(true);
+        // Créer une Task
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                String identifiantValue = identifiant.getText();
+                String motDePasseValue = motDePasse.getText();
 
-            int iduser = -1;
+                iduser = -1;
 
-            Authentication auth = new Authentication(identifiantValue,motDePasseValue);
-            try {
-                UtilisateurDAO utilisateurDAO = InitDAOS.getUtilisateurDAO();
-                iduser = utilisateurDAO.login(auth);
-                MainController.setUserId(iduser);
-            } catch (DataAccessException e) {
-                throw new RuntimeException(e);
+                Authentication auth = new Authentication(identifiantValue,motDePasseValue);
+                try {
+                    UtilisateurDAO utilisateurDAO = InitDAOS.getUtilisateurDAO();
+                    iduser = utilisateurDAO.login(auth);
+                    MainController.setUserId(iduser);
+                } catch (DataAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+                return null;
             }
+        };
+
+        // Lier la progression de la tâche à la ProgressBar
+        progressBar.progressProperty().bind(task.progressProperty());
+
+        // Gestionnaires pour les états de la Task
+        task.setOnSucceeded(event -> {
             if(iduser>=0){
                 //Affichage de la scène Accueil
                 try {
@@ -90,7 +113,18 @@ public class IdentificationController {
             }
             else{
                 textErreurLogin.setText("L'identifiant ou le mot de passe est incorrect, veuillez réessayer.");
+                seConnecter.setVisible(true);
+                progressBar.setVisible(false);
             }
+        });
+
+        task.setOnFailed(event -> {
+            new Thread(task).start();
+        });
+
+
+        new Thread(task).start();
+
 
 
 
