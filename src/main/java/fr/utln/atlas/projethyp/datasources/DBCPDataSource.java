@@ -17,6 +17,7 @@ public class DBCPDataSource {
         ds.setMinIdle(5);
         ds.setMaxIdle(20);
         ds.setMaxOpenPreparedStatements(100);
+        ds.setMaxTotal(20);
     }
 
     private DBCPDataSource() {

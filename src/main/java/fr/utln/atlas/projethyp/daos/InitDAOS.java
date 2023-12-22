@@ -1,22 +1,37 @@
 package fr.utln.atlas.projethyp.daos;
 
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
+import lombok.Getter;
+import lombok.extern.java.Log;
 
+@Log
 public class InitDAOS {
+    @Getter
     private static AbsenceDAO absenceDAO;
+    @Getter
     private static CoursDAO coursDAO;
+    @Getter
     private static DevoirDAO devoirDAO;
+    @Getter
     private static EnseignantDAO enseignantDAO;
+    @Getter
     private static EtudiantDAO etudiantDAO;
+    @Getter
     private static MatiereDAO matiereDAO;
+    @Getter
     private static SalleDAO salleDAO;
+    @Getter
     private static UtilisateurDAO utilisateurDAO;
 
     static {
         try {
             initializeDaos();
         } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+            try {
+                throw new DataAccessException(e.getLocalizedMessage());
+            } catch (DataAccessException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
@@ -32,38 +47,6 @@ public class InitDAOS {
 
     }
 
-    public static AbsenceDAO getAbsenceDAO() {
-        return absenceDAO;
-    }
-
-    public static CoursDAO getCoursDAO() {
-        return coursDAO;
-    }
-
-    public static DevoirDAO getDevoirDAO() {
-        return devoirDAO;
-    }
-
-    public static EnseignantDAO getEnseignantDAO() {
-        return enseignantDAO;
-    }
-
-    public static EtudiantDAO getEtudiantDAO() {
-        return etudiantDAO;
-    }
-
-    public static MatiereDAO getMatiereDAO() {
-        return matiereDAO;
-    }
-
-    public static SalleDAO getSalleDAO() {
-        return salleDAO;
-    }
-
-    public static UtilisateurDAO getUtilisateurDAO() {
-        return utilisateurDAO;
-    }
-
     public static void closeAll() throws DataAccessException {
         absenceDAO.close();
         coursDAO.close();
@@ -73,5 +56,6 @@ public class InitDAOS {
         matiereDAO.close();
         salleDAO.close();
         utilisateurDAO.close();
+        log.info("All DAOS closed.");
     }
 }
