@@ -19,6 +19,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
     private final PreparedStatement findCoursPS;
     private final PreparedStatement findCoursEtudiantPS;
     private final PreparedStatement findCoursByIdPS;
+    private final PreparedStatement findCoursFormationPS;
 
     public CoursDAO() throws DataAccessException {
         super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE,TYPECOURS) VALUES (?,?,?,?,?,?,?,?)",
@@ -26,6 +27,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
 
         try{
             findCoursPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ?");
+            findCoursFormationPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
+                    "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = ?)");
             findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
                     "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
             findCoursByIdPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE ID=?");
@@ -153,6 +156,33 @@ public class CoursDAO extends AbstractDAO<Cours> {
         List<Cours> listeCours = new ArrayList<>();
         for (Date jour : semaine) {
             listeCours.addAll(findCoursJourEtudiant(jour,id));
+        }
+        return new Page<>(pageNumber, pageSize, listeCours);
+    }
+
+    public Page<Cours> findCoursSemaineFormation(int numeroSemaine, int idFormation, int pageNumber, int pageSize, int annee) throws DataAccessException{
+        List<Date> semaine = JourSemaine(numeroSemaine, annee);
+        List<Cours> listeCours = new ArrayList<>();
+        for(Date jour : semaine){
+            List<Cours> listeCoursJour = new ArrayList<>();
+
+            try {
+                findCoursFormationPS.setDate(1, jour);
+                findCoursFormationPS.setInt(2, idFormation);
+
+                ResultSet resultSet = findCoursFormationPS.executeQuery();
+
+                while (resultSet.next()) {
+                    Cours cours = fromResultSet(resultSet);
+                    listeCoursJour.add(cours);
+                }
+
+                resultSet.close();
+
+            } catch (SQLException throwables) {
+                throw new DataAccessException(throwables.getLocalizedMessage());
+            }
+            listeCours.addAll(listeCoursJour);
         }
         return new Page<>(pageNumber, pageSize, listeCours);
     }
