@@ -22,6 +22,8 @@ public class InitDAOS {
     private static SalleDAO salleDAO;
     @Getter
     private static UtilisateurDAO utilisateurDAO;
+	@Getter
+    private static FormationDAO formationDAO;
 
     static {
         try {
@@ -44,7 +46,7 @@ public class InitDAOS {
         etudiantDAO = new EtudiantDAO();
         matiereDAO = new MatiereDAO();
         salleDAO = new SalleDAO();
-
+        formationDAO = new FormationDAO();
     }
 
     public static void closeAll() throws DataAccessException {
@@ -56,6 +58,7 @@ public class InitDAOS {
         matiereDAO.close();
         salleDAO.close();
         utilisateurDAO.close();
+		formationDAO.close();
         log.info("All DAOS closed.");
     }
 }
