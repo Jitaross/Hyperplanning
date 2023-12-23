@@ -25,4 +25,9 @@ public class Utilisateur implements Entity {
         SuperAdmin
     }
     private TypeUser typeUser;
+
+    @Override
+    public String toString(){
+        return nom.toUpperCase() + " " + prenom;
+    }
 }

@@ -10,4 +10,8 @@ import lombok.experimental.SuperBuilder;
 public class Etudiant extends Utilisateur{
     private int idFormation;
     private String nomFormation;
+    @Override
+    public String toString(){
+        return super.toString();
+    }
 }
