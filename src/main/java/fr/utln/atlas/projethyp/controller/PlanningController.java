@@ -1,23 +1,40 @@
 package fr.utln.atlas.projethyp.controller;
 
+import fr.utln.atlas.projethyp.App;
 import fr.utln.atlas.projethyp.daos.*;
 import fr.utln.atlas.projethyp.entities.Cours;
+import fr.utln.atlas.projethyp.entities.Formation;
+import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser;
+import lombok.Getter;
 import lombok.extern.java.Log;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.Date;
+import java.sql.Time;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
@@ -42,7 +59,12 @@ import net.fortuna.ical4j.util.RandomUidGenerator;
 
 @Log
 public class PlanningController {
-
+    @FXML
+    private HBox hboxGestionCours;
+    @FXML
+    private ChoiceBox<Formation> choiceBoxFormation;
+    @FXML
+    private ChoiceBox<Integer> choiceBoxGroupe;
     @FXML
     private BorderPane planningPane;
 
@@ -67,13 +89,14 @@ public class PlanningController {
     private Text jour4;
     @FXML
     private Text jour5;
-
+    @Getter
     @FXML
     private ChoiceBox<Integer> anneeChoice;
 
     private CoursDAO coursDAO;
     private MatiereDAO matiereDAO;
     private UtilisateurDAO utilisateurDAO;
+    private FormationDAO formationDAO;
 
     private static final int START_WEEK = 1;
     private static final int DAYS_IN_WEEK = 7;
@@ -82,6 +105,11 @@ public class PlanningController {
 
     int userId = MainController.getUserId();
 
+    private int currentFormation = 1;
+    private int currentGroupe = 0;
+    private boolean gestionCoursMode = false;
+    private Stage popupStage = null;
+    private TextArea coursTemporaireTextArea = null;
 
     @FXML
     public void initialize() throws DataAccessException {
@@ -92,6 +120,7 @@ public class PlanningController {
         this.coursDAO = InitDAOS.getCoursDAO();
         this.utilisateurDAO = InitDAOS.getUtilisateurDAO();
         /*this.matiereDAO = new MatiereDAO();*/
+        this.formationDAO = InitDAOS.getFormationDAO();
 
         paginationPlanning.setCurrentPageIndex(START_WEEK); // On initialise à la première semaine de l'année (plus simple pour les calculs suivants)
         paginationPlanning.setPageFactory(this::createPage); // Notre méthode de création de page est createPage
@@ -106,6 +135,29 @@ public class PlanningController {
 
         anneeChoice.setOnAction(event -> {this.annee=anneeChoice.getValue();
                                             createPage(paginationPlanning.getCurrentPageIndex());});
+
+        // A EXECUTER SI GESTIONNAIRE EDT (ET/OU Admin ?)
+        if(this.utilisateurDAO.findUtilisateur(this.userId).getTypeUser() == Utilisateur.TypeUser.Gestionnaire){
+            this.hboxGestionCours.setVisible(true);
+            this.choiceBoxGroupe.setDisable(true); // pour le moment
+
+            Page<Formation> pageFormation = this.formationDAO.findAll(1,20);
+            List<Formation> listeFormation = pageFormation.getResultList();
+            this.choiceBoxFormation.getItems().addAll(listeFormation);
+            this.choiceBoxFormation.setValue(listeFormation.get(0));
+            this.choiceBoxFormation.setOnAction(event -> {
+                this.currentFormation = choiceBoxFormation.getValue().getId();
+                try {
+                    Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineFormation(START_WEEK +
+                            paginationPlanning.getCurrentPageIndex(), this.currentFormation, 1, 10, this.annee);
+                    this.afficherCours(pageCoursSemaine);
+                } catch (DataAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+
     }
 
     private GridPane createPage(Integer weekIndex) {
@@ -152,18 +204,26 @@ public class PlanningController {
         // Enlève tous les cours présent à l'écran
         this.planning.getChildren().removeIf(TextArea.class::isInstance);
         try{
+            /*SI ETUDIANT
             Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineEtudiant(currentWeek,userId, 1, 10,this.annee);
-            List<Cours> cours = pageCoursSemaine.getResultList();
-            for (Cours c : cours) {
-                this.ajouterCours(c);
-            }
+            */
+            Page<Cours> pageCoursSemaine = coursDAO.findCoursSemaineFormation(currentWeek,currentFormation,1,10,this.annee);
+            this.afficherCours(pageCoursSemaine);
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
         return gridPane;
     }
+    private void afficherCours(Page<Cours> pageCoursSemaine){
+        // Placement des cours de la semaine
+        this.planning.getChildren().removeIf(TextArea.class::isInstance);
+        List<Cours> cours = pageCoursSemaine.getResultList();
+        for (Cours c : cours) {
+            this.ajouterCours(c);
+        }
+    }
 
-    private void ajouterCours(Cours cours){
+    public TextArea ajouterCours(Cours cours){
 
         HashMap<String, String> couleurs = new HashMap<String, String>();
         couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");
@@ -203,9 +263,55 @@ public class PlanningController {
 
 
         this.planning.add(coursTextArea, column, row, 1, rowSpan);
+        return coursTextArea;
     }
 
+    public void ajouterCoursTemporaire(Cours cours){
+        this.retirerCoursTemporaire();
+        this.coursTemporaireTextArea = this.ajouterCours(cours);
+    }
 
+    public void retirerCoursTemporaire(){
+        if(this.coursTemporaireTextArea != null){
+            this.planning.getChildren().remove(this.coursTemporaireTextArea);
+            this.coursTemporaireTextArea = null;
+        }
+    }
+    @FXML
+    private void openGestionCours(){
+        if(!this.gestionCoursMode){
+            try {
+                // Permet de passer en mode "Gestion cours" et de désactiver le changement de formation et d'années
+                this.setGestionCoursMode(true);
+
+                //Création de la fenetre popup
+                InputStream fxmlStream = App.class.getResourceAsStream("gestionCours.fxml");
+                FXMLLoader loader = new FXMLLoader();
+                Parent root = loader.load(fxmlStream);
+                GestionCoursController controller = loader.getController();
+                controller.init(this.currentFormation, this.annee, this);
+				this.popupStage = new Stage();
+                this.popupStage.setAlwaysOnTop(true);
+                this.popupStage.setOnHiding(event -> {
+                    this.setGestionCoursMode(false);
+                    this.retirerCoursTemporaire();
+                });
+                this.popupStage.setResizable(false);
+                Scene scene = new Scene(root);
+                this.popupStage.setScene(scene);
+                this.popupStage.setTitle("Ajouter un cours");
+                this.popupStage.show();
+            } catch (IOException e) {
+                e.printStackTrace(); // Gérer l'exception de chargement du FXML
+            }
+        }
+    }
+
+    public void setGestionCoursMode(boolean bool){
+        this.gestionCoursMode = bool;
+        this.anneeChoice.setDisable(bool);
+        this.choiceBoxFormation.setDisable(bool);
+    }
 
     public void exporterEmploiDuTemps() throws Exception {
         // Créer un nouveau calendrier
@@ -275,6 +381,11 @@ public class PlanningController {
     }
 
     public void hide(){
+        this.retirerCoursTemporaire();
+        if(this.gestionCoursMode){
+            this.popupStage.close();
+            this.setGestionCoursMode(false);
+        }
         this.planningPane.setVisible(false);
     }
 
