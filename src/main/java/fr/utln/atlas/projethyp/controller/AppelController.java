@@ -37,31 +37,35 @@ public class AppelController {
     @FXML
     private void initialize() throws DataAccessException {
         this.anchorPane.setVisible(false);
-        this.coursDAO = InitDAOS.getCoursDAO();
-        EnseignantDAO enseignantDAO = InitDAOS.getEnseignantDAO();
-        this.coursList = enseignantDAO.findAllCoursIdDay(MainController.getUserId(), Date.valueOf(LocalDate.now()));
-        ObservableList<String> items = FXCollections.observableArrayList();
-        for (Cours cours : this.coursList)
-            items.add(String.valueOf(cours.getDebut()));
-        this.heureCours = String.valueOf(coursList.get(0).getDebut());
-        this.labelCoursSel.setText(coursList.get(0).getDescription());
-        this.labelDateCours.setText(String.valueOf(coursList.get(0).getDate()));
-        afficherAppel(coursList.get(0).getId());
+        Utilisateur utilisateur = InitDAOS.getUtilisateurDAO().findUtilisateur(MainController.getUserId());
+        if (utilisateur.getTypeUser() == Utilisateur.TypeUser.Enseignant) {
+            this.coursDAO = InitDAOS.getCoursDAO();
+            EnseignantDAO enseignantDAO = InitDAOS.getEnseignantDAO();
+            this.coursList = enseignantDAO.findAllCoursIdDay(MainController.getUserId(), Date.valueOf(LocalDate.now()));
+            ObservableList<String> items = FXCollections.observableArrayList();
+            for (Cours cours : this.coursList)
+                items.add(String.valueOf(cours.getDebut()));
+            this.heureCours = String.valueOf(coursList.get(0).getDebut());
+            this.labelCoursSel.setText(coursList.get(0).getDescription());
+            this.labelDateCours.setText(String.valueOf(coursList.get(0).getDate()));
+            afficherAppel(coursList.get(0).getId());
 
-        choiceBox.setItems(items);
+            choiceBox.setItems(items);
 
-        choiceBox.getSelectionModel().select(0);
+            choiceBox.getSelectionModel().select(0);
 
-        choiceBox.setOnAction(event -> {
-            this.heureCours = choiceBox.getValue();
-            try {
-                this.labelCoursSel.setText(coursList.get(choiceBox.getSelectionModel().getSelectedIndex()).getDescription());
-                this.labelDateCours.setText(String.valueOf(coursList.get(choiceBox.getSelectionModel().getSelectedIndex()).getDate()));
-                afficherAppel(coursList.get(choiceBox.getSelectionModel().getSelectedIndex()).getId());
-            } catch (DataAccessException e) {
-                throw new RuntimeException(e);
-            }
-        });
+            choiceBox.setOnAction(event -> {
+                this.heureCours = choiceBox.getValue();
+                try {
+                    this.labelCoursSel.setText(coursList.get(choiceBox.getSelectionModel().getSelectedIndex()).getDescription());
+                    this.labelDateCours.setText(String.valueOf(coursList.get(choiceBox.getSelectionModel().getSelectedIndex()).getDate()));
+                    afficherAppel(coursList.get(choiceBox.getSelectionModel().getSelectedIndex()).getId());
+                } catch (DataAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
     }
 
     public void afficherAppel(int idCours) throws DataAccessException {
