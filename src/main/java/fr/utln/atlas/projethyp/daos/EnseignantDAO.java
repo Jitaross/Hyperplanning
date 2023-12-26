@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp.daos;
 
+import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.entities.Enseignant;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
@@ -8,14 +9,25 @@ import lombok.extern.java.Log;
 
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Log
 public class EnseignantDAO extends AbstractDAO<Enseignant> {
 
+    private PreparedStatement findAllCoursIdDayPS;
+
     public EnseignantDAO() throws DataAccessException {
         super("INSERT INTO ENSEIGNANT(ID,UFR) VALUES (?,?)",
                 "UPDATE ENSEIGNANT SET UFR=? WHERE ID=?");
+        try {
+            findAllCoursIdDayPS = getConnection().prepareStatement("SELECT c.* FROM ENSEIGNANT as e, COURS as c WHERE e.ID=?" +
+                    "AND c.IDENSEIGNANT=e.ID " +
+                    "AND c.DATE=?");
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
 
     }
 
@@ -63,6 +75,20 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
         DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
         devoirDAO.update(devoir);
 
+    }
+
+    public List<Cours> findAllCoursIdDay(int idEnseignant, Date dateCours) throws DataAccessException{
+        List<Cours> cours = new ArrayList<>();
+        CoursDAO coursDAO = InitDAOS.getCoursDAO();
+        try {
+            findAllCoursIdDayPS.setInt(1, idEnseignant);
+            findAllCoursIdDayPS.setDate(2, dateCours);
+            ResultSet rs = findAllCoursIdDayPS.executeQuery();
+            while(rs.next()) cours.add(coursDAO.fromResultSet(rs));
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+        return cours;
     }
 
     @Override

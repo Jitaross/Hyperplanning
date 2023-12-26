@@ -4,6 +4,7 @@ import fr.utln.atlas.projethyp.App;
 import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 
+import fr.utln.atlas.projethyp.entities.Utilisateur;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,7 +24,7 @@ public class MainController {
 	private static int userId = -1;
 
 	private enum Page{
-		ACCUEIL, PLANNING, ABSENCES, NOTES
+		ACCUEIL, PLANNING, ABSENCES, NOTES, APPEL
 	}
 	@FXML
 	private AccueilController accueilController;
@@ -33,6 +34,8 @@ public class MainController {
 	private NotesEtudiantController notesEtudiantController;
 	@FXML
 	private AbsencesController absencesController;
+	@FXML
+	private AppelController appelController;
 
 	@FXML
 	private Button btnAccueil;
@@ -42,6 +45,8 @@ public class MainController {
 	private Button btnNotes;
 	@FXML
 	private Button btnAbsences;
+	@FXML
+	private Button btnAppel;
 	@FXML
 	private Text textInfos;
 	@FXML
@@ -60,7 +65,8 @@ public class MainController {
 	@FXML
 	private void initialize() throws Exception {
 		UtilisateurDAO userdao = InitDAOS.getUtilisateurDAO();
-		textInfos.setText("Espace "+userdao.findUtilisateur(userId).getTypeUser()+" | "+userdao.findUtilisateur(userId).getNom() + " " + userdao.findUtilisateur(userId).getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
+		Utilisateur user = userdao.findUtilisateur(userId);
+		textInfos.setText("Espace "+ user.getTypeUser()+" | "+user.getNom() + " " + user.getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
 
 
 		IdentificationController identificationController = new IdentificationController();
@@ -79,6 +85,11 @@ public class MainController {
 		this.btnPlanning.setOnAction(event -> showNewPage(Page.PLANNING));
 		this.btnNotes.setOnAction(event -> showNewPage(Page.NOTES));
 		this.btnAbsences.setOnAction(event->showNewPage(Page.ABSENCES));
+		if (user.getTypeUser() == Utilisateur.TypeUser.Enseignant) {
+			this.btnAppel.setVisible(true);
+			this.btnAppel.setDisable(false);
+			this.btnAppel.setOnAction(actionEvent -> showNewPage(Page.APPEL));
+		}
 	}
 
 	private void hideCurrentPage(){
@@ -87,6 +98,7 @@ public class MainController {
 			case PLANNING -> planningController.hide();
 			case NOTES -> notesEtudiantController.hide();
 			case ABSENCES -> absencesController.hide();
+			case APPEL -> appelController.hide();
 		}
 	}
 
@@ -98,6 +110,7 @@ public class MainController {
 			case PLANNING -> planningController.show();
 			case NOTES -> notesEtudiantController.show();
 			case ABSENCES -> absencesController.show();
+			case APPEL -> appelController.show();
 		}
 	}
 

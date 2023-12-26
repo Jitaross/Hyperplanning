@@ -1,6 +1,8 @@
 package fr.utln.atlas.projethyp.daos;
 
 import fr.utln.atlas.projethyp.entities.Cours;
+import fr.utln.atlas.projethyp.entities.Etudiant;
+import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
 import lombok.extern.java.Log;
@@ -19,6 +21,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
     private final PreparedStatement findCoursPS;
     private final PreparedStatement findCoursEtudiantPS;
     private final PreparedStatement findCoursByIdPS;
+    private final PreparedStatement findAllEtudiantCours;
 
     public CoursDAO() throws DataAccessException {
         super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE,TYPECOURS) VALUES (?,?,?,?,?,?,?,?)",
@@ -29,6 +32,11 @@ public class CoursDAO extends AbstractDAO<Cours> {
             findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
                     "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
             findCoursByIdPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE ID=?");
+            findAllEtudiantCours = getConnection().prepareStatement("SELECT e.*, u.* FROM COURS as c, ETUDIANT as e, UTILISATEUR as u, MATIERE as m " +
+                    "WHERE c.ID=?" +
+                    "AND c.IDMATIERE=m.ID " +
+                    "AND m.IDFORMATION=e.IDFORMATION " +
+                    "AND e.ID=u.ID");
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -169,6 +177,18 @@ public class CoursDAO extends AbstractDAO<Cours> {
 
         return cours;
 
+    }
+
+    public List<Etudiant> findAllEtudiant(int idCours) throws DataAccessException {
+        List<Etudiant> utilisateurs = new ArrayList<>();
+        try {
+            findAllEtudiantCours.setInt(1, idCours);
+            ResultSet resultSet = findAllEtudiantCours.executeQuery();
+            while(resultSet.next()) utilisateurs.add(InitDAOS.getEtudiantDAO().fromResultSet(resultSet));
+        } catch (SQLException e) {
+            throw new DataAccessException(e.getLocalizedMessage());
+        }
+        return utilisateurs;
     }
 
 
