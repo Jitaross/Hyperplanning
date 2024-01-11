@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp;
 
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.UtilisateurDAO;
 import fr.utln.atlas.projethyp.entities.Enseignant;
 import fr.utln.atlas.projethyp.entities.Etudiant;
@@ -15,7 +16,8 @@ public class TestCreateUser {
 
     @Test
     public void createUserTest() throws DataAccessException {
-        try (UtilisateurDAO utilisateurDAO = new UtilisateurDAO()) {
+        try {
+            UtilisateurDAO utilisateurDAO = InitDAOS.getUtilisateurDAO();
             Utilisateur utilisateur = Utilisateur.builder()
                     .nom("Potter")
                     .prenom("Harry")
@@ -61,6 +63,8 @@ public class TestCreateUser {
             assertNotEquals(-1, modify1);
 
             System.out.println(modify1);
+        } catch (DataAccessException e){
+            throw new DataAccessException(e.getLocalizedMessage());
         }
 
 

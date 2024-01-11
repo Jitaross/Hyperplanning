@@ -1,5 +1,6 @@
 package fr.utln.atlas.projethyp;
 
+import fr.utln.atlas.projethyp.daos.InitDAOS;
 import fr.utln.atlas.projethyp.daos.Page;
 import fr.utln.atlas.projethyp.daos.SalleDAO;
 import fr.utln.atlas.projethyp.entities.Salle;
@@ -23,11 +24,14 @@ public class TestSalle {
                 .nombrePlace(20)
                 .build();
 
-        try (SalleDAO salleDAO = new SalleDAO()) {
+        try {
+            SalleDAO salleDAO = InitDAOS.getSalleDAO();
             salleDAO.persist(salle);
             Page<Salle> sallePage = salleDAO.findNotTakenRoom(Date.valueOf("2023-12-10"), Time.valueOf("15:00:00"), 10, 10);
             assertNotNull(sallePage);
             System.out.println(sallePage);
+        } catch (DataAccessException e){
+            throw new DataAccessException(e.getLocalizedMessage());
         }
     }
 }
