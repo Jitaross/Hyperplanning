@@ -22,6 +22,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
     private final PreparedStatement findCoursEtudiantPS;
     private final PreparedStatement findCoursByIdPS;
     private final PreparedStatement findAllEtudiantCours;
+    private final PreparedStatement findAllByIdPS;
 
     public CoursDAO() throws DataAccessException {
         super("INSERT INTO COURS(DESCRIPTION,IDENSEIGNANT,IDMATIERE,IDSALLE,DEBUT,FIN,DATE,TYPECOURS) VALUES (?,?,?,?,?,?,?,?)",
@@ -37,6 +38,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
                     "AND c.IDMATIERE=m.ID " +
                     "AND m.IDFORMATION=e.IDFORMATION " +
                     "AND e.ID=u.ID");
+            findAllByIdPS = getConnection().prepareStatement("SELECT Cours.* FROM Etudiant JOIN Matiere ON Etudiant.idformation = Matiere.idformation JOIN Cours ON Matiere.id = Cours.idmatiere WHERE Etudiant.id = ?;");
+
         } catch(SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -119,6 +122,29 @@ public class CoursDAO extends AbstractDAO<Cours> {
 
         return listeCours;
     }
+
+    public List<Cours> findAllById(int id) throws DataAccessException {
+        List<Cours> listeCours = new ArrayList<>();
+
+        try {
+            findAllByIdPS.setInt(1, id);
+
+            ResultSet resultSet = findAllByIdPS.executeQuery();
+
+            while (resultSet.next()) {
+                Cours cours = fromResultSet(resultSet);
+                listeCours.add(cours);
+            }
+
+            resultSet.close();
+
+        } catch (SQLException throwables) {
+            throw new DataAccessException(throwables.getLocalizedMessage());
+        }
+
+        return listeCours;
+    }
+
 
     public Page<Cours> findCoursSemaine(int numeroSemaine, int pageNumber, int pageSize, int annee) throws  DataAccessException {
         List<Date> semaine = JourSemaine(numeroSemaine, annee);

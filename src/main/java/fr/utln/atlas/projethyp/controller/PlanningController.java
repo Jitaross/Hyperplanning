@@ -216,10 +216,7 @@ public class PlanningController {
 
         // Générateur d'UID pour les événements
         RandomUidGenerator ug = new RandomUidGenerator();
-
-        CoursDAO coursDAO = InitDAOS.getCoursDAO();
-        Page<Cours> pcours = coursDAO.findAll();
-        List<Cours> lcours = pcours.getResultList();
+        List<Cours> lcours = coursDAO.findAllById(userId);
 
         // Pour chaque événement de l'emploi du temps
         for (Cours c:lcours) {
