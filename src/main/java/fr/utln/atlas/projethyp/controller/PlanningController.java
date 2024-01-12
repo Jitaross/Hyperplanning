@@ -206,7 +206,7 @@ public class PlanningController {
     }
 
 
-
+    @FXML
     public void exporterEmploiDuTemps() throws Exception {
         // Créer un nouveau calendrier
         Calendar calendar = new Calendar();
