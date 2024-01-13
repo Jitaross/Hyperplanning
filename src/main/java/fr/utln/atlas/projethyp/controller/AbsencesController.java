@@ -59,7 +59,7 @@ public class AbsencesController {
             date.setText(c.getDate().toString());
             cours.setText(c.getDescription());
             motif.setText(abs.getMotif());
-            heure.setText(c.getDebut().toString());
+            heure.setText(c.getDebut().toString()+"\n"+c.getFin().toString());
 
             this.gridPane.add(date,0,i);
             this.gridPane.add(heure,1,i);
