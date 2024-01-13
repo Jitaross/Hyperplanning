@@ -21,6 +21,7 @@ import lombok.extern.java.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -74,6 +75,8 @@ public class PlanningController {
     private CoursDAO coursDAO;
     private MatiereDAO matiereDAO;
     private UtilisateurDAO utilisateurDAO;
+    private SalleDAO salleDAO;
+
 
     private static final int START_WEEK = 1;
     private static final int DAYS_IN_WEEK = 7;
@@ -91,7 +94,7 @@ public class PlanningController {
 
         this.coursDAO = InitDAOS.getCoursDAO();
         this.utilisateurDAO = InitDAOS.getUtilisateurDAO();
-        /*this.matiereDAO = new MatiereDAO();*/
+        this.salleDAO = InitDAOS.getSalleDAO();
 
         paginationPlanning.setCurrentPageIndex(START_WEEK); // On initialise à la première semaine de l'année (plus simple pour les calculs suivants)
         paginationPlanning.setPageFactory(this::createPage); // Notre méthode de création de page est createPage
@@ -157,13 +160,13 @@ public class PlanningController {
             for (Cours c : cours) {
                 this.ajouterCours(c);
             }
-        } catch (DataAccessException e) {
+        } catch (DataAccessException | SQLException e) {
             e.printStackTrace();
         }
         return gridPane;
     }
 
-    private void ajouterCours(Cours cours){
+    private void ajouterCours(Cours cours) throws DataAccessException, SQLException {
 
         HashMap<String, String> couleurs = new HashMap<String, String>();
         couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");
@@ -196,7 +199,7 @@ public class PlanningController {
                     nomProf + "\n" +
                     dureeCours;
         */
-        TextArea coursTextArea = new TextArea(cours.getDescription());
+        TextArea coursTextArea = new TextArea(cours.getDescription()+"\n"+utilisateurDAO.findUtilisateur(cours.getIdEnseignant()).getNom()+"\n"+salleDAO.find(5).get().getNomSalle());
         coursTextArea.setEditable(false);
 
         coursTextArea.setStyle(couleurs.get(cours.getTypeCours().toString()));

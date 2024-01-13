@@ -17,6 +17,7 @@ import java.util.List;
 public class EnseignantDAO extends AbstractDAO<Enseignant> {
 
     private PreparedStatement findAllCoursIdDayPS;
+    private PreparedStatement findByIdPS;
 
     public EnseignantDAO() throws DataAccessException {
         super("INSERT INTO ENSEIGNANT(ID,UFR) VALUES (?,?)",
@@ -25,6 +26,7 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
             findAllCoursIdDayPS = getConnection().prepareStatement("SELECT c.* FROM ENSEIGNANT as e, COURS as c WHERE e.ID=?" +
                     "AND c.IDENSEIGNANT=e.ID " +
                     "AND c.DATE=?");
+            findByIdPS = getConnection().prepareStatement("SELECT * FROM ENSEIGNANT WHERE ID=?");
         } catch (SQLException e) {
             throw new DataAccessException(e.getLocalizedMessage());
         }
@@ -89,6 +91,20 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
             throw new DataAccessException(e.getLocalizedMessage());
         }
         return cours;
+    }
+
+    public Enseignant findById(int id) throws SQLException {
+        Enseignant enseignant = null;
+        try{
+            findByIdPS.setInt(1,id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ResultSet resultSet = findByIdPS.executeQuery();
+        while (resultSet.next()) {enseignant = fromResultSet(resultSet);}
+
+        return enseignant;
+
     }
 
     @Override
