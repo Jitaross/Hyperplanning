@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -96,6 +97,8 @@ public class PlanningController {
     private CoursDAO coursDAO;
     private MatiereDAO matiereDAO;
     private UtilisateurDAO utilisateurDAO;
+    private SalleDAO salleDAO;
+
     private FormationDAO formationDAO;
 
     private static final int START_WEEK = 1;
@@ -119,8 +122,8 @@ public class PlanningController {
 
         this.coursDAO = InitDAOS.getCoursDAO();
         this.utilisateurDAO = InitDAOS.getUtilisateurDAO();
-        /*this.matiereDAO = new MatiereDAO();*/
         this.formationDAO = InitDAOS.getFormationDAO();
+        this.salleDAO = InitDAOS.getSalleDAO();
 
         paginationPlanning.setCurrentPageIndex(START_WEEK); // On initialise à la première semaine de l'année (plus simple pour les calculs suivants)
         paginationPlanning.setPageFactory(this::createPage); // Notre méthode de création de page est createPage
@@ -223,7 +226,7 @@ public class PlanningController {
         }
     }
 
-    public TextArea ajouterCours(Cours cours){
+    private TextArea ajouterCours(Cours cours) throws DataAccessException, SQLException {
 
         HashMap<String, String> couleurs = new HashMap<String, String>();
         couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");
@@ -256,7 +259,7 @@ public class PlanningController {
                     nomProf + "\n" +
                     dureeCours;
         */
-        TextArea coursTextArea = new TextArea(cours.getDescription());
+        TextArea coursTextArea = new TextArea(cours.getDescription()+"\n"+utilisateurDAO.findUtilisateur(cours.getIdEnseignant()).getNom()+"\n"+salleDAO.find(5).get().getNomSalle());
         coursTextArea.setEditable(false);
 
         coursTextArea.setStyle(couleurs.get(cours.getTypeCours().toString()));
@@ -270,6 +273,7 @@ public class PlanningController {
         this.retirerCoursTemporaire();
         this.coursTemporaireTextArea = this.ajouterCours(cours);
     }
+
 
     public void retirerCoursTemporaire(){
         if(this.coursTemporaireTextArea != null){
@@ -312,7 +316,7 @@ public class PlanningController {
         this.anneeChoice.setDisable(bool);
         this.choiceBoxFormation.setDisable(bool);
     }
-
+	@FXML
     public void exporterEmploiDuTemps() throws Exception {
         // Créer un nouveau calendrier
         Calendar calendar = new Calendar();
@@ -322,10 +326,7 @@ public class PlanningController {
 
         // Générateur d'UID pour les événements
         RandomUidGenerator ug = new RandomUidGenerator();
-
-        CoursDAO coursDAO = InitDAOS.getCoursDAO();
-        Page<Cours> pcours = coursDAO.findAll();
-        List<Cours> lcours = pcours.getResultList();
+        List<Cours> lcours = coursDAO.findAllById(userId);
 
         // Pour chaque événement de l'emploi du temps
         for (Cours c:lcours) {

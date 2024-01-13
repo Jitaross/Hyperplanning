@@ -49,16 +49,20 @@ public class AbsencesController {
             TextArea date = new TextArea();
             TextArea cours = new TextArea();
             TextArea motif = new TextArea();
+            TextArea heure = new TextArea();
 
             date.setEditable(false);
             cours.setEditable(false);
             motif.setEditable(false);
+            heure.setEditable(false);
 
             date.setText(c.getDate().toString());
             cours.setText(c.getDescription());
             motif.setText(abs.getMotif());
+            heure.setText(c.getDebut().toString()+"\n"+c.getFin().toString());
 
             this.gridPane.add(date,0,i);
+            this.gridPane.add(heure,1,i);
             this.gridPane.add(cours,2,i);
             this.gridPane.add(motif,3,i);
 
