@@ -10,4 +10,9 @@ public class Matiere implements Entity{
     private int id = -1;
     private String nomMatiere;
     private int idFormation;
+
+    @Override
+    public String toString(){
+        return nomMatiere;
+    }
 }

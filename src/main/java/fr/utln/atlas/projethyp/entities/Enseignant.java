@@ -8,4 +8,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class Enseignant extends Utilisateur {
     private String UFR;
+
+    /*@Override
+    public String toString(){
+        return super.toString();
+    }*/
 }

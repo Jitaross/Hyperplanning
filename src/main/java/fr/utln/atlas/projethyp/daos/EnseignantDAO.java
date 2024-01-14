@@ -3,6 +3,7 @@ package fr.utln.atlas.projethyp.daos;
 import fr.utln.atlas.projethyp.entities.Cours;
 import fr.utln.atlas.projethyp.entities.Devoir;
 import fr.utln.atlas.projethyp.entities.Enseignant;
+import fr.utln.atlas.projethyp.entities.Utilisateur;
 import fr.utln.atlas.projethyp.exceptions.DataAccessException;
 
 import lombok.extern.java.Log;
@@ -37,6 +38,7 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
     @Override
     protected Enseignant fromResultSet(ResultSet resultSet) throws SQLException {
         return Enseignant.builder()
+                .id(resultSet.getInt("ID"))
                 .UFR(resultSet.getString("UFR"))
                 .build();
     }
@@ -77,6 +79,18 @@ public class EnseignantDAO extends AbstractDAO<Enseignant> {
         DevoirDAO devoirDAO = InitDAOS.getDevoirDAO();
         devoirDAO.update(devoir);
 
+    }
+    public Utilisateur findInfoEns(int idEns) throws DataAccessException {
+        return InitDAOS.getUtilisateurDAO().findUtilisateur(idEns);
+    }
+    public Page<Utilisateur> findAllInfoEns(int pageNumber, int pageSize) throws DataAccessException {
+        Page<Enseignant> pageEnseignant = this.findAll(pageNumber,pageSize);
+        List<Enseignant> listeEnseignant = pageEnseignant.getResultList();
+        List<Utilisateur> listeUtilisateur = new ArrayList<>();
+        for(Enseignant e : listeEnseignant){
+            listeUtilisateur.add(this.findInfoEns(e.getId()));
+        }
+        return new Page<>(pageNumber, pageSize, listeUtilisateur);
     }
 
     public List<Cours> findAllCoursIdDay(int idEnseignant, Date dateCours) throws DataAccessException{

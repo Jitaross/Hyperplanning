@@ -8,4 +8,9 @@ import lombok.Data;
 public class Formation implements Entity{
     private int id = -1;
     private String nomFormation;
+
+    @Override
+    public String toString(){
+        return nomFormation;
+    }
 }
