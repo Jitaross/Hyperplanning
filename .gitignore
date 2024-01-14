@@ -36,5 +36,4 @@ build/
 
 ### Maven ###
 .mvn
-test
 site

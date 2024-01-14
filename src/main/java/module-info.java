@@ -8,8 +8,9 @@
     requires commons.dbcp2;
     requires com.h2database;
     requires java.management;
+        requires org.mnode.ical4j.core;
 
-		opens fr.utln.atlas.projethyp to javafx.fxml;
+        opens fr.utln.atlas.projethyp to javafx.fxml;
     exports fr.utln.atlas.projethyp;
     opens fr.utln.atlas.projethyp.controller to javafx.fxml;
     exports fr.utln.atlas.projethyp.controller;

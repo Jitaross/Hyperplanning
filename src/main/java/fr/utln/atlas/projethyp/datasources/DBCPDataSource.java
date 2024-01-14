@@ -15,8 +15,9 @@ public class DBCPDataSource {
         ds.setPassword("@tlas");
 
         ds.setMinIdle(5);
-        ds.setMaxIdle(10);
+        ds.setMaxIdle(20);
         ds.setMaxOpenPreparedStatements(100);
+        ds.setMaxTotal(20);
     }
 
     private DBCPDataSource() {
