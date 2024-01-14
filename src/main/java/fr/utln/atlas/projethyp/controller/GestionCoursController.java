@@ -31,7 +31,7 @@ public class GestionCoursController {
 	@FXML
 	private ChoiceBox<Matiere> choiceBoxMatiere;
 	@FXML
-	private ChoiceBox<Integer> choiceBoxEnseignant;
+	private ChoiceBox<Utilisateur> choiceBoxEnseignant;
 	@FXML
 	private ChoiceBox<Salle> choiceBoxSalle;
 	@FXML
@@ -45,7 +45,7 @@ public class GestionCoursController {
 	private PlanningController planningController;
 	private Cours cours = null;
 	private MatiereDAO matiereDAO;
-	private UtilisateurDAO utilisateurDAO;
+	private EnseignantDAO enseignantDAO;
 	private SalleDAO salleDAO;
 	private CoursDAO coursDAO;
 
@@ -53,9 +53,10 @@ public class GestionCoursController {
 	@FXML
 	private void initialize(){
 		this.matiereDAO = InitDAOS.getMatiereDAO();
-		this.utilisateurDAO = InitDAOS.getUtilisateurDAO();
+		this.enseignantDAO = InitDAOS.getEnseignantDAO();
 		this.salleDAO = InitDAOS.getSalleDAO();
 		this.coursDAO = InitDAOS.getCoursDAO();
+
 	}
 	void init(int formation, int annee, PlanningController planningController){
 		this.formation = formation;
@@ -66,11 +67,9 @@ public class GestionCoursController {
 			List<Matiere> listeMatiere = pageMatiere.getResultList();
 			this.choiceBoxMatiere.getItems().addAll(listeMatiere);
 
-
-			/* A CORRIGER
-			Page<Utilisateur> pageUtilisateur = this.utilisateurDAO.findAll(1,50);
-			List<Utilisateur> listeUtilisateur = pageUtilisateur.getResultList();*/
-			this.choiceBoxEnseignant.getItems().add(1);
+			Page<Utilisateur> pageUtilisateurEns = this.enseignantDAO.findAllInfoEns(1,50);
+			List<Utilisateur> listeUtilisateurEns = pageUtilisateurEns.getResultList();
+			this.choiceBoxEnseignant.getItems().addAll(listeUtilisateurEns);
 
 			Page<Salle> pageSalle = this.salleDAO.findAll(1,50);
 			List<Salle> listeSalle = pageSalle.getResultList();
@@ -103,7 +102,7 @@ public class GestionCoursController {
 		}));
 
 	}
-
+	// Initialise la ChoiceBox de début d'heure de cours avec chaque début d'heure possible pour un cours
 	private void initChoiceBoxSalle(){
 		String sMin;
 		for(int h=8;h<20;h++){
@@ -120,6 +119,7 @@ public class GestionCoursController {
 		});
 	}
 
+	// Initialise la ChoiceBox de fin d'heure de cours en fonction de l'heure de début choisie
 	private void updateChoiceBoxHeureFin(String time){
 		String sMin;
 		String[] timeArr = time.split(":");
@@ -141,6 +141,7 @@ public class GestionCoursController {
 	}
 
 	private Cours creationCours(){
+		// Gestion des alertes s'il y a un paramètre manquant
 		if(choiceBoxMatiere.getSelectionModel().isEmpty()){
 			showAlert(Alert.AlertType.ERROR,this.vboxGestionCours.getScene().getWindow(), "Erreur", "Veuillez selectionner une matière");
 			return null;
@@ -170,6 +171,7 @@ public class GestionCoursController {
 			showAlert(Alert.AlertType.ERROR,this.vboxGestionCours.getScene().getWindow(), "Erreur", "Veuillez selectionner une date");
 			return null;
 		}
+		int idEnseignant = choiceBoxEnseignant.getSelectionModel().getSelectedItem().getId();
 		int idMatiere = choiceBoxMatiere.getSelectionModel().getSelectedItem().getId();
 		int idSalle = choiceBoxSalle.getSelectionModel().getSelectedItem().getId();
 		Date date = Date.valueOf(datePicker.getValue());
@@ -177,7 +179,7 @@ public class GestionCoursController {
 		Time fin = Time.valueOf(choiceBoxHeureFin.getSelectionModel().getSelectedItem() + ":00");
 		Cours.TypeCours typeCours = choiceBoxTypeCours.getSelectionModel().getSelectedItem();
 
-		return Cours.builder().idEnseignant(1).idMatiere(idMatiere).idSalle(idSalle)
+		return Cours.builder().idEnseignant(idEnseignant).idMatiere(idMatiere).idSalle(idSalle)
 				.date(date).debut(debut).fin(fin).typeCours(typeCours)
 				.description(typeCours + " de " + choiceBoxMatiere.getSelectionModel().getSelectedItem().getNomMatiere()).build();
 
