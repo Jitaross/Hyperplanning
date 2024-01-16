@@ -2,4 +2,5 @@
 
 Connexion identifiant:
 enseignant : charles.leclerc@gmail.com mot de passe : test
-gest : estelle.leboulanger@gmail.com mot de passe : az
+gestionnaire : estelle.leboulanger@gmail.com mot de passe : az
+etudiant : jean.dujardin@gmail.com mot de passe : mdptest
