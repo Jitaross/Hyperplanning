@@ -66,7 +66,13 @@ public class MainController {
 	private void initialize() throws Exception {
 		UtilisateurDAO userdao = InitDAOS.getUtilisateurDAO();
 		Utilisateur user = userdao.findUtilisateur(userId);
-		textInfos.setText("Espace "+ user.getTypeUser()+" | "+user.getNom() + " " + user.getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
+		if(user.getTypeUser()== Utilisateur.TypeUser.Etudiant){
+			textInfos.setText("Espace "+ user.getTypeUser()+" | "+user.getNom() + " " + user.getPrenom() + " ("+userdao.getNomFormationWithId(userId)+")");
+		}
+		else{
+			textInfos.setText("Espace "+ user.getTypeUser()+" | "+user.getNom() + " " + user.getPrenom());
+		}
+
 
 
 		IdentificationController identificationController = new IdentificationController();
