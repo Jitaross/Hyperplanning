@@ -41,6 +41,7 @@ public class AccueilController {
 
 		}
 		datePicker.setOnAction(event->{
+			this.gridPane.getChildren().removeIf(TextArea.class::isInstance);
 			try {
 				List<Cours> lcours = coursDAO.findCoursJourEtudiant(Date.valueOf(datePicker.getValue()),MainController.getUserId());
 				for(Cours c:lcours){
@@ -89,7 +90,7 @@ public class AccueilController {
 	}
 
 	private void ajouterCours(Cours cours){
-		this.gridPane.getChildren().removeIf(TextArea.class::isInstance);
+
 
 		HashMap<String, String> couleurs = new HashMap<String, String>();
 		couleurs.put("CM", "-fx-control-inner-background:#ffeb7a;");
