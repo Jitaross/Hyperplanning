@@ -34,8 +34,8 @@ public class CoursDAO extends AbstractDAO<Cours> {
             findCoursPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ?");
             findCoursFormationPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
                     "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = ?)");
-            findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND IDMATIERE " +
-                    "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))");
+            findCoursEtudiantPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE DATE = ? AND ((IDMATIERE " +
+                    "IN (SELECT ID FROM MATIERE WHERE IDFORMATION = (SELECT IDFORMATION FROM ETUDIANT WHERE ID =?))) OR (IDENSEIGNANT = ?))");
             findCoursByIdPS = getConnection().prepareStatement("SELECT * FROM COURS WHERE ID=?");
             findAllEtudiantCours = getConnection().prepareStatement("SELECT e.*, u.* FROM COURS as c, ETUDIANT as e, UTILISATEUR as u, MATIERE as m " +
                     "WHERE c.ID=?" +
@@ -168,6 +168,7 @@ public class CoursDAO extends AbstractDAO<Cours> {
         try {
             findCoursEtudiantPS.setDate(1, date);
             findCoursEtudiantPS.setInt(2, id);
+            findCoursEtudiantPS.setInt(3, id);
 
             ResultSet resultSet = findCoursEtudiantPS.executeQuery();
 
